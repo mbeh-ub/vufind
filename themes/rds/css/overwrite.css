@@ -1,0 +1,11 @@
+[class*="span"] {
+    margin-left: 0px;
+} 
+
+.control-group {
+ float: right;
+}
+
+#langForm {
+ float: left;
+}

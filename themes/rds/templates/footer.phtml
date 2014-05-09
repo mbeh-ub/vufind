@@ -1,0 +1,27 @@
+<? if ($mobileViewLink = $this->mobileUrl()): // display 'return to mobile' link when applicable ?>
+  <hr/>
+  <div class="mobileViewLink"><a href="<?=$this->escapeHtml($mobileViewLink)?>"><?=$this->transEsc("mobile_link")?></a></div>
+<? endif; ?>
+<hr/>
+<div class="span8 row-fluid small">
+<!-- start footerWrapper -->
+<div id="footerWrapper">
+    <div id="footer">
+    <ul id="siteActions">
+        <li>
+                <a title="<?=$this->transEsc('RDS_CONTACT')?>" href="http://www.ub.uni-freiburg.de/index.php?id=info"><?=$this->transEsc('RDS_CONTACT')?></a>
+                <span class="sactionSeparator"> | </span>
+        </li>
+        <li>
+                <a title="<?=$this->transEsc('RDS_LIBRARY_IMPRINT')?>" href="http://www.ub.uni-freiburg.de/index.php?id=impressum"><?=$this->transEsc('RDS_LIBRARY_IMPRINT')?></a>
+                </li>
+    </ul>
+
+    <!-- start copyright -->
+    <div class="copyright">&copy; <?=$this->transEsc('RDS_COPYRIGHT')?></div>
+    <!-- end copyright -->
+
+
+    </div>
+</div>
+</div>
