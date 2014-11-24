@@ -244,6 +244,11 @@ abstract class AbstractBase implements \VuFind\Db\Table\DbTableAwareInterface,
             $this->getUniqueId(), $this->getResourceSource(), true, $this
         );
 
+        
+        $recordTable = $this->getDbTable('Record');
+        $record = $recordTable->findRecord($resource->record_id, $this->getRawData(), true, $resource->source, $user->id, $listId);
+        
+        
         // Add the information to the user's account:
         $user->saveResource(
             $resource, $list,
