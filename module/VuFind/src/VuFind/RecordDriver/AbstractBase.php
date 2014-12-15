@@ -42,7 +42,8 @@ use VuFind\Exception\LoginRequired as LoginRequiredException,
  */
 abstract class AbstractBase implements \VuFind\Db\Table\DbTableAwareInterface,
     \VuFind\I18n\Translator\TranslatorAwareInterface,
-    \VuFindSearch\Response\RecordInterface
+    \VuFindSearch\Response\RecordInterface,
+    \VuFind\Record\Cache\RecordCacheAwareInterface
 {
     use \VuFind\Db\Table\DbTableAwareTrait;
     use \VuFind\I18n\Translator\TranslatorAwareTrait;
@@ -82,6 +83,9 @@ abstract class AbstractBase implements \VuFind\Db\Table\DbTableAwareInterface,
      */
     protected $fields = [];
 
+    
+    protected $recordCache = null;
+    
     /**
      * Constructor
      *
@@ -243,15 +247,10 @@ abstract class AbstractBase implements \VuFind\Db\Table\DbTableAwareInterface,
         $resource = $resourceTable->findResource(
             $this->getUniqueId(), $this->getResourceSource(), true, $this
         );
-
+        
         // Persist record in the database for "offline" use
-        if ($this->mainConfig->Social->cache === 'enabled') {
-            $recordTable = $this->getDbTable('Record');
-            $record = $recordTable->findRecord(
-                $resource->record_id, $this->getRawData(), true, 
-                $resource->source, $user->id, $listId
-            );
-        }
+        $this->recordCache->update($resource->record_id, $this->getRawData(), 
+            $resource->source, $user->id, null, $listId);
         
         // Add the information to the user's account:
         $user->saveResource(
@@ -498,5 +497,77 @@ abstract class AbstractBase implements \VuFind\Db\Table\DbTableAwareInterface,
         return is_callable([$this, $method])
             ? call_user_func_array([$this, $method], $params)
             : null;
+    }
+
+    /**
+     * Get a database table object.
+     *
+     * @param string $table Table to load.
+     *
+     * @return \VuFind\Db\Table\User
+     */
+    public function getDbTable($table)
+    {
+        return $this->getDbTableManager()->get($table);
+    }
+
+    /**
+     * Get the table plugin manager.  Throw an exception if it is missing.
+     *
+     * @throws \Exception
+     * @return \VuFind\Db\Table\PluginManager
+     */
+    public function getDbTableManager()
+    {
+        if (null === $this->tableManager) {
+            throw new \Exception('DB table manager missing.');
+        }
+        return $this->tableManager;
+    }
+
+    /**
+     * Set the table plugin manager.
+     *
+     * @param \VuFind\Db\Table\PluginManager $manager Plugin manager
+     *
+     * @return void
+     */
+    public function setDbTableManager(\VuFind\Db\Table\PluginManager $manager)
+    {
+        $this->tableManager = $manager;
+    }
+
+    /**
+     * Set a translator
+     *
+     * @param \Zend\I18n\Translator\Translator $translator Translator
+     *
+     * @return AbstractBase
+     */
+    public function setTranslator(\Zend\I18n\Translator\Translator $translator)
+    {
+        $this->translator = $translator;
+        return $this;
+    }
+
+    /**
+     * Translate a string if a translator is available.
+     *
+     * @param string $msg Message to translate
+     *
+     * @return string
+     */
+    public function translate($msg)
+    {
+        return null !== $this->translator
+            ? $this->translator->translate($msg) : $msg;
+    }
+    
+    public function getRecordCache() {
+        return $this->recordCache;
+    }
+    
+    public function setRecordCache(\VuFind\Record\Cache $recordCache) {
+       $this->recordCache = $recordCache;   
     }
 }
