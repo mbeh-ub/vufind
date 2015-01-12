@@ -403,7 +403,8 @@ class MyResearchController extends AbstractBase
 
         // Process the deletes if necessary:
         if ($this->formWasSubmitted('submit')) {
-            $this->favorites()->delete($ids, $listID, $user);
+            $this->favorites()->delete($ids, $listID, $user);         
+            $this->getRecordCache()->delete($ids, $user->id);
             $this->flashMessenger()->setNamespace('info')
                 ->addMessage('fav_delete_success');
             return $this->redirect()->toUrl($newUrl);
@@ -463,6 +464,8 @@ class MyResearchController extends AbstractBase
             $this->flashMessenger()->setNamespace('info')
                 ->addMessage('Item removed from favorites');
         }
+        
+        $this->getRecordCache()->delete(array("$source|$id"), $user->id);
 
         // All done -- return true to indicate success.
         return true;
