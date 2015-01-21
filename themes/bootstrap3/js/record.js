@@ -151,12 +151,12 @@ function registerTabEvents() {
 function ajaxLoadTab(tabid) {
   var id = $('.hiddenId')[0].value;
   // Grab the part of the url that is the Controller and Record ID
-  var urlroot = document.URL.match(new RegExp('/[^/]+/'+id+'(/|\\b)'));
-  if(urlroot[0].substring(-1) != '/') {
-    urlroot[0] += '/';
+  var urlroot = document.URL.match(new RegExp('/[^/]+/'+id)) + "/";
+  if(urlroot == "null/") {
+    return true;
   }
   $.ajax({
-    url: path + urlroot[0] + 'AjaxTab',
+    url: path + urlroot + 'AjaxTab',
     type: 'POST',
     data: {tab: tabid},
     success: function(data) {
@@ -169,6 +169,7 @@ function ajaxLoadTab(tabid) {
       }
     }
   });
+  return false;
 }
 
 $(document).ready(function(){
@@ -177,21 +178,20 @@ $(document).ready(function(){
 
   $('ul.recordTabs a').click(function (e) {
     if($(this).parents('li.active').length > 0) {
-      window.location.href = $(this).attr('href');
-      return;
+      return true;
     }
     var tabid = $(this).attr('id').toLowerCase();
     if($('#'+tabid+'-tab').length > 0) {
       $('#record-tabs .tab-pane.active').removeClass('active');
       $('#'+tabid+'-tab').addClass('active');
       $('#'+tabid).tab('show');
+      return false;
     } else {
       $('#record-tabs').append('<div class="tab-pane" id="'+tabid+'-tab"><i class="fa fa-spinner fa-spin"></i> '+vufindString.loading+'...</div>');
       $('#record-tabs .tab-pane.active').removeClass('active');
       $('#'+tabid+'-tab').addClass('active');
-      ajaxLoadTab(tabid);
+      return ajaxLoadTab(tabid);
     }
-    return false;
   });
 
   /* --- LIGHTBOX --- */
