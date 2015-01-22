@@ -287,15 +287,18 @@ class RDSProxy extends SolrDefault
      */
     public function getCleanISSN()
     {
-        $issns = $this->getISSNs();
-        if (empty($issns)) {
-            return false;
+        // print ISSN prefered
+        if(isset($this->fields['pissn'])) {
+                return $this->fields['pissn'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['pissn'])) {
+                return $this->fields['source']['pissn'];
+        } elseif(isset($this->fields['eissn'])) {
+                return $this->fields['eissn'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['eissn'])) {
+                return $this->fields['source']['eissn'];
+        } else {
+                return false;
         }
-        $issn = $issns[0];
-        if ($pos = strpos($issn, ' ')) {
-            $issn = substr($issn, 0, $pos);
-        }
-        return $issn;
     }
 
     /**
@@ -517,10 +520,18 @@ class RDSProxy extends SolrDefault
      */
     public function getISBNs()
     {
-        // If ISBN is in the index, it should automatically be an array... but if
-        // it's not set at all, we should normalize the value to an empty array.
-        return isset($this->fields['sb']) && is_array($this->fields['sb']) ?
-            $this->fields['sb'] : array();
+        $isbns = array();
+        if(isset($this->fields['pisbn'])) {
+                $isbns['print'] = $this->fields['pisbn'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['pisbn'])) {
+                $isbns['print'] = $this->fields['source']['pisbn'];
+        }
+        if(isset($this->fields['eisbn'])) {
+                $isbns['electronic'] = $this->fields['eisbn'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['eisbn'])) {
+                $isbns['electronic'] = $this->fields['source']['eisbn'];
+        }
+        return $isbns;
     }
 
     /**
@@ -530,10 +541,18 @@ class RDSProxy extends SolrDefault
      */
     public function getISSNs()
     {
-        // If ISSN is in the index, it should automatically be an array... but if
-        // it's not set at all, we should normalize the value to an empty array.
-        return isset($this->fields['ss']) && is_array($this->fields['ss']) ?
-            $this->fields['ss'] : array();
+        $issns = array();
+        if(isset($this->fields['pissn'])) {
+                $issns['print'] = $this->fields['pissn'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['pissn'])) {
+                $issns['print'] = $this->fields['source']['pissn'];
+        }
+        if(isset($this->fields['eissn'])) {
+                $issns['electronic'] = $this->fields['eissn'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['eissn'])) {
+                $issns['electronic'] = $this->fields['source']['eissn'];
+        }
+        return $issns;
     }
 
     /**
@@ -899,8 +918,20 @@ class RDSProxy extends SolrDefault
      */
     public function getPublicationDates()
     {
-        return isset($this->fields['publishDate']) ?
-            $this->fields['publishDate'] : array();
+	// ToDO there is something wrong
+  	if(isset($this->fields['dates'])) {
+                $dates = $this->fields['dates'];
+        } elseif(isset($this->fields['source']) && isset($this->fields['source']['dates'])) {
+                $dates = $this->fields['source']['dates'];
+        } else {
+                return array();
+        }
+
+        if(isset($dates['published'])) {
+                return $dates['published'];
+        } else {
+                return array();
+        }
     }
 
     /**
@@ -1060,11 +1091,11 @@ class RDSProxy extends SolrDefault
         // array as needed (it should be a flat string according to the default
         // schema, but we might as well support the array case just to be on the safe
         // side:
-        if (isset($this->fields['abstract'])
-            && !empty($this->fields['abstract'])
+        if (isset($this->fields['abstracts'])
+            && !empty($this->fields['abstracts'])
         ) {
-            return is_array($this->fields['abstract'])
-                ? $this->fields['abstract'] : array($this->fields['abstract']);
+            return is_array($this->fields['abstracts'])
+                ? $this->fields['abstracts'] : array($this->fields['abstracts']);
         }
 
         // If we got this far, no description was found:
@@ -1481,8 +1512,7 @@ class RDSProxy extends SolrDefault
      */
     public function getContainerTitle()
     {
-        return isset($this->fields['container_title'])
-            ? $this->fields['container_title'] : '';
+                return $this->getSourceData('title');
     }
 
     /**
@@ -1493,8 +1523,7 @@ class RDSProxy extends SolrDefault
      */
     public function getContainerVolume()
     {
-        return isset($this->fields['container_volume'])
-            ? $this->fields['container_volume'] : '';
+                return $this->getItemOrSourceData('volume');
     }
 
     /**
@@ -1505,8 +1534,7 @@ class RDSProxy extends SolrDefault
      */
     public function getContainerIssue()
     {
-        return isset($this->fields['container_issue'])
-            ? $this->fields['container_issue'] : '';
+        return $this->getItemOrSourceData('issue');
     }
 
     /**
@@ -1517,8 +1545,8 @@ class RDSProxy extends SolrDefault
      */
     public function getContainerStartPage()
     {
-        return isset($this->fields['container_start_page'])
-            ? $this->fields['container_start_page'] : '';
+        return isset($this->fields['startpage'])
+            ? $this->fields['startpage'] : '';
     }
 
     /**
@@ -1612,4 +1640,171 @@ class RDSProxy extends SolrDefault
     {
         return implode(' ', $this->getSchemaOrgFormatsArray());
     }
+
+    /**
+     * special RDSProxy functions
+     */
+
+    public function getAuthorsEtAl()
+    {
+        $result = array();
+        if(isset($this->fields['authors'])) {
+                if(count($this->fields['authors']) <= 3) {
+                        $result = $this->fields['authors'];
+                } else {
+                        $result = array_slice($this->fields['authors'], 0, 3);
+                        $result[] = 'et al.';
+                }
+                for($i = 0; $i < count($result); $i++) {
+                        $result[$i] = preg_replace('|<sup>[^<]*</sup>|u', '', $result[$i]);
+                }
+        }
+        return implode(' ; ', $result);
+    }
+
+    public function getAuthors()
+    {
+        $result = array();
+        if(isset($this->fields['authors'])) {
+                $result = $this->fields['authors'];
+                for($i = 0; $i < count($result); $i++) {
+                        $result[$i] = preg_replace('|<sup>[^<]*</sup>|u', '', $result[$i]);
+                }
+        }
+        return implode(' ; ', $result);
+    }
+
+    public function getDataSource()
+    {
+        return (isset($this->fields['datasource']) ? $this->fields['datasource'] : '');
+    }
+
+    public function getDoi()
+    {
+        return (isset($this->fields['doi']) ? $this->fields['doi'] : '');
+    }
+
+    public function getMediaIcon()
+    {
+        return (isset($this->fields['mediaicon']) ? $this->fields['mediaicon'] : '');
+    }
+
+    public function getGuestView()
+    {
+        return (isset($this->fields['guestview']) ? $this->fields['guestview'] : '');
+    }
+
+    /**
+     * protected function for intern use
+     */
+
+    protected function getItemOrSourceData($element)
+    {
+        if(isset($this->fields[$element])) {
+                return $this->fields[$element];
+        } else {
+                return $this->getSourceData($element);
+        }
+    }
+
+    protected function getSourceData($element)
+    {
+        if(isset($this->fields['source']) && isset($this->field['source'][$element])) {
+                return $this->field['source'][$element];
+        } else {
+                return '';
+        }
+    }
+
+   /** 
+    * ToDO: these functions may be intergrated
+    */
+/*
+    protected function getNumPages()
+    {
+        return $this->getItemOrSourceData('numpages');
+    }
+
+    protected function getLink($properties)
+    {
+        if(isset($this->fields['links'])) {
+                foreach($this->fields['links'] as $link) {
+                        if(!is_array($link)) {
+                                continue;
+                        }
+                        $match = true;
+                        foreach($properties as $pKey => $pValue) {
+                                if(!isset($link[$pKey]) || $link[$pKey] !== $pValue) {
+                                        $match = false;
+                                        break;
+                                }
+                        }
+                        if($match) {
+                                return $link;
+                        }
+                }
+        }
+        return '';
+    }
+    protected function getCover()
+    {
+        $cover = $this->getLink(array('category' => 'cover', 'type' => 'thumb'));
+        if($cover !== '') {
+                return $cover['url'];
+        }
+    }
+
+    protected function getEmptyCover() {
+        global $configArray;
+           $noCoverImage = isset($configArray['Content']['noCoverAvailableImage']) ? $configArray['Content']['noCoverAvailableImage'] : null;
+        return $noCoverImage;
+    }
+
+    public function getOpenUrl()
+    {
+        $openUrl = $this->getLink(array('category' => 'openurl', 'type' => 'embedded'));
+        if($openUrl !== '') {
+                return $openUrl['url'];
+        }
+    }
+    public function getOpenUrlExternal()
+    {
+        $openUrl = $this->getLink(array('category' => 'openurl', 'type' => 'external'));
+        if($openUrl !== '') {
+                return $openUrl['url'];
+        }
+    }
+
+    public function getOpenUrlGenre()
+    {
+        return (isset($this->fields['openurlgenre']) ? $this->fields['openurlgenre'] : '');
+    }
+
+    protected function getPdfFulltext()
+    {
+        return $this->getLink(array('category' => 'fulltext', 'type' => 'pdf'));
+    }
+
+    protected function getHtmlFulltext()
+    {
+        return $this->getLink(array('category' => 'fulltext', 'type' => 'html'));
+    }
+
+    protected function getFreeFulltext()
+    {
+        return $this->getLink(array('category' => 'fulltext', 'access' => 'green'));
+    }
+
+    protected function getPmid()
+    {
+        return (isset($this->fields['pmid']) ? $this->fields['pmid'] : '');
+    }
+
+    public function getPrintData()
+    {
+        return str_replace('    ', '  ', print_r($this->fields, true));
+    }
+
+*/
+
 }
