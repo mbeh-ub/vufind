@@ -918,17 +918,17 @@ class RDSProxy extends SolrDefault
      */
     public function getPublicationDates()
     {
-	// ToDO there is something wrong
-  	if(isset($this->fields['dates'])) {
+        // ToDO there is something wrong
+        if (isset($this->fields['dates'])) {
                 $dates = $this->fields['dates'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['dates'])) {
+        } elseif (isset($this->fields['source']) && isset($this->fields['source']['dates'])) {
                 $dates = $this->fields['source']['dates'];
         } else {
                 return array();
         }
 
-        if(isset($dates['published'])) {
-                return $dates['published'];
+        if (isset($dates['published'])) {
+                return array($dates['published']['year']);
         } else {
                 return array();
         }
