@@ -288,13 +288,15 @@ class RDSProxy extends SolrDefault
     public function getCleanISSN()
     {
         // print ISSN prefered
-        if(isset($this->fields['pissn'])) {
+        if (isset($this->fields['pissn'])) {
                 return $this->fields['pissn'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['pissn'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['pissn'])) {
                 return $this->fields['source']['pissn'];
-        } elseif(isset($this->fields['eissn'])) {
+        } elseif (isset($this->fields['eissn'])) {
                 return $this->fields['eissn'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['eissn'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['eissn'])) {
                 return $this->fields['source']['eissn'];
         } else {
                 return false;
@@ -395,7 +397,8 @@ class RDSProxy extends SolrDefault
      */
     public function getFormats()
     {
-        return isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
+        return isset($this->fields['medieninfo']) 
+            ? $this->fields['medieninfo'] : array();
     }
 
     /**
@@ -521,14 +524,16 @@ class RDSProxy extends SolrDefault
     public function getISBNs()
     {
         $isbns = array();
-        if(isset($this->fields['pisbn'])) {
+        if (isset($this->fields['pisbn'])) {
                 $isbns['print'] = $this->fields['pisbn'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['pisbn'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['pisbn'])) {
                 $isbns['print'] = $this->fields['source']['pisbn'];
         }
-        if(isset($this->fields['eisbn'])) {
+        if (isset($this->fields['eisbn'])) {
                 $isbns['electronic'] = $this->fields['eisbn'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['eisbn'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['eisbn'])) {
                 $isbns['electronic'] = $this->fields['source']['eisbn'];
         }
         return $isbns;
@@ -542,14 +547,16 @@ class RDSProxy extends SolrDefault
     public function getISSNs()
     {
         $issns = array();
-        if(isset($this->fields['pissn'])) {
+        if (isset($this->fields['pissn'])) {
                 $issns['print'] = $this->fields['pissn'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['pissn'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['pissn'])) {
                 $issns['print'] = $this->fields['source']['pissn'];
         }
-        if(isset($this->fields['eissn'])) {
+        if (isset($this->fields['eissn'])) {
                 $issns['electronic'] = $this->fields['eissn'];
-        } elseif(isset($this->fields['source']) && isset($this->fields['source']['eissn'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['eissn'])) {
                 $issns['electronic'] = $this->fields['source']['eissn'];
         }
         return $issns;
@@ -882,6 +889,11 @@ class RDSProxy extends SolrDefault
             $this->fields['title_old'] : array();
     }
 
+    /**
+     * Get an array of author names (short version).
+     *
+     * @return array
+     */
     public function getShortAuthors()
     {
         return isset($this->fields['authors']) ?
@@ -896,7 +908,7 @@ class RDSProxy extends SolrDefault
      */
     public function getPrimaryAuthor()
     {
-	return isset($this->fields['authors']) ?
+        return isset($this->fields['authors']) ?
             $this->fields['authors'][0] : "";
     }
 
@@ -921,7 +933,8 @@ class RDSProxy extends SolrDefault
         // ToDO there is something wrong
         if (isset($this->fields['dates'])) {
                 $dates = $this->fields['dates'];
-        } elseif (isset($this->fields['source']) && isset($this->fields['source']['dates'])) {
+        } elseif (isset($this->fields['source']) 
+            && isset($this->fields['source']['dates'])) {
                 $dates = $this->fields['source']['dates'];
         } else {
                 return array();
@@ -1193,14 +1206,17 @@ class RDSProxy extends SolrDefault
      */
     public function getURLs()
     {
-	$myurl = array();
+        $myurl = array();
         if (isset($this->fields['links']) && is_array($this->fields['links'])) {
-	    foreach ($this->fields['links'] as $key => $value) {
-		if (is_array($value) && $value['type']!='embedded') {
-			$myurl[] = (array('url'=>$value['url'],'desc'=> $value['access'] . " " . $value['provider']));
-		}
-	    }
-	   return($myurl); 
+            foreach ($this->fields['links'] as $key => $value) {
+                if (is_array($value) && $value['type']!='embedded') {
+                        $myurl[] = (array(
+                           'url'=>$value['url'],
+                           'desc'=> $value['access'] . " " . $value['provider']
+                    ));
+                }
+            }
+            return($myurl); 
         }
         return array();
     }
@@ -1643,52 +1659,80 @@ class RDSProxy extends SolrDefault
 
     /**
      * special RDSProxy functions
+     * 
+     * @return String return author et al stirng
      */
 
     public function getAuthorsEtAl()
     {
         $result = array();
-        if(isset($this->fields['authors'])) {
-                if(count($this->fields['authors']) <= 3) {
-                        $result = $this->fields['authors'];
-                } else {
-                        $result = array_slice($this->fields['authors'], 0, 3);
-                        $result[] = 'et al.';
-                }
-                for($i = 0; $i < count($result); $i++) {
-                        $result[$i] = preg_replace('|<sup>[^<]*</sup>|u', '', $result[$i]);
-                }
+        if (isset($this->fields['authors'])) {
+            if (count($this->fields['authors']) <= 3) {
+                $result = $this->fields['authors'];
+            } else {
+                $result = array_slice($this->fields['authors'], 0, 3);
+                $result[] = 'et al.';
+            }
+            for ($i = 0; $i < count($result); $i++) {
+                $result[$i] = preg_replace('|<sup>[^<]*</sup>|u', '', $result[$i]);
+            }
         }
         return implode(' ; ', $result);
     }
 
+    /**
+     * Get an array of author names.
+     *
+     * @return array
+     */
     public function getAuthors()
     {
         $result = array();
-        if(isset($this->fields['authors'])) {
-                $result = $this->fields['authors'];
-                for($i = 0; $i < count($result); $i++) {
-                        $result[$i] = preg_replace('|<sup>[^<]*</sup>|u', '', $result[$i]);
-                }
+        if (isset($this->fields['authors'])) {
+            $result = $this->fields['authors'];
+            for ($i = 0; $i < count($result); $i++) {
+                $result[$i] = preg_replace('|<sup>[^<]*</sup>|u', '', $result[$i]);
+            }
         }
         return implode(' ; ', $result);
     }
 
+    /**
+     * Get an datasource.
+     *
+     * @return String
+     */
     public function getDataSource()
     {
-        return (isset($this->fields['datasource']) ? $this->fields['datasource'] : '');
+        return (isset($this->fields['datasource']) ? 
+            $this->fields['datasource'] : '');
     }
 
+    /**
+     * Get an DOI.
+     *
+     * @return String
+     */
     public function getDoi()
     {
         return (isset($this->fields['doi']) ? $this->fields['doi'] : '');
     }
 
+    /**
+     * Get an mediaicon.
+     *
+     * @return String
+     */
     public function getMediaIcon()
     {
         return (isset($this->fields['mediaicon']) ? $this->fields['mediaicon'] : '');
     }
 
+    /**
+     * Is guest view ?
+     *
+     * @return Boolean
+     */
     public function getGuestView()
     {
         return (isset($this->fields['guestview']) ? $this->fields['guestview'] : '');
@@ -1696,30 +1740,41 @@ class RDSProxy extends SolrDefault
 
     /**
      * protected function for intern use
+     * 
+     * @param String $element item our source data element name
+     * 
+     * @return Mixed
      */
-
     protected function getItemOrSourceData($element)
     {
-        if(isset($this->fields[$element])) {
+        if (isset($this->fields[$element])) {
                 return $this->fields[$element];
         } else {
                 return $this->getSourceData($element);
         }
     }
-
+    
+    /**
+     * protected function for intern use
+     *
+     * @param String $element data element name
+     *
+     * @return Mixed
+     */
     protected function getSourceData($element)
     {
-        if(isset($this->fields['source']) && isset($this->field['source'][$element])) {
+        if (isset($this->fields['source']) && isset($this->field['source'][$element])) {
                 return $this->field['source'][$element];
         } else {
                 return '';
         }
     }
 
-   /** 
+    /** 
     * ToDO: these functions may be intergrated
     */
-/*
+
+    /*
     protected function getNumPages()
     {
         return $this->getItemOrSourceData('numpages');
@@ -1805,6 +1860,6 @@ class RDSProxy extends SolrDefault
         return str_replace('    ', '  ', print_r($this->fields, true));
     }
 
-*/
+    */
 
 }
