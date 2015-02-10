@@ -1702,12 +1702,34 @@ class RDSProxy extends SolrDefault
      *
      * @return String
      */
-    public function getDataSource()
+    public function getDatasource()
     {
-        return (isset($this->fields['datasource']) ? 
-            $this->fields['datasource'] : '');
+        $datasource = '';
+        if (isset($this->fields['datasource'])) {
+            $datasource = $this->translate('RDS_DATASOURCE');
+            $datasource .=  ': ' . $this->fields['datasource'];   
+        } 
+        
+        return $datasource;
     }
 
+    /**
+     * Get an datasource.
+     *
+     * @return String
+     */
+    public function getSourceDisplay() 
+    {
+        $sourceDisplay = $this->getSourceData('display');
+        
+        if (! isset($sourceDisplay)) {
+            $sourceDisplay = '';
+        }
+        
+        return $sourceDisplay;
+    }
+    
+    
     /**
      * Get an DOI.
      *
@@ -1763,8 +1785,8 @@ class RDSProxy extends SolrDefault
      */
     protected function getSourceData($element)
     {
-        if (isset($this->fields['source']) && isset($this->field['source'][$element])) {
-                return $this->field['source'][$element];
+        if (isset($this->fields['source']) && isset($this->fields['source'][$element])) {
+                return $this->fields['source'][$element];
         } else {
                 return '';
         }
