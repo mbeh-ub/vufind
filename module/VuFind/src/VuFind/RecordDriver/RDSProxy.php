@@ -1721,8 +1721,9 @@ class RDSProxy extends SolrDefault
     public function getSourceDisplay() 
     {
         $sourceDisplay = $this->getSourceData('display');
-        
-        if (! isset($sourceDisplay)) {
+        if (isset($sourceDisplay)) {
+            $sourceDisplay = str_replace('&amp;', '&', strip_tags($sourceDisplay));
+        } else {
             $sourceDisplay = '';
         }
         
