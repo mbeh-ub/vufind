@@ -1,6 +1,6 @@
 <?php
 return array(
-    'extends' => 'bootstrap',
+    'extends' => 'bootstrap3',
     'css' => array(
 	'overwrite.css',
 	'rds-cd.css',
