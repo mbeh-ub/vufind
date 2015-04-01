@@ -35,11 +35,11 @@ use VuFind\Code\ISBN;
  *
  * This should be used as the base class for all Solr-based record models.
  *
- * @category VuFind2
- * @package  RecordDrivers
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @category                                     VuFind2
+ * @package                                      RecordDrivers
+ * @author                                       Demian Katz <demian.katz@villanova.edu>
+ * @license                                      http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link                                         http://vufind.org/wiki/vufind2:record_drivers Wiki
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
 class RDSIndex extends SolrMarc
@@ -51,7 +51,7 @@ class RDSIndex extends SolrMarc
      * @var array
      */
     protected $preferredSnippetFields = array(
-        'contents', 'topic'
+    'contents', 'topic'
     );
 
     /**
@@ -63,9 +63,9 @@ class RDSIndex extends SolrMarc
      * @var array
      */
     protected $forbiddenSnippetFields = array(
-        'author', 'author-letter', 'title', 'title_short', 'title_full',
-        'title_full_unstemmed', 'title_auth', 'title_sub', 'spelling', 'id',
-        'ctrlnum'
+    'author', 'author-letter', 'title', 'title_short', 'title_full',
+    'title_full_unstemmed', 'title_auth', 'title_sub', 'spelling', 'id',
+    'ctrlnum'
     );
 
     /**
@@ -125,9 +125,9 @@ class RDSIndex extends SolrMarc
     ) {
         // Turn on highlighting/snippets as needed:
         $this->highlight = !isset($searchSettings->General->highlighting)
-            ? false : $searchSettings->General->highlighting;
+        ? false : $searchSettings->General->highlighting;
         $this->snippet = !isset($searchSettings->General->snippets)
-            ? false : $searchSettings->General->snippets;
+        ? false : $searchSettings->General->snippets;
 
         // Load snippet caption settings:
         if (isset($searchSettings->Snippet_Captions)
@@ -204,7 +204,7 @@ class RDSIndex extends SolrMarc
      */
     public function getAllRecordLinks()
     {
-	return null;
+        return null;
     }
 
     /**
@@ -250,7 +250,7 @@ class RDSIndex extends SolrMarc
         // Use the callnumber-a field from the Solr index; the plain callnumber
         // field is normalized to have no spaces, so it is unsuitable for display.
         return isset($this->fields['si']) ?
-            $this->fields['si'] : '';
+        $this->fields['si'] : '';
     }
 
     /**
@@ -303,7 +303,7 @@ class RDSIndex extends SolrMarc
     public function getDateSpan()
     {
         return isset($this->fields['dateSpan']) ?
-            $this->fields['dateSpan'] : array();
+        $this->fields['dateSpan'] : array();
     }
 
     /**
@@ -315,9 +315,9 @@ class RDSIndex extends SolrMarc
     public function getDeduplicatedAuthors()
     {
         $authors = array(
-            'main' => $this->getPrimaryAuthor(),
-            'corporate' => $this->getCorporateAuthor(),
-            'secondary' => $this->getSecondaryAuthors()
+        'main' => $this->getPrimaryAuthor(),
+        'corporate' => $this->getCorporateAuthor(),
+        'secondary' => $this->getSecondaryAuthors()
         );
 
         // The secondary author array may contain a corporate or primary author;
@@ -344,7 +344,7 @@ class RDSIndex extends SolrMarc
     public function getEdition()
     {
         return isset($this->fields['ausgabe'][0]) ?
-            $this->fields['ausgabe'][0] : '';
+        $this->fields['ausgabe'][0] : '';
     }
 
     /**
@@ -391,7 +391,7 @@ class RDSIndex extends SolrMarc
             return '';
         }
         return (isset($this->highlightDetails['au'][0]))
-            ? $this->highlightDetails['au'][0] : '';
+        ? $this->highlightDetails['au'][0] : '';
     }
 
     /**
@@ -402,7 +402,7 @@ class RDSIndex extends SolrMarc
     public function getLastIndexed()
     {
         return isset($this->fields['udate'])
-            ? $this->fields['udate'] : '';
+        ? $this->fields['udate'] : '';
     }
 
     /**
@@ -415,7 +415,7 @@ class RDSIndex extends SolrMarc
     public function getSnippetCaption($field)
     {
         return isset($this->snippetCaptions[$field])
-            ? $this->snippetCaptions[$field] : false;
+        ? $this->snippetCaptions[$field] : false;
     }
 
     /**
@@ -432,9 +432,9 @@ class RDSIndex extends SolrMarc
             foreach ($this->preferredSnippetFields as $current) {
                 if (isset($this->highlightDetails[$current][0])) {
                     return array(
-                        'snippet' => $this->highlightDetails[$current][0],
-                        'caption' => $this->getSnippetCaption($current)
-                    );
+                    'snippet' => $this->highlightDetails[$current][0],
+                    'caption' => $this->getSnippetCaption($current)
+                            );
                 }
             }
 
@@ -445,9 +445,9 @@ class RDSIndex extends SolrMarc
                 foreach ($this->highlightDetails as $key => $value) {
                     if (!in_array($key, $this->forbiddenSnippetFields)) {
                         return array(
-                            'snippet' => $value[0],
-                            'caption' => $this->getSnippetCaption($key)
-                        );
+                        'snippet' => $value[0],
+                        'caption' => $this->getSnippetCaption($key)
+                                );
                     }
                 }
             }
@@ -469,7 +469,7 @@ class RDSIndex extends SolrMarc
             return '';
         }
         return (isset($this->highlightDetails['ti'][0]))
-            ? $this->highlightDetails['ti'][0] : '';
+        ? $this->highlightDetails['ti'][0] : '';
     }
 
     /**
@@ -480,7 +480,7 @@ class RDSIndex extends SolrMarc
     public function getInstitutions()
     {
         return isset($this->fields['zj'])
-            ? $this->fields['zj'] : array();
+        ? $this->fields['zj'] : array();
     }
 
     /**
@@ -493,7 +493,7 @@ class RDSIndex extends SolrMarc
         // If ISBN is in the index, it should automatically be an array... but if
         // it's not set at all, we should normalize the value to an empty array.
         return isset($this->fields['sb']) && is_array($this->fields['sb']) ?
-            $this->fields['sb'] : array();
+        $this->fields['sb'] : array();
     }
 
     /**
@@ -506,7 +506,7 @@ class RDSIndex extends SolrMarc
         // If ISSN is in the index, it should automatically be an array... but if
         // it's not set at all, we should normalize the value to an empty array.
         return isset($this->fields['ss']) && is_array($this->fields['ss']) ?
-            $this->fields['ss'] : array();
+        $this->fields['ss'] : array();
     }
 
     /**
@@ -517,7 +517,7 @@ class RDSIndex extends SolrMarc
     public function getLanguages()
     {
         return isset($this->fields['la']) ?
-            $this->fields['la'] : array();
+        $this->fields['la'] : array();
     }
 
     /**
@@ -540,13 +540,13 @@ class RDSIndex extends SolrMarc
             $raw = $tmpArray[0];
         }
         /* If there is a hyphen in the string:
-            a. Remove it.
-            b. Inspect the substring following (to the right of) the (removed)
-               hyphen. Then (and assuming that steps 1 and 2 have been carried out):
-                    i.  All these characters should be digits, and there should be
-                    six or less.
-                    ii. If the length of the substring is less than 6, left-fill the
-                    substring with zeros until  the length is six.
+        a. Remove it.
+        b. Inspect the substring following (to the right of) the (removed)
+        hyphen. Then (and assuming that steps 1 and 2 have been carried out):
+        i.  All these characters should be digits, and there should be
+        six or less.
+        ii. If the length of the substring is less than 6, left-fill the
+        substring with zeros until  the length is six.
         */
         if (strpos($raw, '-') > 0) {
             // haven't checked for i. above. If they aren't all digits, there is
@@ -565,7 +565,7 @@ class RDSIndex extends SolrMarc
     public function getNewerTitles()
     {
         return isset($this->fields['title_new']) ?
-            $this->fields['title_new'] : array();
+        $this->fields['title_new'] : array();
     }
 
     /**
@@ -576,7 +576,7 @@ class RDSIndex extends SolrMarc
     public function getOCLC()
     {
         return isset($this->fields['oclc_num']) ?
-            $this->fields['oclc_num'] : array();
+        $this->fields['oclc_num'] : array();
     }
 
     /**
@@ -639,12 +639,12 @@ class RDSIndex extends SolrMarc
 
         // Start an array of OpenURL parameters:
         return array(
-            'ctx_ver' => 'Z39.88-2004',
-            'ctx_enc' => 'info:ofi/enc:UTF-8',
-            'rfr_id' => 'info:sid/' . $this->getCoinsID() . ':generator',
-            'rft.title' => $this->getTitle(),
-            'rft.date' => $pubDate
-        );
+        'ctx_ver' => 'Z39.88-2004',
+        'ctx_enc' => 'info:ofi/enc:UTF-8',
+        'rfr_id' => 'info:sid/' . $this->getCoinsID() . ':generator',
+        'rft.title' => $this->getTitle(),
+        'rft.date' => $pubDate
+                );
     }
 
     /**
@@ -662,7 +662,7 @@ class RDSIndex extends SolrMarc
         if (count($series) > 0) {
             // Handle both possible return formats of getSeries:
             $params['rft.series'] = is_array($series[0]) ?
-                $series[0]['name'] : $series[0];
+            $series[0]['name'] : $series[0];
         }
         $params['rft.au'] = $this->getPrimaryAuthor();
         $publishers = $this->getPublishers();
@@ -737,15 +737,15 @@ class RDSIndex extends SolrMarc
     {
         $params = $this->getUnknownFormatOpenURLParams('Journal');
         /* This is probably the most technically correct way to represent
-         * a journal run as an OpenURL; however, it doesn't work well with
-         * Zotero, so it is currently commented out -- instead, we just add
-         * some extra fields and to the "unknown format" case.
+        * a journal run as an OpenURL; however, it doesn't work well with
+        * Zotero, so it is currently commented out -- instead, we just add
+        * some extra fields and to the "unknown format" case.
         $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:journal';
         $params['rft.genre'] = 'journal';
         $params['rft.jtitle'] = $params['rft.title'];
         $params['rft.issn'] = $this->getCleanISSN();
         $params['rft.au'] = $this->getPrimaryAuthor();
-         */
+        */
         $params['rft.issn'] = (string)$this->getCleanISSN();
 
         // Including a date in a title-level Journal OpenURL may be too
@@ -799,9 +799,9 @@ class RDSIndex extends SolrMarc
      */
     public function getPhysicalDescriptions()
     {
-	// ToDo
+        // ToDo
         return isset($this->fields['umfang']) ?
-            $this->fields['umfang'] : array();
+        $this->fields['umfang'] : array();
     }
 
     /**
@@ -812,8 +812,8 @@ class RDSIndex extends SolrMarc
     public function getPlacesOfPublication()
     {
         // Not currently stored in the Solr index
-	return isset($this->fields['pu_pp_display']) ?
-            $this->fields['pu_pp_display'] : array();
+        return isset($this->fields['pu_pp_display']) ?
+        $this->fields['pu_pp_display'] : array();
     }
 
     /**
@@ -835,15 +835,20 @@ class RDSIndex extends SolrMarc
     public function getPreviousTitles()
     {
         return isset($this->fields['title_old']) ?
-            $this->fields['title_old'] : array();
+        $this->fields['title_old'] : array();
     }
 
+    /**
+     * Get an array of  authors for the record.
+     *
+     * @return array
+     */
     public function getShortAuthors()
     {
         return isset($this->fields['au_display_short']) ?
-            $this->fields['au_display_short'] : array();
+        $this->fields['au_display_short'] : array();
     }
-    
+
 
     /**
      * Get the main author of the record.
@@ -874,7 +879,7 @@ class RDSIndex extends SolrMarc
     public function getPublicationDates()
     {
         return (isset($this->fields['py']) && $this->fields['py']!="0") ?
-            array($this->fields['py']) : array();
+        array($this->fields['py']) : array();
     }
 
     /**
@@ -924,7 +929,7 @@ class RDSIndex extends SolrMarc
     public function getPublishers()
     {
         return isset($this->fields['pu']) ?
-            $this->fields['pu'] : array();
+        $this->fields['pu'] : array();
     }
 
     /**
@@ -970,7 +975,7 @@ class RDSIndex extends SolrMarc
     public function getSecondaryAuthors()
     {
         return isset($this->fields['author2']) ?
-            $this->fields['author2'] : array();
+        $this->fields['author2'] : array();
     }
 
     /**
@@ -987,7 +992,7 @@ class RDSIndex extends SolrMarc
             return $this->fields['orig_reihe_display'];
         }
         return isset($this->fields['orig_ureihe_display']) ?
-            $this->fields['orig_ureihe_display'] : array();
+        $this->fields['orig_ureihe_display'] : array();
     }
 
     /**
@@ -998,7 +1003,7 @@ class RDSIndex extends SolrMarc
     public function getShortTitle()
     {
         return isset($this->fields['ti_short']) ?
-            $this->fields['ti_short'] : '';
+        $this->fields['ti_short'] : '';
     }
 
     /**
@@ -1008,9 +1013,9 @@ class RDSIndex extends SolrMarc
      */
     public function getSubtitle()
     {
-	// ToDo
+        // ToDo
         return isset($this->fields['title_sub']) ?
-            $this->fields['title_sub'] : '';
+        $this->fields['title_sub'] : '';
     }
 
     /**
@@ -1039,7 +1044,7 @@ class RDSIndex extends SolrMarc
             && !empty($this->fields['abstract'])
         ) {
             return is_array($this->fields['abstract'])
-                ? $this->fields['abstract'] : array($this->fields['abstract']);
+            ? $this->fields['abstract'] : array($this->fields['abstract']);
         }
 
         // If we got this far, no description was found:
@@ -1084,7 +1089,7 @@ class RDSIndex extends SolrMarc
     public function getTitle()
     {
         return isset($this->fields['ti_long']) ?
-            $this->fields['ti_long'] : '';
+        $this->fields['ti_long'] : '';
     }
 
     /**
@@ -1118,7 +1123,7 @@ class RDSIndex extends SolrMarc
     public function getTOC()
     {
         return isset($this->fields['contents'])
-            ? $this->fields['contents'] : array();
+        ? $this->fields['contents'] : array();
     }
 
     /**
@@ -1139,8 +1144,8 @@ class RDSIndex extends SolrMarc
     {
         $myurl = array();
         if (isset($this->fields['url_short'])) {
-                $myurl[] = (array('url'=>$this->fields['url_short']));
-           	return($myurl);
+            $myurl[] = (array('url'=>$this->fields['url_short']));
+            return($myurl);
         }
         return array();
     }
@@ -1158,7 +1163,7 @@ class RDSIndex extends SolrMarc
         ) {
             $type = $this->getHierarchyType();
             $this->hierarchyDriver = $type
-                ? $this->hierarchyDriverManager->get($type) : false;
+            ? $this->hierarchyDriverManager->get($type) : false;
         }
         return $this->hierarchyDriver;
     }
@@ -1185,7 +1190,7 @@ class RDSIndex extends SolrMarc
     public function getHierarchyTopID()
     {
         return isset($this->fields['hierarchy_top_id'])
-            ? $this->fields['hierarchy_top_id'] : array();
+        ? $this->fields['hierarchy_top_id'] : array();
     }
 
     /**
@@ -1197,7 +1202,7 @@ class RDSIndex extends SolrMarc
     public function getHierarchyTopTitle()
     {
         return isset($this->fields['hierarchy_top_title'])
-            ? $this->fields['hierarchy_top_title'] : array();
+        ? $this->fields['hierarchy_top_title'] : array();
     }
 
     /**
@@ -1275,11 +1280,11 @@ class RDSIndex extends SolrMarc
             return (isset($this->fields['is_hierarchy_id']));
         case 'Top':
             return isset($this->fields['is_hierarchy_title'])
-                && isset($this->fields['is_hierarchy_id'])
-                && in_array(
-                    $this->fields['is_hierarchy_id'],
-                    $this->fields['hierarchy_top_id']
-                );
+           && isset($this->fields['is_hierarchy_id'])
+           && in_array(
+               $this->fields['is_hierarchy_id'],
+               $this->fields['hierarchy_top_id']
+           );
         default:
             // Default to not be a collection level record
             return false;
@@ -1332,10 +1337,10 @@ class RDSIndex extends SolrMarc
     {
         if (isset($this->fields['hierarchy_top_id'])) {
             $hierarchyType = isset($this->fields['hierarchytype'])
-                ? $this->fields['hierarchytype'] : false;
+            ? $this->fields['hierarchytype'] : false;
             if (!$hierarchyType) {
                 $hierarchyType = isset($this->mainConfig->Hierarchy->driver)
-                    ? $this->mainConfig->Hierarchy->driver : false;
+                ? $this->mainConfig->Hierarchy->driver : false;
             }
             return $hierarchyType;
         }
@@ -1453,7 +1458,7 @@ class RDSIndex extends SolrMarc
     public function getContainerTitle()
     {
         return isset($this->fields['container_title'])
-            ? $this->fields['container_title'] : '';
+        ? $this->fields['container_title'] : '';
     }
 
     /**
@@ -1465,7 +1470,7 @@ class RDSIndex extends SolrMarc
     public function getContainerVolume()
     {
         return isset($this->fields['container_volume'])
-            ? $this->fields['container_volume'] : '';
+        ? $this->fields['container_volume'] : '';
     }
 
     /**
@@ -1477,7 +1482,7 @@ class RDSIndex extends SolrMarc
     public function getContainerIssue()
     {
         return isset($this->fields['container_issue'])
-            ? $this->fields['container_issue'] : '';
+        ? $this->fields['container_issue'] : '';
     }
 
     /**
@@ -1489,7 +1494,7 @@ class RDSIndex extends SolrMarc
     public function getContainerStartPage()
     {
         return isset($this->fields['container_start_page'])
-            ? $this->fields['container_start_page'] : '';
+        ? $this->fields['container_start_page'] : '';
     }
 
     /**
@@ -1512,7 +1517,7 @@ class RDSIndex extends SolrMarc
     public function getContainerReference()
     {
         return isset($this->fields['container_reference'])
-            ? $this->fields['container_reference'] : '';
+        ? $this->fields['container_reference'] : '';
     }
 
     /**
@@ -1523,7 +1528,7 @@ class RDSIndex extends SolrMarc
     public function getSortTitle()
     {
         return isset($this->fields['title_sort'])
-            ? $this->fields['title_sort'] : parent::getSortTitle();
+        ? $this->fields['title_sort'] : parent::getSortTitle();
     }
 
     /**
@@ -1534,7 +1539,7 @@ class RDSIndex extends SolrMarc
     public function getLongLat()
     {
         return isset($this->fields['long_lat'])
-            ? $this->fields['long_lat'] : false;
+        ? $this->fields['long_lat'] : false;
     }
 
     /**
