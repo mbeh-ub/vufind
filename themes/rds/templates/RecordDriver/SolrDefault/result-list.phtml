@@ -26,6 +26,12 @@
           }
         ?>
         </a>
+       <?
+         $summEdition = $this->driver->getEdition();
+         if (!empty($summEdition)) {
+           echo " " . $summEdition;
+         }
+        ?>
       </div>
 
       <div>
