@@ -4,6 +4,7 @@ return array(
     'css' => array(
 	'overwrite.css',
 	'rds-cd.css',
+        'rds-medienicons.css',
     ),
     'js' => array(
     ),
