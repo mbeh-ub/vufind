@@ -475,6 +475,7 @@ $config = [
                 ],
                 'invokables' => [
                     'description' => 'VuFind\RecordTab\Description',
+                    'rdsindexdescription' => 'VuFind\RecordTab\RDSIndexDescription',
                     'staffviewarray' => 'VuFind\RecordTab\StaffViewArray',
                     'staffviewmarc' => 'VuFind\RecordTab\StaffViewMARC',
                     'toc' => 'VuFind\RecordTab\TOC',
@@ -610,7 +611,7 @@ $config = [
             'VuFind\RecordDriver\RDSIndex' => [
                 'tabs' => [
 		    'Holdings' => 'HoldingsILS', 
-                    'Description' => 'Description',
+                    'Description' => 'RDSIndexDescription',
                     'Details' => 'StaffViewArray',
                  ],
 	         'defaultTab' => null,
