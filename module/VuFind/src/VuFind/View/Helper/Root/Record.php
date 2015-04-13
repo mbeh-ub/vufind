@@ -234,6 +234,16 @@ class Record extends AbstractHelper
     }
 
     /**
+     * Render a list of record formats. RDS-Helper
+     *
+     * @return string
+     */
+    public function getMedienicon()
+    {
+        return $this->renderTemplate('medienicon.phtml');
+    }
+
+    /**
      * Render previews (data and link) of the item if configured.
      *
      * @return string
