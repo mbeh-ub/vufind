@@ -35,11 +35,11 @@ use VuFind\Code\ISBN;
  *
  * This should be used as the base class for all Solr-based record models.
  *
- * @category VuFind2
- * @package  RecordDrivers
- * @author   Demian Katz <demian.katz@villanova.edu>
- * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:record_drivers Wiki
+ * @category                                     VuFind2
+ * @package                                      RecordDrivers
+ * @author                                       Demian Katz <demian.katz@villanova.edu>
+ * @license                                      http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link                                         http://vufind.org/wiki/vufind2:record_drivers Wiki
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
 class RDSIndex extends SolrMarc
@@ -204,7 +204,7 @@ class RDSIndex extends SolrMarc
      */
     public function getAllRecordLinks()
     {
-	return null;
+        return null;
     }
 
     /**
@@ -799,7 +799,7 @@ class RDSIndex extends SolrMarc
      */
     public function getPhysicalDescriptions()
     {
-	// ToDo
+        // ToDo
         return isset($this->fields['umfang']) ?
             $this->fields['umfang'] : array();
     }
@@ -812,7 +812,7 @@ class RDSIndex extends SolrMarc
     public function getPlacesOfPublication()
     {
         // Not currently stored in the Solr index
-	return isset($this->fields['pu_pp_display']) ?
+        return isset($this->fields['pu_pp_display']) ?
             $this->fields['pu_pp_display'] : array();
     }
 
@@ -1008,7 +1008,7 @@ class RDSIndex extends SolrMarc
      */
     public function getSubtitle()
     {
-	// ToDo
+        // ToDo
         return isset($this->fields['title_sub']) ?
             $this->fields['title_sub'] : '';
     }
@@ -1140,7 +1140,7 @@ class RDSIndex extends SolrMarc
         $myurl = array();
         if (isset($this->fields['url_short'])) {
                 $myurl[] = (array('url'=>$this->fields['url_short']));
-           	return($myurl);
+               return($myurl);
         }
         return array();
     }
@@ -1583,4 +1583,16 @@ class RDSIndex extends SolrMarc
     {
         return implode(' ', $this->getSchemaOrgFormatsArray());
     }
+
+    /**
+     * get the Medienicon description from index 
+     *
+     * @return string
+     */
+    public function getMedienicon() 
+    {
+        return isset($this->fields['medienicon']) ? $this->fields['medienicon'] : '&nbsp;';
+    }
+
+
 }
