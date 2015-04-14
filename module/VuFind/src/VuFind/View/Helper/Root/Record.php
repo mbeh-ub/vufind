@@ -240,7 +240,11 @@ class Record extends AbstractHelper
      */
     public function getMedienicon()
     {
-        return $this->renderTemplate('medienicon.phtml');
+        if ($this->driver->getResourceSource()=="RDSIndex") {
+          return $this->renderTemplate('medienicon.phtml');
+        } else {
+          return false;
+        }
     }
 
     /**
