@@ -8,6 +8,7 @@ return array(
         'compiled.css',
         'vendor/font-awesome.min.css',
         'vendor/bootstrap-slider.css',
+	'rdsindex.css',
         'print.css:print',
     ),
     'js' => array(

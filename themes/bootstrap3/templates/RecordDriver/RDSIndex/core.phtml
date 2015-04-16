@@ -28,8 +28,9 @@
   </div>
 
   <div class="col-sm-9">
-    <h3 property="name"><?=$this->escapeHtml($this->driver->getShortTitle() . ' ' . $this->driver->getSubtitle() . ' ' . $this->driver->getTitleSection())?></h3>
-
+    <h4 property="name">
+    <? if (!empty($this->driver->getAst())): ?>[<?=$this->escapeHtml($this->driver->getAst())?>]<? endif; ?>
+    	<?=$this->escapeHtml($this->driver->getTitle())?></h4>
     <? $summary = $this->driver->getSummary(); $summary = isset($summary[0]) ? $this->escapeHtml($summary[0]) : false; ?>
     <? if ($summary): ?>
       <p><?=$this->truncate($summary, 300)?></p>
@@ -59,45 +60,71 @@
       </tr>
       <? endif; ?>
 
-      <? $nextTitles = $this->driver->getNewerTitles(); $prevTitles = $this->driver->getPreviousTitles(); ?>
-      <? if (!empty($nextTitles)): ?>
+      <? $titleLong_f = $this->driver->getTitleLongf(); $titleLong_f_sec = $this->driver->getTitleLongfsec(); ?>
+      <? if (!empty($titleLong_f)): ?>
       <tr>
-        <th><?=$this->transEsc('New Title')?>: </th>
+        <th><?=$this->transEsc('RDS_COLL_TITLE')?>: </th>
         <td>
-          <? foreach($nextTitles as $field): ?>
-            <a href="<?=$this->record($this->driver)->getLink('title', $field)?>"><?=$this->escapeHtml($field)?></a><br/>
-          <? endforeach; ?>
+          <?=$this->escapeHtml($titleLong_f)?>
+	  <? if (!empty($titleLong_f_sec)): ?>
+	  	<? foreach($titleLong_f_sec as $field): ?>
+			<?=$this->escapeHtml($field)?>
+		<? endforeach; ?>
+	  <? endif; ?>
         </td>
       </tr>
       <? endif; ?>
+      
+      <? $titlePart = $this->driver->getTitlePart(); if (!empty($titlePart)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_TITLE_PART')?>: </th>
+          <td><? foreach ($titlePart as $part): ?><?= $this->escapeHtml($part)?><br/><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
 
-      <? if (!empty($prevTitles)): ?>
+<? // TODO only for Hohenheim???? TODO ?>
+      <? $titelCut = $this->driver->getTitleCut(); if (!empty($titelCut)): ?>
       <tr>
-        <th><?=$this->transEsc('Previous Title')?>: </th>
+        <th><?=$this->transEsc('RDS_TITLECUT')?>: </th>
         <td>
-          <? foreach($prevTitles as $field): ?>
-            <a href="<?=$this->record($this->driver)->getLink('title', $field)?>"><?=$this->escapeHtml($field)?></a><br/>
-          <? endforeach; ?>
+          <?=$this->escapeHtml($titelCut)?>
         </td>
       </tr>
       <? endif; ?>
+<? // END TODO  ?>
 
-      <? $authors = $this->driver->getDeduplicatedAuthors(); ?>
-      <? if (isset($authors['main']) && !empty($authors['main'])): ?>
+      <? $authors_long = $this->driver->getAuthorsLong(); ?>
+      <? if (isset($authors_long) && !empty($authors_long)): ?>
       <tr>
-        <th><?=$this->transEsc('Main Author')?>: </th>
-        <td property="author"><a href="<?=$this->record($this->driver)->getLink('author', $authors['main'])?>"><?=$this->escapeHtml($authors['main'])?></a></td>
+        <th><?=$this->transEsc('RDS_PERSON')?>: </th>
+        <td property="author">
+	<? $i = 0; foreach ($authors_long as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<a href="<?=$this->record($this->driver)->getLink('author', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+	<a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title=<?=$this->transEsc('Personenbeschreibung der DNB')?>></a>
+	<? endif; ?>
+	 <? endforeach; ?>
+	</td>
       </tr>
       <? endif; ?>
-
-      <? if (isset($authors['corporate']) && !empty($authors['corporate'])): ?>
+	
+     <? $co_display = $this->driver->getCorporation(); ?>	
+      <? if (isset($co_display) && !empty($co_display)): ?>
       <tr>
         <th><?=$this->transEsc('Corporate Author')?>: </th>
-        <td property="creator"><a href="<?=$this->record($this->driver)->getLink('author', $authors['corporate'])?>"><?=$this->escapeHtml($authors['corporate'])?></a></td>
+        <td property="creator">
+	<? $i = 0; foreach ($co_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<a href="<?=$this->record($this->driver)->getLink('corporate', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+	        <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title=<?=$this->transEsc('Personenbeschreibung der DNB')?>></a>
+	<? endif; ?>
+	<? endforeach; ?>
+	</td>
       </tr>
       <? endif; ?>
 
-      <? if (isset($authors['secondary']) && !empty($authors['secondary'])): ?>
+<? /*
+	<? if (isset($authors['secondary']) && !empty($authors['secondary'])): ?>
       <tr>
         <th><?=$this->transEsc('Other Authors')?>: </th>
         <td>
@@ -112,7 +139,7 @@
           <td><?=$this->record($this->driver)->getFormatList()?></td>
         </tr>
       <? endif; ?>
-
+*/ ?>
       <? $langs = $this->driver->getLanguages(); if (!empty($langs)): ?>
         <tr>
           <th><?=$this->transEsc('Language')?>: </th>

@@ -312,7 +312,7 @@ class RDSIndex extends SolrMarc
      *
      * @return array
      */
-    public function getDeduplicatedAuthors()
+    /*    public function getDeduplicatedAuthors()
     {
         $authors = array(
         'main' => $this->getPrimaryAuthor(),
@@ -335,6 +335,7 @@ class RDSIndex extends SolrMarc
 
         return $authors;
     }
+    */
 
     /**
      * Get the edition of the current record.
@@ -832,23 +833,13 @@ class RDSIndex extends SolrMarc
      *
      * @return array
      */
-    public function getPreviousTitles()
+    /*    public function getPreviousTitles()
     {
         return isset($this->fields['title_old']) ?
         $this->fields['title_old'] : array();
     }
-
-    /**
-     * Get an array of  authors for the record.
-     *
-     * @return array
-     */
-    public function getShortAuthors()
-    {
-        return isset($this->fields['au_display_short']) ?
-        $this->fields['au_display_short'] : array();
-    }
-
+    */
+    
 
     /**
      * Get the main author of the record.
@@ -1081,28 +1072,7 @@ class RDSIndex extends SolrMarc
         return false;
     }
 
-    /**
-     * Get the full title of the record.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return isset($this->fields['ti_long']) ?
-        $this->fields['ti_long'] : '';
-    }
-
-    /**
-     * Get the text of the part/section portion of the title.
-     *
-     * @return string
-     */
-    public function getTitleSection()
-    {
-        // Not currently stored in the Solr index
-        return null;
-    }
-
+    
     /**
      * Get the statement of responsibility that goes with the title (i.e. "by John
      * Smith").
@@ -1590,8 +1560,8 @@ class RDSIndex extends SolrMarc
     }
 
     /**
-     * get the Medienicon description from index 
-     *
+     * Get the Medienicon description from index 
+     * RDS
      * @return string
      */
     public function getMedienicon() 
@@ -1599,5 +1569,152 @@ class RDSIndex extends SolrMarc
         return isset($this->fields['medienicon']) ? $this->fields['medienicon'] : '&nbsp;';
     }
 
+    /**
+     * Get an array of  authors for the record.
+     * RDS
+     * @return array
+     */
+    public function getShortAuthors()
+    {
+        return isset($this->fields['au_display_short']) ?
+        $this->fields['au_display_short'] : array();
+    }
+
+    /**
+     * Get an array of authors for the record.
+     * RDS
+     * @return array
+     */
+    public function getAuthorsLong() 
+    {
+
+        $gnd_ppn = "";
+        $authors_long = array();
+        if (isset($this->fields['au_display'])) {
+            $arr_links = $this->fields['au_display'];
+            $last_item = end($arr_links);
+            foreach ($arr_links as $key => $link) {
+                $gnd_ppn = "";
+                $chk_link = $link;
+                if (strstr($link, " ; ")) {
+                    $tmp = $link;
+                    $pos = strrpos($link, " ; ");
+                    $gnd_ppn = substr($tmp, $pos+3);
+                    $authors_long[$key]["gnd"] = $gnd_ppn;
+                    $link = substr($link, '0', $pos);
+                }
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $authors_long[$key]["link"]=$arr_link[0];
+                    $authors_long[$key]["link_text"]=$arr_link[1];
+                } else {
+                    $authors_long[$key]["link"]=$link;
+                }
+            }
+        }
+        return $authors_long;
+    }
+
+    /**
+     * Get an array of corporations for the record.
+     * RDS
+     * @return array
+    */
+    public function getCorporation() 
+    {
+        $co_display = array();            
+        if (isset($this->fields['co_display'])) {
+            $arr_links = $this->fields['co_display'];
+            $last_item = end($arr_links);
+            foreach ($arr_links as $key => $link) {
+                $gnd_ppn = "";
+                $chk_link = $link;
+                if (strstr($link, " ; ")) {
+                    $tmp = $link;
+                    $pos = strrpos($link, " ; ");
+                    $gnd_ppn = substr($tmp, $pos+3);
+                    $co_display[$key]["gnd"] = $gnd_ppn;
+                    $link = substr($link, '0', $pos);
+                    $link = str_replace('"', '\"', $link);
+                    $co_display[$key]["link"]=$link;
+                }
+            }
+        }
+        return $co_display;
+    }
+
+    /**
+     * Get the full title of the record.
+     * RDS
+     * @return string
+     */
+    public function getTitle()
+    {
+        return isset($this->fields['ti_long']) ?
+        $this->fields['ti_long'] : '';
+    }
+
+    /**
+     * Get the text of the part/section portion of the title.
+     * RDS
+     * @return string
+     */
+    public function getTitlePart()
+    {
+        $arr_link = "";
+        if (isset($this->fields['ti_part'])) {
+            $arr_link = explode(" ; ", $this->fields['ti_part']);
+        }
+        return $arr_link;
+    }
+    /**
+     * Get part of 'f-Satz' from series
+     * RDS
+     * @return string
+     */
+    public function getTitleLongf()
+    {
+        return isset($this->fields['ti_long_f']) ? 
+        $this->fields['ti_long_f'] : '';
+    }
+
+    /**
+     * Get second part of 'f-Satz' from series
+     * RDS
+     * @return string
+     */
+    public function getTitleLongfsec()
+    {
+        return isset($this->fields['ti_long_f_second']) ? $this->fields['ti_long_f_second'] : '';
+    }
+
+    /**
+     * Get short form of title 
+     * RDS
+     * @return string
+     */
+    public function getTitleCut()
+    {
+        return isset($this->fields['ti_cut']) ? $this->fields['ti_cut'] : '';
+    }
+    /**
+     * Get main Title  
+     * RDS
+     * @return string
+     */      
+    public function getTitleMain()
+    {
+        return isset($this->fields['ht']) ? implode($this->fields['ht']) : '';
+    }
+
+    /**
+     * Get main heading of title 
+     * RDS
+     * @return string
+     */
+    public function getAst()
+    {
+        return isset($this->fields['ast']) ? implode($this->fields['ast']) : '';
+    }
 
 }
