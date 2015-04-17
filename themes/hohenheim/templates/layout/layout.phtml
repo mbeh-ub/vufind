@@ -1,0 +1,228 @@
+<?=$this->doctype('HTML5')?>
+<html lang="<?=$this->layout()->userLang?>">
+  <head>
+    <?$this->headThemeResources()?>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/jquery/jquery-ui-1.8.7.custom/css/smoothness/jquery-ui-1.8.7.custom.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/styles.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/cd.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/location.css" />
+<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/rds.css" />
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/stylesheet_15060e1fe4-65ec1c875b6443f2673a4399e86120c6.css?1418796385" media="all">
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/layout-6bbf15efda49cf47da2f2c233e25b29b.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/jquery-ui-1.10.2.all.min-e9753b0000eb9471db894f466cd4e282.css?1418796385" media="all">
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/site17f0f-e4e72f519f5d278ff5ee4af699b24a4c.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/site2c2b8-0d2b467c0b624bba776256c1f152aa35.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/fixtures-995a6acd8d5d99d97d0c9778341a290c.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/fileadmin/einrichtungen/hohsearch/template/css/hohsearch-relaunch.css" media="all" />
+<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/jquery-1.9.1.min.js?1405954852" type="text/javascript"></script>
+<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/jquery-ui.min.js?1409124159" type="text/javascript"></script>
+<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/head.min34e9.js?1405954852" type="text/javascript"></script>
+<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/MultiContentTabs.js?1409470683" type="text/javascript"></script>
+<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/MainNav.js?1412691256" type="text/javascript"></script>
+
+
+    <?=$this->headMeta()?>
+    <?=$this->headTitle()?>
+    <?
+      // Set up OpenSearch link:
+      $this->headLink(
+        array(
+          'href' => $this->url('search-opensearch') . '?method=describe',
+          'type' => 'application/opensearchdescription+xml',
+          'title' => $this->transEsc('Library Catalog Search'),
+          'rel' => 'search'
+        )
+      );
+    ?>
+    <?=$this->headLink()?>
+    <?=$this->headStyle()?>
+    <?
+      // Set global path for Javascript code:
+      $this->headScript()->prependScript("path = '" . rtrim($this->url('home'), '/') . "';");
+
+      // Deal with cart stuff:
+      if (!isset($this->renderingError)) {
+        $cart = $this->cart();
+        $this->jsTranslations()->addStrings(
+          array(
+            'bulk_email_success' => 'bulk_email_success',
+            'bulk_save_success' => 'bulk_save_success',
+            'close' => 'close',
+            'loading' => 'Loading',
+            'sms_success' => 'sms_success',
+            'number_thousands_separator' => ['number_thousands_separator', null, ',']
+          )
+        );
+        if ($cart->isActive()) {
+          $this->headScript()->appendFile("vendor/cookies.js");
+          $this->headScript()->appendFile("cart.js");
+          $domain = $cart->getCookieDomain();
+          $this->headScript()->appendScript(
+            'var cartCookieDomain = ' . (!empty($domain) ? "'$domain'" : 'false') . ';'
+          );
+          $this->jsTranslations()->addStrings(
+            array(
+              'bulk_noitems_advice' => 'bulk_noitems_advice',
+              'confirmDelete' => 'confirm_delete',
+              'confirmEmpty' => 'bookbag_confirm_empty',
+              'viewBookBag' => 'View Book Bag',
+              'addBookBag' => 'Add to Book Bag',
+              'removeBookBag' => 'Remove from Book Bag',
+              'itemsAddBag' => 'items_added_to_bookbag',
+              'itemsInBag' => 'items_already_in_bookbag',
+              'bookbagMax' => $cart->getMaxSize(),
+              'bookbagFull' => 'bookbag_full_msg',
+              'bookbagStatusFull' => 'bookbag_full',
+              'no_tags' => 'No Tags'
+            )
+          );
+        }
+        $this->headScript()->appendScript($this->jsTranslations()->getScript());
+      }
+
+      // Session keep-alive
+      if ($this->KeepAlive()) {
+          $this->headScript()->appendScript('var keepAliveInterval = '
+            . $this->KeepAlive());
+          $this->headScript()->appendFile("keep_alive.js");
+      }
+    ?>
+    <?=$this->headScript()?>
+  </head>
+  <body>
+    <? // Set up the search box -- there are three possible cases:
+      // 1. No search box was set; we should default to the normal box
+      // 2. It was set to false; we should display nothing
+      // 3. It is set to a custom string; we should display the provided version
+      // Set up default search box if no data was provided from the template;
+      // this covers case 1.  Cases 2 and 3 are then covered by logic below.
+      if (!isset($this->layout()->searchbox)) {
+        $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+      }
+    ?>
+    <header role="banner" class="header-site hidden-print">
+      <div class="container">
+        <a class="sr-only" href="#content"><?=$this->transEsc('Skip to content') ?></a>
+        <?=$this->render('header.phtml')?>
+      </div>
+ </header>
+
+ <nav class="navigation-main ">
+    <div class="navigation-main__wrp-1">
+      <div class="navigation-main__wrp-2"> 
+        
+        <!--
+				button group
+
+				additional classes:
+				.navigation-main__button_active = active button (used on search and login buttons)
+			-->
+        <div class="navigation-main__button-group"> <a class="navigation-main__button navigation-main__button-navigation" data-gremlin="MobileNavToggle"><i></i><span>Navigation</span></a> <a class="navigation-main__button navigation-main__button-search" href="#nav-panel-search" tabindex="10" data-gremlin="NavbarToggle"><i></i><span>Suche</span></a> <a href="/103790?N=1&L=1" class="navigation-main__language-select">English</a> </div>
+        
+        <!--
+				navigation content
+			-->
+        
+        <div class="navigation-main__toggle-content" data-gremlin="SiteNavigation,MobileNavigation">
+          <div class="navigation-main-flyout-cover-strap"></div>
+          <div class="navigation-main-flyout-cover-head"></div>
+          <section class="navigation-main__section" id="nav-themenbereiche">
+            <h6 class="navigation-main__section-title">Themenbereiche</h6>
+            <ul>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103626?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">HohSearch</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103627?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Bibliothekskonto</a></li>
+              <li class="nav-section nav-section__level-1 "><a href="https://hohsearch-info.uni-hohenheim.de/103790?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Systematik</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103628?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Infos zur Ausleihe</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103711?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Fachdatenbanken</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103629?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Hilfe</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103710?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">KIM</a></li>
+            </ul>
+          </section>
+          <!-- /section --> 
+          
+        </div>
+        <!-- /toggle-content --> 
+        
+      </div>
+      <!-- /wrp-2 --> 
+    </div>
+    <!-- /wrp-1 -->
+    
+     <div class="navigation-main__wrp-3" data-gremlin="SiteNavObserver">
+      <div id="nav-panel-search" class="navigation-main__panel navigation-main__panel-search" data-gremlin="Navbar">       
+        <!-- site search -->
+        <div class="site-search">
+          <form class="form-inline" id="tx-solr-search-form-breadcrumb" role="form" action="/103440?N=1">
+            <div class="site-search__col-1">
+              <label for="tx-solr-q-breadcrumb" class="sr-only">Suche</label>
+              <input name="tx_solr[q]" autocomplete="off" id="tx-solr-q-breadcrumb" class="ac_input ui-autocomplete-input form-control site-search__form-search" placeholder="Suchbegriff, Name, Studiengang …" type="text">
+            </div>
+            <div class="site-search__col-2">
+              <button type="submit" id="suchbutton" class="btn btn-primary site-search__form-submit"> <span>Suchen</span><i></i> </button>
+            </div>
+          </form>
+        </div>
+        <!-- /site-search --> 
+        
+      </div>
+      <!-- /panel-search --> 
+      
+      <!-- /panel-login --> 
+      
+    </div>
+    <!-- /wrp-3 --> 
+    
+  </nav>
+
+ <div data-gremlin="Site" class="site"> 
+    
+    <!--
+			breadcrumbs
+		-->
+    
+    <section class="container">
+      <div class="row">
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="https://hohsearch-info.uni-hohenheim.de/startseite?&amp;N=1&amp;cHash=d4a71dd99c4c6a3706cd319cf9544340">Startseite</a></li>
+            <li class="active">SystematischeSuche</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+    
+    <!--
+			/ breadcrumbs
+		--> 
+
+    <div role="main" class="main template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?>">
+      <div class="container">
+        <?=$this->layout()->content ?>
+      </div>
+    </div>
+    <footer role="contentinfo" class="hidden-print footer-site">
+      <div class="container">
+        <?=$this->render('footer.phtml')?>
+      </div>
+    </footer>
+    <!-- MODAL IN CASE WE NEED ONE -->
+    <div id="modal" class="modal fade hidden-print" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 id="modalTitle" class="modal-title"></h4>
+          </div>
+          <div class="modal-body"><?=$this->transEsc('Loading') ?>...</div>
+        </div>
+      </div>
+    </div>
+    <?=$this->googleanalytics()?>
+    <?=$this->piwik()?>
+
+  </body>
+</html>
