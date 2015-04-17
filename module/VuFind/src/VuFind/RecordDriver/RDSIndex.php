@@ -1592,7 +1592,6 @@ class RDSIndex extends SolrMarc
         $authors_long = array();
         if (isset($this->fields['au_display'])) {
             $arr_links = $this->fields['au_display'];
-            $last_item = end($arr_links);
             foreach ($arr_links as $key => $link) {
                 $gnd_ppn = "";
                 $chk_link = $link;
@@ -1625,7 +1624,6 @@ class RDSIndex extends SolrMarc
         $co_display = array();            
         if (isset($this->fields['co_display'])) {
             $arr_links = $this->fields['co_display'];
-            $last_item = end($arr_links);
             foreach ($arr_links as $key => $link) {
                 $gnd_ppn = "";
                 $chk_link = $link;
@@ -1716,5 +1714,38 @@ class RDSIndex extends SolrMarc
     {
         return isset($this->fields['ast']) ? implode($this->fields['ast']) : '';
     }
+
+    
+    /**
+     * Get main topics of title 
+     * RDS
+     * @return array
+     */
+    public function getCT()
+    {
+        
+        $ct_display = array();
+        if (isset($this->fields['ct_display'])) {
+            $arr_ct = $this->fields['ct_display'];
+            foreach ($arr_ct as $key_list => $ct_string) {
+                $gnd_ppn = "";
+                $ct_list = explode(" , ", $ct_string);
+                foreach ($ct_list as $key => $value ) {                    
+                    if (strstr($value, " ; ")) {
+                        $tmp = $value;
+                        $pos = strrpos($value, " ; ");
+                        $gnd_ppn = substr($tmp, $pos+3);
+                        $ct_display[$key_list][$key]["gnd"] = $gnd_ppn;
+                        $link = substr($value, '0', $pos);
+                        $ct_display[$key_list][$key]["link"] = trim($link);
+                    } else {
+                        $ct_display[$key_list][$key]["link"] =  $value;
+                    }
+                }
+            }
+        }
+        return $ct_display;
+    }
+
 
 }

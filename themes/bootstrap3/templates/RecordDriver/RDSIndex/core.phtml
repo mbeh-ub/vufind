@@ -201,22 +201,20 @@
       </tr>
       <? endif; ?>
 
-      <? $subjects = $this->driver->getAllSubjectHeadings(); if (!empty($subjects)): ?>
+     <? $ct_display = $this->driver->getCT(); ?>	
+      <? if (isset($ct_display) && !empty($ct_display)): ?>
       <tr>
         <th><?=$this->transEsc('Subjects')?>: </th>
-        <td>
-          <? foreach ($subjects as $field): ?>
-          <div class="subjectLine" property="keywords">
-            <? $subject = ''; ?>
-            <? if(count($field) == 1) $field = explode('--', $field[0]); ?>
-            <? $i = 0; foreach ($field as $subfield): ?>
-              <?=($i++ == 0) ? '' : ' &gt; '?>
-              <? $subject = trim($subject . ' ' . $subfield); ?>
-              <a class="backlink" title="<?=$this->escapeHtmlAttr($subject)?>" href="<?=$this->record($this->driver)->getLink('subject', $subject)?>"><?=trim($this->escapeHtml($subfield))?></a>
-            <? endforeach; ?>
-          </div>
-          <? endforeach; ?>
-        </td>
+        <td property="creator">
+	<? $i = 0; foreach ($ct_display as $ct_field): ?><?=($i++ == 0)?'':'<br />'?>
+	<? $i = 0; foreach ($ct_field as $field): ?><?=($i++ == 0)?'':'/'?>
+	<a href="<?=$this->record($this->driver)->getLink('ct', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+	        <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title=<?=$this->transEsc('Schlagworte der DNB')?>></a>
+	<? endif; ?>
+	<? endforeach; ?>
+	<? endforeach; ?>
+	</td>
       </tr>
       <? endif; ?>
 
