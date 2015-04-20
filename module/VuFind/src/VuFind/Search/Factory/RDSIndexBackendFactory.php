@@ -55,7 +55,7 @@ class RDSIndexBackendFactory extends AbstractRDSIndexBackendFactory
         parent::__construct();
 	$this->searchConfig = 'RDSIndex_searches';
         //$this->searchConfig = 'RDSIndex';
-        $this->searchYaml = 'searchspecs.yaml';
+        $this->searchYaml = 'RDSIndex_searchspecs.yaml';
     }
 
     /**
