@@ -175,7 +175,7 @@
       
     </div>
     <!-- /wrp-3 --> 
-    
+
   </nav>
 
  <div data-gremlin="Site" class="site"> 
@@ -198,6 +198,10 @@
     <!--
 			/ breadcrumbs
 		--> 
+
+       <nav class="nav searchbox hidden-lg hidden-print">
+          <?=$this->layout()->searchbox ?>
+        </nav>
 
     <div role="main" class="main template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?>">
       <div class="container">
