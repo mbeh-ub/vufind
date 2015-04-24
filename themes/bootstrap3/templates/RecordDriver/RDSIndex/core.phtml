@@ -78,20 +78,49 @@
       <? $titlePart = $this->driver->getTitlePart(); if (!empty($titlePart)): ?>
         <tr>
           <th><?=$this->transEsc('RDS_TITLE_PART')?>: </th>
-          <td><? foreach ($titlePart as $part): ?><?= $this->escapeHtml($part)?><br/><? endforeach; ?></td>
+          <td><? $i = 0; foreach ($titlePart as $part): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($part)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $titleCjkAst = $this->driver->getCjkAst(); ?>
+      <? $titleCjkPart = $this->driver->getCjkTitle(); if (!empty($titleCjkPart)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_TITLE')?>: </th>
+          <td>
+	  <?= $this->escapeHtml($titleCjkPart)?>
+	  <? if (!empty($$titleCjkAst)): ?>
+	  	<?= $this->escapeHtml($titleCjkAst)?>
+	  <? endif; ?>
+	  
+	  </td>
         </tr>
       <? endif; ?>
 
 <? // TODO only for Hohenheim???? TODO ?>
-      <? $titelCut = $this->driver->getTitleCut(); if (!empty($titelCut)): ?>
+      <? $titleCut = $this->driver->getTitleCut(); if (!empty($titleCut)): ?>
       <tr>
         <th><?=$this->transEsc('RDS_TITLECUT')?>: </th>
-        <td>
-          <?=$this->escapeHtml($titelCut)?>
+        <td><? $i = 0; foreach ($titleCut as $cut): ?><?=($i++ == 0)?'':'<br />'?>
+	<?=$this->escapeHtml($cut)?><? endforeach; ?>
         </td>
       </tr>
       <? endif; ?>
 <? // END TODO  ?>
+
+      <? $ureihe = $this->driver->getUnterreihe(); if (!empty($ureihe)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_UREIHE')?>: </th>
+          <td><?= $this->escapeHtml($ureihe)?></td>
+        </tr>
+      <? endif; ?>
+	
+      <? $cjkureihe = $this->driver->getCjkUreihe(); if (!empty($cjkureihe)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_UREIHE')?>: </th>
+          <td><?= $this->escapeHtml($cjkureihe)?></td>
+        </tr>
+      <? endif; ?>
 
       <? $authors_long = $this->driver->getAuthorsLong(); ?>
       <? if (isset($authors_long) && !empty($authors_long)): ?>
@@ -108,6 +137,13 @@
       </tr>
       <? endif; ?>
 	
+      <? $cjkauthor = $this->driver->getCjkAut(); if (!empty($cjkauthor)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_AUT')?>: </th>
+          <td><?= $this->escapeHtml($cjkauthor)?></td>
+        </tr>
+      <? endif; ?>
+
      <? $co_display = $this->driver->getCorporation(); ?>	
       <? if (isset($co_display) && !empty($co_display)): ?>
       <tr>
@@ -123,30 +159,94 @@
       </tr>
       <? endif; ?>
 
-<? /*
-	<? if (isset($authors['secondary']) && !empty($authors['secondary'])): ?>
-      <tr>
-        <th><?=$this->transEsc('Other Authors')?>: </th>
-        <td>
-          <? $i = 0; foreach ($authors['secondary'] as $field): ?><?=($i++ == 0)?'':', '?><span property="contributor"><a href="<?=$this->record($this->driver)->getLink('author', $field)?>"><?=$this->escapeHtml($field)?></a></span><? endforeach; ?>
-        </td>
-      </tr>
-      <? endif; ?>
-
-      <? $formats = $this->driver->getFormats(); if (!empty($formats)): ?>
+      <? $cjkco = $this->driver->getCjkKoerp(); if (!empty($cjkco)): ?>
         <tr>
-          <th><?=$this->transEsc('Format')?>: </th>
-          <td><?=$this->record($this->driver)->getFormatList()?></td>
+          <th><?=$this->transEsc('RDS_CJK_CO')?>: </th>
+          <td><?= $this->escapeHtml($cjkco)?></td>
         </tr>
       <? endif; ?>
-*/ ?>
+
+      <? $edition = $this->driver->getEditions(); if (!empty($edition)): ?>
+        <tr>
+          <th><?=$this->transEsc('Edition')?>: </th>
+          <td><?= $this->escapeHtml($edition)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $cjkedition = $this->driver->getCjkAusgabe(); if (!empty($cjkedition)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_AUSGABE')?>: </th>
+          <td><?= $this->escapeHtml($cjkedition)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $pu_pp_display = $this->driver->getPublishDisplay() ?>
+      <? $pp_norm_display = $this->driver->getppNormDisplay() ?>
+      <? if (isset($pu_pp_display) && !empty($pu_pp_display)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_PUBLISH')?>: </th>
+          <td>
+	  <? $i = 0; foreach ($pu_pp_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+		<?=$this->escapeHtml($field)?>	
+	   <? endforeach; ?>
+	   <? if (isset($pp_norm_display) && !empty($pp_norm_display)): ?>
+		<br/ ><span class='handwriting'><?=$this->transEsc('RDS_HAND_NORM')?>: </span>
+	   	<? $i = 0; foreach ($pp_norm_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+		<?=$this->escapeHtml($field)?>
+		 <? endforeach; ?>
+	   <? endif; ?>
+	  </td>
+        </tr>
+      <? endif; ?>
+      
       <? $langs = $this->driver->getLanguages(); if (!empty($langs)): ?>
         <tr>
           <th><?=$this->transEsc('Language')?>: </th>
-          <td><? foreach ($langs as $lang): ?><?= $this->escapeHtml($lang)?><br/><? endforeach; ?></td>
+          <td><? $i = 0; foreach ($langs as $lang): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($lang)?><? endforeach; ?></td>
         </tr>
       <? endif; ?>
 
+      <? $scope = $this->driver->getScope(); if (!empty($scope)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_SCOPE')?>: </th>
+          <td><?= $this->escapeHtml($scope)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $cjk_scope = $this->driver->getCjkScope(); if (!empty($cjk_scope)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_SCOPE')?>: </th>
+          <td><?= $this->escapeHtml($cjk_scope)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $isbn = $this->driver->getISBN(); if (!empty($isbn)): ?>
+        <tr>
+          <th><?=$this->transEsc('ISBN')?>: </th>
+          <td><? $i = 0; foreach ($isbn as $text): ?><?=($i++ == 0)?'':'<br />'?>
+	    <?= $this->escapeHtml($text)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+     <? $issnprint =  $this->driver->getISSNPrint(); $issnonline =  $this->driver->getISSNOnline(); ?>	
+      <? $issn = $this->driver->getISSN(); if (!empty($issn)): ?>
+        <tr>
+          <th><?=$this->transEsc('ISSN')?>: </th>
+          <td><? $i = 0; foreach ($issn as $text): ?><?=($i++ == 0)?'':'<br />'?><?= $this->escapeHtml($text)?><? endforeach; ?>
+	  <? // TODO only for Hohenheim TODO ?>
+	  <? if (!empty($issnprint)): ?>
+	  <br /> <?=$this->transEsc('RDS_ISSNPRINT')?>: <?= $this->escapeHtml($issnprint)?>	
+	   <? endif; ?>
+	  <? if (!empty($issnonline)): ?>
+	  <br /> <?=$this->transEsc('RDS_ISSNONLINE')?>: <?= $this->escapeHtml($issnonline)?>	
+	   <? endif; ?>	  
+	   <? // END  TODO ?>
+	  </td>
+        </tr>
+      <? endif; ?>
+
+<?/*
       <? $publications = $this->driver->getPublicationDetails(); if (!empty($publications)): ?>
       <tr>
         <th><?=$this->transEsc('Published')?>: </th>
@@ -168,7 +268,7 @@
         </td>
       </tr>
       <? endif; ?>
-
+*/?>
       <? $edition = $this->driver->getEdition(); if (!empty($edition)): ?>
       <tr>
         <th><?=$this->transEsc('Edition')?>: </th>

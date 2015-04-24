@@ -1747,5 +1747,335 @@ class RDSIndex extends SolrMarc
         return $ct_display;
     }
 
+    /**
+     * Get  edition of title 
+     * RDS
+     * @return array
+     */
+    public function getEditions()
+    {
+        return isset($this->fields['ausgabe']) ? implode($this->fields['ausgabe']) : '';
+    }
 
+    /**
+     * Get  'unterreihe' of title 
+     * RDS
+     * @return array
+     */
+    public function getUnterreihe()
+    {
+        return isset($this->fields['unterreihe']) ? $this->fields['unterreihe'] : '';
+    }
+
+    /**
+     * Get publisher and publishday  of title 
+     * RDS
+     * @return array
+     */
+    public function getPublishDisplay()
+    {
+        return isset($this->fields['pu_pp_display']) ? $this->fields['pu_pp_display'] : '';
+        
+    }
+
+    /**
+     * Get publisher of handwriting 
+     * RDS
+     * @return array
+     */
+    public function getppNormDisplay()
+    {
+        $formats = isset($this->fields['medieninfo']) ? 
+        $this->fields['medieninfo'] : array();
+
+        if (!in_array('hs', $formats)) {
+            return  isset($this->fields['pp_norm']) ? 
+            $this->fields['pp_norm'] : '';
+        }
+    }
+
+    /**
+     * Get publish year for result-list 
+     * RDS
+    * @return array
+    */    
+    public function getPublishingYear() 
+    {
+        return isset($this->fields['py_display']) ? 
+        implode("; ", $this->fields['py_display']) : '';
+    }
+    
+    /**
+     *Get publish year for function getOpenUrl() ??? TODO
+    * RDS
+    * @usedby getOpenUrl()
+    * @return String
+    */    
+    public function getPY() 
+    {
+        return isset($this->fields['py']) ? $this->fields['py'] : '';
+    }
+
+    /**
+     *Get publisher for function getOpenUrl() ??? TODO  
+     * RDS
+     * @usedby getOpenUrl()
+    * @return String
+    */    
+    public function getPublish() 
+    {
+        if (isset($this->fields['pp_display'])) {
+            $arr_links = $this->fields['pp_display'];
+            $first_item = $arr_links[0];
+        }
+        return $first_item;
+    }
+
+    /**
+     * Get an array of all the medieninfos associated with the record.
+     * RDS
+     * @return array
+     */
+    public function getFormat() 
+    {
+        return isset($this->fields['medieninfo']) ? 
+        implode($this->fields['medieninfo']) : '';
+    }
+
+    /**
+     * Get all the mediatypes associated with the record.
+     * RDS
+     * @return string
+     */
+    public function getTz() 
+    {
+        return isset($this->fields['tz']) ? implode($this->fields['tz']) : '';
+    }
+
+    /**
+     * Get the volume informations
+     * RDS
+     * @return string
+     */
+    public function getScope() 
+    {
+        return isset($this->fields['umfang']) ? implode($this->fields['umfang']) : '';
+    }
+
+    /**
+     * Get the issn for display
+     * RDS
+     * @return array
+     */
+    public function getISSN() 
+    {
+        return isset($this->fields['issn_display']) ? $this->fields['issn_display'] : '';
+    }
+
+    /**
+     * Get the print issn (ub Hohenheim only)
+     * RDS
+     * @return string
+     */
+    public function getISSNPrint() 
+    {
+        return isset($this->fields['issn_display_print']) ? 
+        implode($this->fields['issn_display_print']) : '';
+    }
+
+    /**
+     * Get the issn online (ub Hohenheim only)
+     * RDS
+     * @return string
+     */
+    public function getISSNOnline() 
+    {
+        return isset($this->fields['issn_display_online']) ? 
+        implode($this->fields['issn_display_online']) : '';
+    }
+
+    /**
+     * Get the isbn
+     * RDS
+     * @return array
+     */
+    public function getISBN() 
+    {
+        return isset($this->fields['isbn_display']) ? $this->fields['isbn_display'] : '';
+    }
+
+
+    /**
+     * Get an array of all the medieninfos associated with the record.
+     * RDS
+     * @return array
+     */
+    /*    public function getNotation() {
+    global $configArray;
+    $baseURI = $configArray['Site']['url'];
+    $html_result = "";
+    if (isset($this->fields['rvk_display'])){
+    $arr_links = $this->fields['rvk_display'];
+    foreach ($arr_links as $link) {
+    if (strstr($link, "|")){
+    $arr_link = explode(" | ", $link);
+    $html_result .= "<a href=".$baseURI."/RDSIndex/Results?lookfor0[]=cc:\""
+    .urlencode($arr_link[0])."\"&type0[]=ex&submit=Suchen>".
+    $arr_link[0]."</a>&nbsp;($arr_link[1])<br/>";
+    }
+    else{
+    $html_result .= "<a href=".$baseURI."/RDSIndex/Results?lookfor0[]=cc:\""
+    .urlencode($link)."\"&type0[]=ex&submit=Suchen>".$link."</a><br/>";
+    }
+    }
+    }
+    return  $html_result;
+    }
+     */
+    /**
+     * Get an array of all the medieninfos associated with the record.
+     * RDS
+     * @return array
+     */
+    /*    public function getHss() {
+    return isset($this->fields['hss']) ? $this->fields['hss'] : '';
+    }
+     */
+    /**
+     * Get main topics of title (cjk) 
+     * RDS
+     * @return string
+     */
+    public function getCjkTitle()
+    {
+        return isset($this->fields['orig_titel_display']) ? 
+        implode($this->fields['orig_titel_display']) : '';
+    }
+
+    /**
+     * Get author (cjk) 
+     * RDS
+     * @return array
+     */
+    public function getCjkAut() 
+    {
+        return isset($this->fields['orig_aut_display']) ? 
+        implode($this->fields['orig_aut_display']) : '';
+    }
+    /**
+     * Get corporation (cjk) 
+     * RDS
+     * @return array
+     */
+    public function getCjkKoerp() 
+    {
+        return isset($this->fields['orig_koerp_display']) ? 
+        implode($this->fields['orig_koerp_display']) : '';
+    }
+    /**
+     * Get publisher  (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkVerlag() 
+    {
+        return isset($this->fields['orig_verlag_display']) ? 
+        implode($this->fields['orig_verlag_display']) : '';
+    }
+    /**
+     * Get issue (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkAusgabe() 
+    {
+        return isset($this->fields['orig_verlag_display']) ? 
+        implode($this->fields['orig_verlag_display']) : '';
+    }
+    /**
+     * Get footnote (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkFN() 
+    {
+        return isset($this->fields['orig_fussnote_display']) ? 
+        implode($this->fields['orig_fussnote_display']) : '';
+    }
+    /**
+     * Get fn extended (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkFNEnth() 
+    {
+        return isset($this->fields['orig_fn_enthaltene_display']) ? 
+        $this->fields['orig_fn_enthaltene_display'] : '';
+    }
+    /**
+     * Get  volume (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkScope() 
+    {
+        return isset($this->fields['orig_umfang_display']) ? 
+        implode($this->fields['orig_umfang_display']) : '';
+    }
+    /**
+     * Get series (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkReihe() 
+    {
+        return isset($this->fields['orig_reihe_display']) ? 
+        $this->fields['orig_reihe_display'] : '';
+    }
+    /**
+     * Get serial extra (cjk)
+     * RDS
+     * @return array
+     */
+    public function getCjkUReihe() 
+    {
+        return isset($this->fields['orig_ureihe_display']) ? 
+        implode($this->fields['orig_ureihe_display']) : '';
+    }
+    /**
+     * Get main heading of title (cjk) 
+     * RDS
+     * @return array
+     */
+    public function getCjkAst() 
+    {
+        return isset($this->fields['orig_ast_display']) ? 
+        implode($this->fields['orig_ast_display']) : '';
+    }
+
+    /**
+     * Get an array of all the formats associated with the record.
+     *
+     * @return array
+     * @access protected
+     */
+    /*    public function getFormats()
+    {
+    $formats = isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
+
+    if (in_array('book', $formats)) {
+    $formats[] = 'Book';
+    }
+
+    if (in_array('article', $formats)) {
+    $formats[] = 'Article';
+    }
+
+    if (in_array('zeitschrift', $formats) || in_array('journal', $formats)) {
+    $formats[] = 'Journal';
+    }
+
+    return $formats;
+    }
+     */
 }
