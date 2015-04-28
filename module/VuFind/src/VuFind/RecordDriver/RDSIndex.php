@@ -1904,7 +1904,204 @@ class RDSIndex extends SolrMarc
         return isset($this->fields['isbn_display']) ? $this->fields['isbn_display'] : '';
     }
 
+    /**
+     * Get the  Uniform title
+     * RDS
+     * @return string
+     */
+    public function getEst()
+    {
+        return isset($this->fields['est']) ? implode($this->fields['est']) : '';
+    }
 
+    /**
+     * Get the ebook link 
+     * RDS
+     * @return array 
+     */
+    public function getEbookLink()
+    {
+        $ebook_lnk = array();
+        if (isset($this->fields['ebook_url'])) {
+            $arr_links = $this->fields['ebook_url'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $link_text = $arr_link[1];
+                    $ebook_lnk[$key]['lnk_txt'] = $arr_link[1];
+                     $ebook_lnk[$key]['url'] = $arr_link[0];
+                } else {
+                    $ebook_lnk[$key]['lnk_txt'] = link;
+                    $ebook_lnk[$key]['url'] = link;
+                }
+            }
+        }
+        return $ebook_lnk;
+    }
+
+    /**
+     * Get an array of all the handwriting descriptions
+     * RDS
+     * @return array
+     */
+    public function getHandwritingDesc()
+    {
+        $hand_desc = array(); 
+        if (isset($this->fields['hand_desc'])) {
+            $arr_desc = $this->fields['hand_desc'];
+            
+            foreach ($arr_desc as $key => $txt) {
+                $pos = strpos($txt, ":");
+                if ($pos !== false) {
+                    $first = substr($txt, 0, $pos);
+                    $sec = substr($txt, $pos);
+                    $hand_desc[$key]['txt1'] = $first;
+                    $hand_desc[$key]['txt2'] = $sec;                                                        
+                } else {
+                    $hand_desc[$key]['txt1']= $txt;
+                }
+            }
+        }
+        return $hand_desc;
+    }
+
+    /**
+     * Get an array of all the base handwriting descriptions
+     * RDS
+     * @return array
+     */
+    public function getHandwritingBase()
+    {
+        $hand_basedesc = array();
+        if (isset($this->fields['hand_basedesc'])) {
+            $arr_desc = $this->fields['hand_basedesc'];
+            foreach ($arr_desc as $key =>  $txt) {
+                $title = "Beschreibstoff";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }
+        if (isset($this->fields['hand_basecover'])) {
+            $arr_desc = $this->fields['hand_basecover'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Einband";
+                $hand_basedesc[$key]['title'] = $title;                                    
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        if (isset($this->fields['hand_baserest'])) {
+            $arr_desc = $this->fields['hand_baserest'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Restaurierungsmaßnahmen";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        if (isset($this->fields['hand_base_c'])) {
+            $arr_desc = $this->fields['hand_base_c'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Wasserzeichen";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        if (isset($this->fields['hand_base_d'])) {
+            $arr_desc = $this->fields['hand_base_d'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Erhaltungszustand";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        return $hand_basedesc;
+    }
+
+    /**
+     * Get the info if data is handwriting
+     * RDS
+     * @return string
+     */
+    public function getMedium()
+    {
+        $result = "";
+        if (isset($this->fields['medium'])) {
+            $arr = $this->fields['medium'];
+            foreach ($arr as $txt) {
+                if ($tmp = strstr($txt, "handschr")) {
+                    $result = $tmp; 
+                }
+
+            }
+        }
+        return $result;
+    }
+    /**
+     * Get an array of all the references of handwriting
+     * RDS
+     * @return array
+     */
+    public function getHandwritingRefValue()
+    {
+        $hand_ref = array();
+        if (isset($this->fields['hand_refvalue'])) {
+            $arr_desc = $this->fields['hand_refvalue'];
+            asort($arr_desc);
+            foreach ($arr_desc as $link) {
+                $arr_link[] = explode(" | ", $link);
+            }
+            foreach ($arr_link as $key => $txt) {
+                if ($tmp = strstr($txt[0], "1")) {
+                    $title = "Editionshinweise";
+                    $hand_ref[$key]['title'] = $title;
+                    $hand_ref[$key]['text'] = $txt[1];
+                }
+                if ($tmp = strstr($txt[0], "2")) {
+                    $title = "Literaturhinweise";
+                    $hand_ref[$key]['title'] = $title;
+                    $hand_ref[$key]['text'] = $txt[1];
+                }
+                if ($tmp = strstr($txt[0], "3")) {
+                    $title = "Sonstige Bezugswerke";
+                    $hand_ref[$key]['title'] = $title;
+                    $hand_ref[$key]['text'] = $txt[1];
+                }
+            }
+        }
+        return $hand_ref;
+    }
+    /**
+     * Get an array of all footnotes
+     * RDS
+     * @return array
+     */
+    public function getFn() 
+    {
+        $fn_array = array();
+        if (isset($this->fields['fn_display'])) {
+            $arr_links = $this->fields['fn_display'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $fn_array[$key]['text'] = $arr_link[0];
+                    $fn_array[$key]['link'] = $arr_link[1];
+                } else {
+                    $fn_array[$key]['text'] = $link;
+                }
+            }
+        }
+        return $fn_array;
+    }
+
+    /**
+     * Get an array of all 
+     * RDS
+     * @return array
+     */
+    public function getSekundaer() 
+    {
+        return isset ($this->fields['sekundaer']) ? 
+        $this->fields['sekundaer'] : array();
+    }
     /**
      * Get an array of all the medieninfos associated with the record.
      * RDS
@@ -1933,14 +2130,15 @@ class RDSIndex extends SolrMarc
     }
      */
     /**
-     * Get an array of all the medieninfos associated with the record.
+     * Get an array of all .
      * RDS
      * @return array
      */
-    /*    public function getHss() {
-    return isset($this->fields['hss']) ? $this->fields['hss'] : '';
+    public function getHss() 
+    {
+        return isset($this->fields['hss']) ? $this->fields['hss'] : '';
     }
-     */
+
     /**
      * Get main topics of title (cjk) 
      * RDS
@@ -1967,7 +2165,7 @@ class RDSIndex extends SolrMarc
      * RDS
      * @return array
      */
-    public function getCjkKoerp() 
+    public function getCjkCorp() 
     {
         return isset($this->fields['orig_koerp_display']) ? 
         implode($this->fields['orig_koerp_display']) : '';
@@ -1977,7 +2175,7 @@ class RDSIndex extends SolrMarc
      * RDS
      * @return array
      */
-    public function getCjkVerlag() 
+    public function getCjkPp() 
     {
         return isset($this->fields['orig_verlag_display']) ? 
         implode($this->fields['orig_verlag_display']) : '';
@@ -1987,7 +2185,7 @@ class RDSIndex extends SolrMarc
      * RDS
      * @return array
      */
-    public function getCjkAusgabe() 
+    public function getCjkEdition() 
     {
         return isset($this->fields['orig_verlag_display']) ? 
         implode($this->fields['orig_verlag_display']) : '';

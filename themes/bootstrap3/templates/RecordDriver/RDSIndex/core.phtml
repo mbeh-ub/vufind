@@ -130,7 +130,7 @@
 	<? $i = 0; foreach ($authors_long as $field): ?><?=($i++ == 0)?'':'<br />'?>
 	<a href="<?=$this->record($this->driver)->getLink('author', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
 	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
-	<a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title=<?=$this->transEsc('Personenbeschreibung der DNB')?>></a>
+	<a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_PERS_DNB')?>"></a>
 	<? endif; ?>
 	 <? endforeach; ?>
 	</td>
@@ -152,14 +152,14 @@
 	<? $i = 0; foreach ($co_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
 	<a href="<?=$this->record($this->driver)->getLink('corporate', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
 	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
-	        <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title=<?=$this->transEsc('Personenbeschreibung der DNB')?>></a>
+	        <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_CO_DNB')?>"></a>
 	<? endif; ?>
 	<? endforeach; ?>
 	</td>
       </tr>
       <? endif; ?>
 
-      <? $cjkco = $this->driver->getCjkKoerp(); if (!empty($cjkco)): ?>
+      <? $cjkco = $this->driver->getCjkCorp(); if (!empty($cjkco)): ?>
         <tr>
           <th><?=$this->transEsc('RDS_CJK_CO')?>: </th>
           <td><?= $this->escapeHtml($cjkco)?></td>
@@ -173,7 +173,7 @@
         </tr>
       <? endif; ?>
 
-      <? $cjkedition = $this->driver->getCjkAusgabe(); if (!empty($cjkedition)): ?>
+      <? $cjkedition = $this->driver->getCjkEdition(); if (!empty($cjkedition)): ?>
         <tr>
           <th><?=$this->transEsc('RDS_CJK_AUSGABE')?>: </th>
           <td><?= $this->escapeHtml($cjkedition)?></td>
@@ -246,29 +246,92 @@
         </tr>
       <? endif; ?>
 
-<?/*
-      <? $publications = $this->driver->getPublicationDetails(); if (!empty($publications)): ?>
+      <? $est = $this->driver->getEst(); if (!empty($est)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_EST')?>: </th>
+          <td><?= $this->escapeHtml($est)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $ebook_lnk = $this->driver->getEbookLink(); ?>
+      <? if (isset($ebook_lnk) && !empty($ebook_lnk)): ?>
       <tr>
-        <th><?=$this->transEsc('Published')?>: </th>
-        <td>
-          <? foreach ($publications as $field): ?>
-            <span property="publisher" typeof="Organization">
-            <? $pubPlace = $field->getPlace(); if (!empty($pubPlace)): ?>
-              <span property="location"><?=$this->escapeHtml($pubPlace)?></span>
-            <? endif; ?>
-            <? $pubName = $field->getName(); if (!empty($pubName)): ?>
-              <span property="name"><?=$this->escapeHtml($pubName)?></span>
-            <? endif; ?>
-            </span>
-            <? $pubDate = $field->getDate(); if (!empty($pubDate)): ?>
-              <span property="publicationDate"><?=$this->escapeHtml($pubDate)?></span>
-            <? endif; ?>
-            <br/>
-          <? endforeach; ?>
-        </td>
+        <th><?=$this->transEsc('Links')?>: </th>
+        <td><? $i = 0; foreach ($ebook_lnk as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<a href="<?=$field['url']?>"><?=$this->escapeHtml($field['lnk_txt'])?></a>
+	 <? endforeach; ?>
+	</td>
       </tr>
       <? endif; ?>
-*/?>
+	
+      <? $hss = $this->driver->getHss(); if (!empty($hss)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_HSS')?>: </th>
+          <td><? $i = 0; foreach ($hss as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hand = $this->driver->getHandwritingDesc(); if (!empty($hand)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_DESCR')?>: </th>
+          <td>
+	      <? $i = 0; foreach ($hand as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	      <span class='handwriting'> <?= $this->escapeHtml($value['txt1'])?></span>
+	      <? if(isset($value['txt2'])): ?> <?= $this->escapeHtml($value['txt2'])?><? endif; ?>
+	      <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hand_base = $this->driver->getHandwritingBase(); if (!empty($hand_base)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_STOCK')?>: </th>
+          <td>
+	      <? $i = 0; foreach ($hand_base as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	      <span class='handwriting'> <?= $this->escapeHtml($value['title'])?>:</span>
+	      <?= $this->escapeHtml($value['text'])?>
+	      <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hand_ref = $this->driver->getHandwritingRefValue(); if (!empty($hand_ref)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_REFVALUE')?>: </th>
+          <td>
+	      <? $i = 0; foreach ($hand_ref as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	      <span class='handwriting'> <?= $this->escapeHtml($value['title'])?>:</span>
+	      <?= $this->escapeHtml($value['text'])?>
+	      <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $medium = $this->driver->getMedium(); if (!empty($medium)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_MEDIUM')?>: </th>
+        <td><?=$this->transEsc($medium)?></td>
+      </tr>
+      <? endif; ?>
+
+      <? $fn = $this->driver->getFN(); $sek = $this->driver->getSekundaer(); ?>
+      <? if (isset($fn) && !empty($fn)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_FN')?>: </th>
+        <td><? $i = 0; foreach ($fn as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<?=$this->escapeHtml($field['text'])?>
+	<? if (isset($field['url']) && !empty($field['url'])): ?>
+	<a href="<?=$field['url']?>"><?=$this->escapeHtml($field['url'])?></a>
+	<? endif; ?>
+	 <? endforeach; ?>
+	 <? if (isset($sek) && !empty($sek)): ?>
+	 <br />
+	 <? $i = 0; foreach ($sek as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	 	<?=$this->escapeHtml($field)?>
+	 <? endforeach; ?>
+	 <? endif; ?>
+	</td>
+      </tr>
+      <? endif; ?>
+	
       <? $edition = $this->driver->getEdition(); if (!empty($edition)): ?>
       <tr>
         <th><?=$this->transEsc('Edition')?>: </th>
@@ -298,23 +361,6 @@
             <? endif; ?>
           <? endforeach; ?>
         </td>
-      </tr>
-      <? endif; ?>
-
-     <? $ct_display = $this->driver->getCT(); ?>	
-      <? if (isset($ct_display) && !empty($ct_display)): ?>
-      <tr>
-        <th><?=$this->transEsc('Subjects')?>: </th>
-        <td property="creator">
-	<? $i = 0; foreach ($ct_display as $ct_field): ?><?=($i++ == 0)?'':'<br />'?>
-	<? $i = 0; foreach ($ct_field as $field): ?><?=($i++ == 0)?'':'/'?>
-	<a href="<?=$this->record($this->driver)->getLink('ct', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
-	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
-	        <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title=<?=$this->transEsc('Schlagworte der DNB')?>></a>
-	<? endif; ?>
-	<? endforeach; ?>
-	<? endforeach; ?>
-	</td>
       </tr>
       <? endif; ?>
 

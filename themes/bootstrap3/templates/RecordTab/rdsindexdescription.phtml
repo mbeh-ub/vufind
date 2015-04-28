@@ -18,6 +18,23 @@
     </tr>
   <? endif; ?>
 
+  <? $ct_display = $this->driver->getCT(); ?>
+  <? if (isset($ct_display) && !empty($ct_display)): ?>
+    <tr>
+    <th><?=$this->transEsc('Subjects')?>: </th>
+    <td property="creator">
+      <? $i = 0; foreach ($ct_display as $ct_field): ?><?=($i++ == 0)?'':'<br />'?>
+        <? $i = 0; foreach ($ct_field as $field): ?><?=($i++ == 0)?'':'/'?>
+          <a href="<?=$this->record($this->driver)->getLink('ct', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+          <? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+            <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_CT_DNB')?>"></a>
+          <? endif; ?>
+       <? endforeach; ?>
+     <? endforeach; ?>
+    </td>
+    </tr>
+  <? endif; ?>
+
   <? $dateSpan = $this->driver->getDateSpan(); if (!empty($dateSpan)): ?>
     <? $contentDisplayed = true; ?>
     <tr>
