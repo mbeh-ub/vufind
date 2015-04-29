@@ -344,6 +344,10 @@ $config = [
                     'userresource' => 'VuFind\Db\Table\UserResource',
                     'userstats' => 'VuFind\Db\Table\UserStats',
                     'userstatsfields' => 'VuFind\Db\Table\UserStatsFields',
+                ],
+            ],
+            'hierarchy_driver' => [
+               'factories' => [
                     'default' => 'VuFind\Hierarchy\Driver\Factory::getHierarchyDefault',
                     'flat' => 'VuFind\Hierarchy\Driver\Factory::getHierarchyFlat',
                 ],
