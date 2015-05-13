@@ -131,6 +131,10 @@
 	<a href="<?=$this->record($this->driver)->getLink('author', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
 	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
 	<a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_PERS_DNB')?>"></a>
+	<? $myau = explode(",",$field['link']);
+	$mywiki = str_replace(' ', '_', trim($myau[1])) . "_" . $myau[0];
+	?>
+	<a class="wikipedia" href="<?=$this->record($this->driver)->getLink('wiki', $mywiki)?>" target="_blank" title="<?=$this->transEsc('RDS_PERS_WIKI')?>"></a>
 	<? endif; ?>
 	 <? endforeach; ?>
 	</td>
@@ -143,6 +147,15 @@
           <td><?= $this->escapeHtml($cjkauthor)?></td>
         </tr>
       <? endif; ?>
+
+<? /* only for PHFR TODO not tested TODO */ ?>
+      <? $fn_beigwerk = $this->driver->getFnAttWork(); if (!empty($fn_beigwerk)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_FN_BEIGWERK')?>: </th>
+          <td><?= $this->escapeHtml($fn_beigwerk)?></td>
+        </tr>
+      <? endif; ?>
+<? /* END TODO */ ?>
 
      <? $co_display = $this->driver->getCorporation(); ?>	
       <? if (isset($co_display) && !empty($co_display)): ?>
@@ -264,14 +277,6 @@
       </tr>
       <? endif; ?>
 	
-      <? $hss = $this->driver->getHss(); if (!empty($hss)): ?>
-        <tr>
-          <th><?=$this->transEsc('RDS_HSS')?>: </th>
-          <td><? $i = 0; foreach ($hss as $value): ?><?=($i++ == 0)?'':'<br />'?>
-	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
-        </tr>
-      <? endif; ?>
-
       <? $hand = $this->driver->getHandwritingDesc(); if (!empty($hand)): ?>
         <tr>
           <th><?=$this->transEsc('RDS_DESCR')?>: </th>
@@ -332,11 +337,69 @@
       </tr>
       <? endif; ?>
 	
-      <? $edition = $this->driver->getEdition(); if (!empty($edition)): ?>
-      <tr>
-        <th><?=$this->transEsc('Edition')?>: </th>
-        <td property="bookEdition"><?=$this->escapeHtml($edition)?></td>
-      </tr>
+      <? $cjkfn = $this->driver->getCjkFN(); if (!empty($cjkfn)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_FN')?>: </th>
+          <td><?= $this->escapeHtml($cjkfn)?></td>
+        </tr>
+      <? endif; ?>
+
+<? // TODO not tested  TODO ?>
+      <? $fn_enthWek = $this->driver->getFnEnthWerk(); if (!empty($fn_enthWek)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_FN_ENTHWERK')?>: </th>
+          <td><? $i = 0; foreach ($fn_enthWek as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $fn_ebook = $this->driver->getFnEbook(); if (!empty($fn_ebook)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_FN_EBOOK')?>: </th>
+          <td><? $i = 0; foreach ($fn_ebook as $value): ?><?=($i++ == 0)?'':' ; '?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+<? // TODO END TODO ?>
+
+      <? $cjkfn_enthWek = $this->driver->getCjkFNEnth(); if (!empty($cjkfn_enthWek)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_FN_ENTH')?>: </th>
+          <td><? $i = 0; foreach ($cjkfn_enthWek as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hss = $this->driver->getHss(); if (!empty($hss)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_HSS')?>: </th>
+          <td><? $i = 0; foreach ($hss as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+<? // TODO not tested  TODO ?>
+      <? $fn_interpret = $this->driver->getFnInterpret(); if (!empty($fn_interpret)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_NOTE')?>: </th>
+          <td><? $i = 0; foreach ($fn_interpret as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+<? // TODO END TODO ?>
+
+      <? $zs_info = $this->driver->getJournalInfo(); if (!empty($zs_info)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_BIBL_ZUS1')?>: </th>
+          <td><? $i = 0; foreach ($zs_info as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <? if (!empty($field['pre-text'])): ?>
+	  	<?=$this->escapeHtml($field['pre-text'])?> :
+	      <? endif; ?>
+	      <? if (!empty($field['id'])): ?>
+	      <a href="<?=$this->record($this->driver)->getLink('journalinfo', $field['id'])?>"><?=$this->escapeHtml($field['text'])?></a>
+	      <? endif; ?>
+	  <? endforeach; ?></td>
+        </tr>
       <? endif; ?>
 
       <?/* Display series section if at least one series exists. */?>

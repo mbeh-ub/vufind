@@ -10,3 +10,10 @@
   color:#b22222;
 }
 
+.wikipedia {
+  display:inline-block;
+  background: #ffffff url(../images/rds/wikipedia.png) no-repeat scroll left bottom;
+  width: 16px;
+  height:16px;
+  vertical-align: middle;
+}
