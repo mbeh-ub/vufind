@@ -396,7 +396,7 @@
 	  	<?=$this->escapeHtml($field['pre-text'])?> :
 	      <? endif; ?>
 	      <? if (!empty($field['id'])): ?>
-	      <a href="<?=$this->record($this->driver)->getLink('journalinfo', $field['id'])?>"><?=$this->escapeHtml($field['text'])?></a>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['text'])?></a>
 	      <? endif; ?>
 	  <? endforeach; ?></td>
         </tr>
