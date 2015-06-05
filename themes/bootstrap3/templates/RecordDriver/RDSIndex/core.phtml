@@ -212,6 +212,13 @@
         </tr>
       <? endif; ?>
       
+      <? $cjkpb = $this->driver->getCjkPp(); if (!empty($cjkpb)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_PUBLISH')?>: </th>
+          <td><?= $this->escapeHtml($cjkedition)?></td>
+        </tr>
+      <? endif; ?>
+
       <? $langs = $this->driver->getLanguages(); if (!empty($langs)): ?>
         <tr>
           <th><?=$this->transEsc('Language')?>: </th>
@@ -402,30 +409,44 @@
         </tr>
       <? endif; ?>
 
-      <?/* Display series section if at least one series exists. */?>
-      <? $series = $this->driver->getSeries(); if (!empty($series)): ?>
-      <tr>
-        <th><?=$this->transEsc('Series')?>: </th>
-        <td>
-          <? foreach ($series as $field): ?>
-            <?/* Depending on the record driver, $field may either be an array with
-               "name" and "number" keys or a flat string containing only the series
-               name.  We should account for both cases to maximize compatibility. */?>
-            <? if (is_array($field)): ?>
-              <? if (!empty($field['name'])): ?>
-                <a href="<?=$this->record($this->driver)->getLink('series', $field['name'])?>"><?=$this->escapeHtml($field['name'])?></a>
-                <? if (!empty($field['number'])): ?>
-                  <?=$this->escapeHtml($field['number'])?>
-                <? endif; ?>
-                <br/>
-              <? endif; ?>
-            <? else: ?>
-              <a href="<?=$this->record($this->driver)->getLink('series', $field)?>"><?=$this->escapeHtml($field)?></a><br/>
-            <? endif; ?>
-          <? endforeach; ?>
-        </td>
-      </tr>
+      <? $inf = $this->driver->getArticleInfo(); ?>
+      <? $werk_info = $this->driver->getWerk(); if (!empty($werk_info)): ?>
+        <tr>
+          <th><? if ($inf == "0"){ echo $this->transEsc('RDS_WERK'); } else{ echo $this->transEsc('RDS_IN'); } ?>: </th>
+          <td><? $i = 0; foreach ($werk_info as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?>
+	      <? if (!empty($field['bnd'])): ?> ; <?=$this->escapeHtml($field['bnd'])?><? endif; ?></a>
+	  <? endforeach; ?></td>
+        </tr>
       <? endif; ?>
+
+      <? $serie = $this->driver->getSeriesTit(); if (!empty($serie)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_SERIE')?>: </th>
+          <td><? $i = 0; foreach ($serie as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?>
+	       <? if (!empty($field['bnd'])): ?> ; <?=$this->escapeHtml($field['bnd'])?><? endif; ?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $serie = $this->driver->getCjkSeriesTit(); if (!empty($serie)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_SERIE')?>: </th>
+          <td><? $i = 0; foreach ($serie as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $nat_info = $this->driver->getNatInfo(); if (!empty($nat_info)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_NATINFO')?>: </th>
+            <td><? $i = 0; foreach ($nat_info as $value): ?><?=($i++ == 0)?'':' ; '?>
+              <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+          </tr>
+       <? endif; ?>
+
 
       <? $childRecordCount = $this->driver->tryMethod('getChildRecordCount'); if ($childRecordCount): ?>
       <tr>
