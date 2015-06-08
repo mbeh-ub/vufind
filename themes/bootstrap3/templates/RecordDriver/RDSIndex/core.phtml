@@ -49,7 +49,9 @@
 
     <?/* Display Main Details */?>
     <table class="table table-striped" summary="<?=$this->transEsc('Bibliographic Details')?>">
-      <? $journalTitle = $this->driver->getContainerTitle(); if (!empty($journalTitle)): ?>
+
+    <?/* 
+     <? $journalTitle = $this->driver->getContainerTitle(); if (!empty($journalTitle)): ?>
       <tr>
         <th><?=$this->transEsc('Published in')?>:</th>
         <td>
@@ -58,6 +60,17 @@
           <? $ref = $this->driver->getContainerReference(); if (!empty($ref)) { echo $this->escapeHtml($ref); } ?>
         </td>
       </tr>
+      <? endif; ?>
+    */ ?>
+
+      <? $medIcon = $this->driver->getMedienicon(); ?>
+      <? $ppn = $this->driver->getPPN(); ?>
+      <? $werk = $this->driver->getWerkInfo(); if ($werk == '1' && $medIcon != 'zeitschr'): ?>
+        <tr>
+          <th></th>
+          <td><a href="<?=$this->record($this->driver)->getLink('rn', $ppn)?>"><?=$this->transEsc('RDS_BAND_LINK')?></a>
+	  </td>
+        </tr>
       <? endif; ?>
 
       <? $titleLong_f = $this->driver->getTitleLongf(); $titleLong_f_sec = $this->driver->getTitleLongfsec(); ?>
@@ -219,11 +232,28 @@
         </tr>
       <? endif; ?>
 
+      <? $info = $this->driver->getZsVerlauf(); if (!empty($info)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_PUB_RUN')?>: </th>
+          <td><?= $this->escapeHtml($info)?></td>
+        </tr>
+      <? endif; ?>
+
+
+      <? /* only for Ulm  TODO not tested TODO */ ?>
+      <? $reg = $this->driver->getRegister(); if (!empty($reg)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_REGISTER')?>: </th>
+          <td><?= $this->escapeHtml($reg)?></td>
+        </tr>
+      <? endif; ?>
+      <? /* TODO END */ ?>
+
       <? $langs = $this->driver->getLanguages(); if (!empty($langs)): ?>
         <tr>
           <th><?=$this->transEsc('Language')?>: </th>
-          <td><? $i = 0; foreach ($langs as $lang): ?><?=($i++ == 0)?'':'<br />'?>
-	  <?= $this->escapeHtml($lang)?><? endforeach; ?></td>
+          <td><? $i = 0; foreach ($langs as $lang): ?><?=($i++ == 0)?'':', '?>
+	  <?= $this->transEsc($lang)?><? endforeach; ?></td>
         </tr>
       <? endif; ?>
 
@@ -273,8 +303,9 @@
         </tr>
       <? endif; ?>
 
-      <? $ebook_lnk = $this->driver->getEbookLink(); ?>
-      <? if (isset($ebook_lnk) && !empty($ebook_lnk)): ?>
+ <? // TODO not tested TODO ?>
+     <? $ebook_lnk = $this->driver->getEbookLink(); ?>
+      <? if (isset($ebook_lnk) && !empty($ebook_lnk) && strstr($ppn, "NL")): ?>
       <tr>
         <th><?=$this->transEsc('Links')?>: </th>
         <td><? $i = 0; foreach ($ebook_lnk as $field): ?><?=($i++ == 0)?'':'<br />'?>
@@ -283,6 +314,7 @@
 	</td>
       </tr>
       <? endif; ?>
+ <? // TODO End ?>
 	
       <? $hand = $this->driver->getHandwritingDesc(); if (!empty($hand)): ?>
         <tr>
