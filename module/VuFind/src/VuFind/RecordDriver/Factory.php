@@ -51,10 +51,19 @@ class Factory
     public static function getRDSIndex(ServiceManager $sm)
     {
         $rdsindex = $sm->getServiceLocator()->get('VuFind\Config')->get('RDSIndex');
-        return new RDSIndex(
+
+        $driver = new RDSIndex(
             $sm->getServiceLocator()->get('VuFind\Config')->get('config'),
             $rdsindex, $rdsindex
         );
+
+        $driver->attachILS(
+            $sm->getServiceLocator()->get('VuFind\ILSConnection'),
+            $sm->getServiceLocator()->get('VuFind\ILSHoldLogic'),
+            $sm->getServiceLocator()->get('VuFind\ILSTitleHoldLogic')
+        );
+
+        return $driver; 
     }
 
     /**

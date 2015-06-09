@@ -944,8 +944,9 @@ class RDSIndex extends SolrMarc
      */
     public function getRealTimeHoldings()
     {
-	    // Not supported by the Solr index -- implement in child classes.
-	    return array();
+        return $this->hasILS() ? $this->holdLogic->getHoldings(
+            $this->getUniqueID(), $this->getConsortialIDs()
+        ) : [];
     }
 
     /**
