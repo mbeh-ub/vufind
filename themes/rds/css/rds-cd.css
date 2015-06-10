@@ -81,3 +81,26 @@ padding: 0;
 color: #b2b4b3;
 }
 
+
+.rds_title {
+  font-size: 1.6em;
+}
+
+.rds_searchTabs {
+	margin-top: 24px;
+}
+
+.navbar-form {
+	padding: 0px;
+}
+
+.rds_subnav ul {
+	padding: 4px;
+	margin-top: 8px;
+	background-color: lightgray;
+}
+
+.rds_subnav ul>li {
+	display: inline;
+	padding: 0px 12px 0px 24px;
+}

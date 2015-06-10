@@ -1,0 +1,42 @@
+<?
+  if (isset($this->renderSearchbox) && $this->renderSearchbox == false) {
+    $this->layout()->searchbox = "";
+  } else {
+    $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+  }
+  
+  
+?>
+<div style="border: 0px solid red;">
+
+  <div class="rds_title">Katalog plus </div>
+
+  <div class="rds_searchbox">
+    <nav class="nav searchbox">
+      <?=$this->layout()->searchbox ?>
+    </nav>
+  </div>
+
+	<div>
+    <div class="rds_searchTabs">
+      <?= $this->render('search/searchTabs'); ?>
+    </div>
+
+    <div class="rds_subnav">
+        <ul>
+            <?if (isset($this->searchType) && $this->searchType == 'advanced'):?>
+            <li><a href="/<?=$this->searchClassId ?>/Search">Einfache Suche</li>
+            <?else:?>
+            <li><a href="/<?=$this->searchClassId ?>/Advanced">Erweitert Suche</li>
+            <? endif;?>
+            <li><a href="/Search/History">Frühere Suchen</a></li>
+            <li><a href="/MyResearch">Merkliste</a></li>
+        </ul>        
+    </div>
+	</div>
+
+  <div class="rds_subnav_infotext">
+  	Bücher & mehr: Bestand der Hohenheimer Bibliotheken, inkl. lizenzfreie elektronische Ressourcen und E-Books der Nationallizenzen.
+  </div>
+  
+</div>

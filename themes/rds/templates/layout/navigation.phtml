@@ -1,0 +1,33 @@
+<?
+  if ($this->layout()->renderSearchbox != false) {
+    $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+  }
+  
+?>
+
+<div style="border: 0px solid red;">
+
+  <div class="rds_title">Katalog plus </div>
+
+  <div class="rds_searchbox">
+    <nav class="nav searchbox">
+      <?=$this->layout()->searchbox ?>
+    </nav>
+  </div>
+
+  <div class="rds_searchTabs">
+      <?= $this->render('search/searchTabs'); ?>
+  </div>
+
+  <div class="rds_subnav">
+      <ul>
+          <li><a href="/<?=$this->searchClassId ?>/Advanced">Erweitert Suche</li>
+          <li><a href="/Search/History">Frühere Suchen</a></li>
+          <li><a href="/MyResearch">Merkliste</a></li>
+          <li>Feedback</li>
+          <li>Hilfe</li>
+      </ul>        
+  </div>
+  
+  
+</div>

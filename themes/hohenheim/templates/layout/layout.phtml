@@ -25,6 +25,7 @@
 <script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/MainNav.js?1412691256" type="text/javascript"></script>
 
 
+
     <?=$this->headMeta()?>
     <?=$this->headTitle()?>
     <?
@@ -92,6 +93,10 @@
       }
     ?>
     <?=$this->headScript()?>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/themes/rds/css/overwrite.css" media="all">
+<link rel="stylesheet" type="text/css" href="/themes/hohenheim/css/overwrite.css" media="all">
   </head>
   <body>
     <? // Set up the search box -- there are three possible cases:
@@ -115,13 +120,23 @@
     <div class="navigation-main__wrp-1">
       <div class="navigation-main__wrp-2"> 
         
+        
         <!--
 				button group
 
 				additional classes:
 				.navigation-main__button_active = active button (used on search and login buttons)
 			-->
-        <div class="navigation-main__button-group"> <a class="navigation-main__button navigation-main__button-navigation" data-gremlin="MobileNavToggle"><i></i><span>Navigation</span></a> <a class="navigation-main__button navigation-main__button-search" href="#nav-panel-search" tabindex="10" data-gremlin="NavbarToggle"><i></i><span>Suche</span></a> <a href="/103790?N=1&L=1" class="navigation-main__language-select">English</a> </div>
+      	<form method="post" name="langForm" action="" id="langForm">
+					<input type="hidden" name="mylang">
+        </form>
+
+        <div class="navigation-main__button-group"> 
+        	<a class="navigation-main__button navigation-main__button-navigation" data-gremlin="MobileNavToggle"><i></i><span>Navigation</span></a> 
+        	<a class="navigation-main__button navigation-main__button-search" href="#nav-panel-search" tabindex="10" data-gremlin="NavbarToggle"><i></i><span>Suche</span></a> 
+          <? $newLang = ($this->layout()->userLang == 'de' ? ['en','English'] : ['de','Deutsch']); ?>            
+       	  <a class="navigation-main__language-select" href="#" onclick="document.langForm.mylang.value='<?=$newLang[0]?>';document.langForm.submit()"><?=$newLang[1]?></a>
+       	</div>
         
         <!--
 				navigation content
@@ -133,13 +148,13 @@
           <section class="navigation-main__section" id="nav-themenbereiche">
             <h6 class="navigation-main__section-title">Themenbereiche</h6>
             <ul>
-              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103626?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">HohSearch</a></li>
+              <li class="nav-section nav-section__level-1"><a href="<?=$this->serverUrl() . '/RDSIndex/Home'?>"  data-nav-toggle="level-1" class="nav-section__toggle">HohSearch</a></li>
               <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103627?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Bibliothekskonto</a></li>
               <li class="nav-section nav-section__level-1 "><a href="https://hohsearch-info.uni-hohenheim.de/103790?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Systematik</a></li>
               <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103628?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Infos zur Ausleihe</a></li>
               <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103711?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Fachdatenbanken</a></li>
               <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103629?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Hilfe</a></li>
-              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103710?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">KIM</a></li>
+                            <li class="nav-section nav-section__level-1"><a href="http://rdsui2.ub.uni-freiburg.de/MyResearch"  data-nav-toggle="level-1" class="nav-section__toggle">Merkliste</a></li>
             </ul>
           </section>
           <!-- /section --> 
@@ -180,34 +195,57 @@
 
  <div data-gremlin="Site" class="site"> 
     
-    <!--
-			breadcrumbs
-		-->
+
+    <!-- breadcrumbs -->
+
+    <? $this->serverUrl();
+      $alreadyDefinedBreadcrumbs = $this->layout()->breadcrumbs;
     
+      $this->layout()->breadcrumbs = '<li class=""><a href="/RDSIndex/Home">' . $this->transEsc('Startseite') . '</a>';
+      $this->layout()->breadcrumbs .= '<li class="active">' . $this->transEsc('Suche');
+      $this->layout()->breadcrumbs .= $alreadyDefinedBreadcrumbs;
+    ?>
+ 
     <section class="container">
       <div class="row">
         <nav class="breadcrumbs">
-          <ol>
-            <li><a href="https://hohsearch-info.uni-hohenheim.de/startseite?&amp;N=1&amp;cHash=d4a71dd99c4c6a3706cd319cf9544340">Startseite</a></li>
-            <li class="active">SystematischeSuche</li>
-          </ol>
+              <? if((!isset($this->layout()->showBreadcrumbs) || $this->layout()->showBreadcrumbs == true)
+                    && !empty($this->layout()->breadcrumbs)
+                    && $this->layout()->breadcrumbs !== false
+        ): ?>
+          <ul class="breadcrumb hidden-print">
+          <? if(is_array($this->layout()->breadcrumbs)): ?>
+            <? if(count($this->layout()->breadcrumbs) > 1): ?>
+              <?=$this->render('breadcrumbs/multi.phtml', array(
+                  'parents' => $this->layout()->breadcrumbs,
+                  'title'   => $this->layout()->title,
+                  'end'     => $this->layout()->breadcrumbEnd,
+                  'from'    => $this->layout()->from
+                )) ?>
+            <? else: ?>
+              <?=$this->render('breadcrumbs/default.phtml', array(
+                  'parents' => $this->layout()->breadcrumbs,
+                  'title'   => $this->layout()->title
+                )) ?>
+            <? endif; ?>
+          <? else: ?>
+            <?=$this->layout()->breadcrumbs ?>
+          <? endif; ?>
+          </ul>
+        <? endif; ?>
         </nav>
       </div>
     </section>
+    <!-- / breadcrumbs --> 
+
     
-    <!--
-			/ breadcrumbs
-		--> 
-
-       <nav class="nav searchbox hidden-lg hidden-print">
-          <?=$this->layout()->searchbox ?>
-        </nav>
-
     <div role="main" class="main template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?>">
       <div class="container">
         <?=$this->layout()->content ?>
       </div>
     </div>
+    
+    
     <footer role="contentinfo" class="hidden-print footer-site">
       <div class="container">
         <?=$this->render('footer.phtml')?>
