@@ -518,8 +518,8 @@ class RDSIndex extends SolrMarc
      */
     public function getLanguages()
     {
-	    return isset($this->fields['la']) ?
-		    $this->fields['la'] : '';
+        return isset($this->fields['la']) ?
+        $this->fields['la'] : '';
     }
 
     /**
@@ -529,19 +529,19 @@ class RDSIndex extends SolrMarc
      */
     public function getLCCN()
     {
-	    // Get LCCN from Index
-	    $raw = isset($this->fields['lccn']) ? $this->fields['lccn'] : '';
+        // Get LCCN from Index
+        $raw = isset($this->fields['lccn']) ? $this->fields['lccn'] : '';
 
-	    // Remove all blanks.
-	    $raw = preg_replace('{[ \t]+}', '', $raw);
+        // Remove all blanks.
+        $raw = preg_replace('{[ \t]+}', '', $raw);
 
-	    // If there is a forward slash (/) in the string, remove it, and remove all
-	    // characters to the right of the forward slash.
-	    if (strpos($raw, '/') > 0) {
-		    $tmpArray = explode("/", $raw);
-		    $raw = $tmpArray[0];
-	    }
-	    /* If there is a hyphen in the string:
+        // If there is a forward slash (/) in the string, remove it, and remove all
+        // characters to the right of the forward slash.
+        if (strpos($raw, '/') > 0) {
+            $tmpArray = explode("/", $raw);
+            $raw = $tmpArray[0];
+        }
+        /* If there is a hyphen in the string:
 	       a. Remove it.
 	       b. Inspect the substring following (to the right of) the (removed)
 	       hyphen. Then (and assuming that steps 1 and 2 have been carried out):
@@ -549,14 +549,14 @@ class RDSIndex extends SolrMarc
 	       six or less.
 	       ii. If the length of the substring is less than 6, left-fill the
 	       substring with zeros until  the length is six.
-	     */
-	    if (strpos($raw, '-') > 0) {
-		    // haven't checked for i. above. If they aren't all digits, there is
-		    // nothing that can be done, so might as well leave it.
-		    $tmpArray = explode("-", $raw);
-		    $raw = $tmpArray[0] . str_pad($tmpArray[1], 6, "0", STR_PAD_LEFT);
-	    }
-	    return $raw;
+        */
+        if (strpos($raw, '-') > 0) {
+            // haven't checked for i. above. If they aren't all digits, there is
+            // nothing that can be done, so might as well leave it.
+            $tmpArray = explode("-", $raw);
+            $raw = $tmpArray[0] . str_pad($tmpArray[1], 6, "0", STR_PAD_LEFT);
+        }
+        return $raw;
     }
 
     /**
@@ -566,8 +566,8 @@ class RDSIndex extends SolrMarc
      */
     public function getNewerTitles()
     {
-	    return isset($this->fields['title_new']) ?
-		    $this->fields['title_new'] : array();
+        return isset($this->fields['title_new']) ?
+        $this->fields['title_new'] : array();
     }
 
     /**
@@ -577,8 +577,8 @@ class RDSIndex extends SolrMarc
      */
     public function getOCLC()
     {
-	    return isset($this->fields['oclc_num']) ?
-		    $this->fields['oclc_num'] : array();
+        return isset($this->fields['oclc_num']) ?
+        $this->fields['oclc_num'] : array();
     }
 
     /**
@@ -588,21 +588,21 @@ class RDSIndex extends SolrMarc
      */
     protected function getOpenURLFormat()
     {
-	    // If we have multiple formats, Book, Journal and Article are most
-	    // important...
-	    $formats = $this->getFormats();
-	    if (in_array('book', $formats)) {
-		    return 'Book';
-	    } else if (in_array('article', $formats)) {
-		    return 'Article';
-	    } else if (in_array('journal', $formats)) {
-		    return 'Journal';
-	    } else if (isset($formats[0])) {
-		    return $formats[0];
-	    } else if (strlen($this->getCleanISSN()) > 0) {
-		    return 'Journal';
-	    }
-	    return 'Book';
+        // If we have multiple formats, Book, Journal and Article are most
+        // important...
+        $formats = $this->getFormats();
+        if (in_array('book', $formats)) {
+            return 'Book';
+        } else if (in_array('article', $formats)) {
+            return 'Article';
+        } else if (in_array('journal', $formats)) {
+            return 'Journal';
+        } else if (isset($formats[0])) {
+            return $formats[0];
+        } else if (strlen($this->getCleanISSN()) > 0) {
+            return 'Journal';
+        }
+        return 'Book';
     }
 
     /**
@@ -612,20 +612,20 @@ class RDSIndex extends SolrMarc
      */
     protected function getCoinsID()
     {
-	    // Get the COinS ID -- it should be in the OpenURL section of config.ini,
-	    // but we'll also check the COinS section for compatibility with legacy
-	    // configurations (this moved between the RC2 and 1.0 releases).
-	    if (isset($this->mainConfig->OpenURL->rfr_id)
-			    && !empty($this->mainConfig->OpenURL->rfr_id)
-	       ) {
-		    return $this->mainConfig->OpenURL->rfr_id;
-	    }
-	    if (isset($this->mainConfig->COinS->identifier)
-			    && !empty($this->mainConfig->COinS->identifier)
-	       ) {
-		    return $this->mainConfig->COinS->identifier;
-	    }
-	    return 'vufind.svn.sourceforge.net';
+        // Get the COinS ID -- it should be in the OpenURL section of config.ini,
+        // but we'll also check the COinS section for compatibility with legacy
+        // configurations (this moved between the RC2 and 1.0 releases).
+        if (isset($this->mainConfig->OpenURL->rfr_id)
+            && !empty($this->mainConfig->OpenURL->rfr_id)
+        ) {
+            return $this->mainConfig->OpenURL->rfr_id;
+        }
+        if (isset($this->mainConfig->COinS->identifier)
+            && !empty($this->mainConfig->COinS->identifier)
+        ) {
+            return $this->mainConfig->COinS->identifier;
+        }
+        return 'vufind.svn.sourceforge.net';
     }
 
     /**
@@ -635,18 +635,18 @@ class RDSIndex extends SolrMarc
      */
     protected function getDefaultOpenURLParams()
     {
-	    // Get a representative publication date:
-	    $pubDate = $this->getPublicationDates();
-	    $pubDate = empty($pubDate) ? '' : $pubDate[0];
+        // Get a representative publication date:
+        $pubDate = $this->getPublicationDates();
+        $pubDate = empty($pubDate) ? '' : $pubDate[0];
 
-	    // Start an array of OpenURL parameters:
-	    return array(
-			    'ctx_ver' => 'Z39.88-2004',
-			    'ctx_enc' => 'info:ofi/enc:UTF-8',
-			    'rfr_id' => 'info:sid/' . $this->getCoinsID() . ':generator',
-			    'rft.title' => $this->getTitle(),
-			    'rft.date' => $pubDate
-			);
+        // Start an array of OpenURL parameters:
+        return array(
+        'ctx_ver' => 'Z39.88-2004',
+        'ctx_enc' => 'info:ofi/enc:UTF-8',
+        'rfr_id' => 'info:sid/' . $this->getCoinsID() . ':generator',
+        'rft.title' => $this->getTitle(),
+        'rft.date' => $pubDate
+        );
     }
 
     /**
@@ -656,24 +656,24 @@ class RDSIndex extends SolrMarc
      */
     protected function getBookOpenURLParams()
     {
-	    $params = $this->getDefaultOpenURLParams();
-	    $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:book';
-	    $params['rft.genre'] = 'book';
-	    $params['rft.btitle'] = $params['rft.title'];
-	    $series = $this->getSeries();
-	    if (count($series) > 0) {
-		    // Handle both possible return formats of getSeries:
-		    $params['rft.series'] = is_array($series[0]) ?
-			    $series[0]['name'] : $series[0];
-	    }
-	    $params['rft.au'] = $this->getPrimaryAuthor();
-	    $publishers = $this->getPublishers();
-	    if (count($publishers) > 0) {
-		    $params['rft.pub'] = $publishers[0];
-	    }
-	    $params['rft.edition'] = $this->getEdition();
-	    $params['rft.isbn'] = (string)$this->getCleanISBN();
-	    return $params;
+        $params = $this->getDefaultOpenURLParams();
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:book';
+        $params['rft.genre'] = 'book';
+        $params['rft.btitle'] = $params['rft.title'];
+        $series = $this->getSeries();
+        if (count($series) > 0) {
+            // Handle both possible return formats of getSeries:
+            $params['rft.series'] = is_array($series[0]) ?
+            $series[0]['name'] : $series[0];
+        }
+        $params['rft.au'] = $this->getPrimaryAuthor();
+        $publishers = $this->getPublishers();
+        if (count($publishers) > 0) {
+            $params['rft.pub'] = $publishers[0];
+        }
+        $params['rft.edition'] = $this->getEdition();
+        $params['rft.isbn'] = (string)$this->getCleanISBN();
+        return $params;
     }
 
     /**
@@ -683,27 +683,27 @@ class RDSIndex extends SolrMarc
      */
     protected function getArticleOpenURLParams()
     {
-	    $params = $this->getDefaultOpenURLParams();
-	    $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:journal';
-	    $params['rft.genre'] = 'article';
-	    $params['rft.issn'] = (string)$this->getCleanISSN();
-	    // an article may have also an ISBN:
-	    $params['rft.isbn'] = (string)$this->getCleanISBN();
-	    $params['rft.volume'] = $this->getContainerVolume();
-	    $params['rft.issue'] = $this->getContainerIssue();
-	    $params['rft.spage'] = $this->getContainerStartPage();
-	    // unset default title -- we only want jtitle/atitle here:
-	    unset($params['rft.title']);
-	    $params['rft.jtitle'] = $this->getContainerTitle();
-	    $params['rft.atitle'] = $this->getTitle();
-	    $params['rft.au'] = $this->getPrimaryAuthor();
+        $params = $this->getDefaultOpenURLParams();
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:journal';
+        $params['rft.genre'] = 'article';
+        $params['rft.issn'] = (string)$this->getCleanISSN();
+        // an article may have also an ISBN:
+        $params['rft.isbn'] = (string)$this->getCleanISBN();
+        $params['rft.volume'] = $this->getContainerVolume();
+        $params['rft.issue'] = $this->getContainerIssue();
+        $params['rft.spage'] = $this->getContainerStartPage();
+        // unset default title -- we only want jtitle/atitle here:
+        unset($params['rft.title']);
+        $params['rft.jtitle'] = $this->getContainerTitle();
+        $params['rft.atitle'] = $this->getTitle();
+        $params['rft.au'] = $this->getPrimaryAuthor();
 
-	    $params['rft.format'] = 'Article';
-	    $langs = $this->getLanguages();
-	    if (count($langs) > 0) {
-		    $params['rft.language'] = $langs[0];
-	    }
-	    return $params;
+        $params['rft.format'] = 'Article';
+        $langs = $this->getLanguages();
+        if (count($langs) > 0) {
+            $params['rft.language'] = $langs[0];
+        }
+        return $params;
     }
 
     /**
@@ -715,19 +715,19 @@ class RDSIndex extends SolrMarc
      */
     protected function getUnknownFormatOpenURLParams($format)
     {
-	    $params = $this->getDefaultOpenURLParams();
-	    $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:dc';
-	    $params['rft.creator'] = $this->getPrimaryAuthor();
-	    $publishers = $this->getPublishers();
-	    if (count($publishers) > 0) {
-		    $params['rft.pub'] = $publishers[0];
-	    }
-	    $params['rft.format'] = $format;
-	    $langs = $this->getLanguages();
-	    if (count($langs) > 0) {
-		    $params['rft.language'] = $langs[0];
-	    }
-	    return $params;
+        $params = $this->getDefaultOpenURLParams();
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:dc';
+        $params['rft.creator'] = $this->getPrimaryAuthor();
+        $publishers = $this->getPublishers();
+        if (count($publishers) > 0) {
+            $params['rft.pub'] = $publishers[0];
+        }
+        $params['rft.format'] = $format;
+        $langs = $this->getLanguages();
+        if (count($langs) > 0) {
+            $params['rft.language'] = $langs[0];
+        }
+        return $params;
     }
 
     /**
@@ -737,33 +737,33 @@ class RDSIndex extends SolrMarc
      */
     protected function getJournalOpenURLParams()
     {
-	    $params = $this->getUnknownFormatOpenURLParams('Journal');
-	    /* This is probably the most technically correct way to represent
-	     * a journal run as an OpenURL; however, it doesn't work well with
-	     * Zotero, so it is currently commented out -- instead, we just add
-	     * some extra fields and to the "unknown format" case.
-	     $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:journal';
-	     $params['rft.genre'] = 'journal';
-	     $params['rft.jtitle'] = $params['rft.title'];
-	     $params['rft.issn'] = $this->getCleanISSN();
-	     $params['rft.au'] = $this->getPrimaryAuthor();
-	     */
-	    $params['rft.issn'] = (string)$this->getCleanISSN();
+        $params = $this->getUnknownFormatOpenURLParams('Journal');
+        /* This is probably the most technically correct way to represent
+        * a journal run as an OpenURL; however, it doesn't work well with
+        * Zotero, so it is currently commented out -- instead, we just add
+        * some extra fields and to the "unknown format" case.
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:journal';
+        $params['rft.genre'] = 'journal';
+        $params['rft.jtitle'] = $params['rft.title'];
+        $params['rft.issn'] = $this->getCleanISSN();
+        $params['rft.au'] = $this->getPrimaryAuthor();
+        */
+        $params['rft.issn'] = (string)$this->getCleanISSN();
 
-	    // Including a date in a title-level Journal OpenURL may be too
-	    // limiting -- in some link resolvers, it may cause the exclusion
-	    // of databases if they do not cover the exact date provided!
-	    unset($params['rft.date']);
+        // Including a date in a title-level Journal OpenURL may be too
+        // limiting -- in some link resolvers, it may cause the exclusion
+        // of databases if they do not cover the exact date provided!
+        unset($params['rft.date']);
 
-	    // If we're working with the SFX resolver, we should add a
-	    // special parameter to ensure that electronic holdings links
-	    // are shown even though no specific date or issue is specified:
-	    if (isset($this->mainConfig->OpenURL->resolver)
-			    && strtolower($this->mainConfig->OpenURL->resolver) == 'sfx'
-	       ) {
-		    $params['sfx.ignore_date_threshold'] = 1;
-	    }
-	    return $params;
+        // If we're working with the SFX resolver, we should add a
+        // special parameter to ensure that electronic holdings links
+        // are shown even though no specific date or issue is specified:
+        if (isset($this->mainConfig->OpenURL->resolver)
+            && strtolower($this->mainConfig->OpenURL->resolver) == 'sfx'
+        ) {
+            $params['sfx.ignore_date_threshold'] = 1;
+        }
+        return $params;
     }
 
     /**
@@ -774,24 +774,24 @@ class RDSIndex extends SolrMarc
      */
     public function getOpenURL()
     {
-	    // Set up parameters based on the format of the record:
-	    switch ($format = $this->getOpenURLFormat()) {
-		    case 'Book':
-			    $params = $this->getBookOpenURLParams();
-			    break;
-		    case 'Article':
-			    $params = $this->getArticleOpenURLParams();
-			    break;
-		    case 'Journal':
-			    $params = $this->getJournalOpenURLParams();
-			    break;
-		    default:
-			    $params = $this->getUnknownFormatOpenURLParams($format);
-			    break;
-	    }
+        // Set up parameters based on the format of the record:
+        switch ($format = $this->getOpenURLFormat()) {
+        case 'Book':
+            $params = $this->getBookOpenURLParams();
+            break;
+        case 'Article':
+            $params = $this->getArticleOpenURLParams();
+            break;
+        case 'Journal':
+            $params = $this->getJournalOpenURLParams();
+            break;
+        default:
+            $params = $this->getUnknownFormatOpenURLParams($format);
+            break;
+        }
 
-	    // Assemble the URL:
-	    return http_build_query($params);
+        // Assemble the URL:
+        return http_build_query($params);
     }
 
     /**
@@ -801,9 +801,9 @@ class RDSIndex extends SolrMarc
      */
     public function getPhysicalDescriptions()
     {
-	    // ToDo
-	    return isset($this->fields['umfang']) ?
-		    $this->fields['umfang'] : array();
+        // ToDo
+        return isset($this->fields['umfang']) ?
+        $this->fields['umfang'] : array();
     }
 
     /**
@@ -813,9 +813,9 @@ class RDSIndex extends SolrMarc
      */
     public function getPlacesOfPublication()
     {
-	    // Not currently stored in the Solr index
-	    return isset($this->fields['pu_pp_display']) ?
-		    $this->fields['pu_pp_display'] : array();
+        // Not currently stored in the Solr index
+        return isset($this->fields['pu_pp_display']) ?
+        $this->fields['pu_pp_display'] : array();
     }
 
     /**
@@ -825,8 +825,8 @@ class RDSIndex extends SolrMarc
      */
     public function getPlayingTimes()
     {
-	    // Not currently stored in the Solr index
-	    return array();
+        // Not currently stored in the Solr index
+        return array();
     }
 
     /**
@@ -835,10 +835,10 @@ class RDSIndex extends SolrMarc
      * @return array
      */
     /*    public function getPreviousTitles()
-	  {
-	  return isset($this->fields['title_old']) ?
-	  $this->fields['title_old'] : array();
-	  }
+    {
+    return isset($this->fields['title_old']) ?
+    $this->fields['title_old'] : array();
+    }
      */
 
 
@@ -849,7 +849,7 @@ class RDSIndex extends SolrMarc
      */
     public function getPrimaryAuthor()
     {
-	    return isset($this->fields['au_display_short'][0]) ?  $this->fields['au_display_short'][0] : "" ;
+        return isset($this->fields['au_display_short'][0]) ?  $this->fields['au_display_short'][0] : "" ;
     }
 
     /**
@@ -859,8 +859,8 @@ class RDSIndex extends SolrMarc
      */
     public function getProductionCredits()
     {
-	    // Not currently stored in the Solr index
-	    return array();
+        // Not currently stored in the Solr index
+        return array();
     }
 
     /**
@@ -870,8 +870,8 @@ class RDSIndex extends SolrMarc
      */
     public function getPublicationDates()
     {
-	    return (isset($this->fields['py']) && $this->fields['py']!="0") ?
-		    array($this->fields['py']) : array();
+        return (isset($this->fields['py']) && $this->fields['py']!="0") ?
+        array($this->fields['py']) : array();
     }
 
     /**
@@ -882,24 +882,24 @@ class RDSIndex extends SolrMarc
      */
     public function getPublicationDetails()
     {
-	    $places = $this->getPlacesOfPublication();
-	    $names = $this->getPublishers();
-	    $dates = $this->getPublicationDates();
+        $places = $this->getPlacesOfPublication();
+        $names = $this->getPublishers();
+        $dates = $this->getPublicationDates();
 
-	    $i = 0;
-	    $retval = array();
-	    while (isset($places[$i]) || isset($names[$i]) || isset($dates[$i])) {
-		    // Build objects to represent each set of data; these will
-		    // transform seamlessly into strings in the view layer.
-		    $retval[] = new Response\PublicationDetails(
-				    isset($places[$i]) ? $places[$i] : '',
-				    isset($names[$i]) ? $names[$i] : '',
-				    isset($dates[$i]) ? $dates[$i] : ''
-				    );
-		    $i++;
-	    }
+        $i = 0;
+        $retval = array();
+        while (isset($places[$i]) || isset($names[$i]) || isset($dates[$i])) {
+            // Build objects to represent each set of data; these will
+            // transform seamlessly into strings in the view layer.
+            $retval[] = new Response\PublicationDetails(
+                isset($places[$i]) ? $places[$i] : '',
+                isset($names[$i]) ? $names[$i] : '',
+                isset($dates[$i]) ? $dates[$i] : ''
+            );
+            $i++;
+        }
 
-	    return $retval;
+        return $retval;
     }
 
     /**
@@ -909,8 +909,8 @@ class RDSIndex extends SolrMarc
      */
     public function getPublicationFrequency()
     {
-	    // Not currently stored in the Solr index
-	    return array();
+        // Not currently stored in the Solr index
+        return array();
     }
 
     /**
@@ -920,8 +920,8 @@ class RDSIndex extends SolrMarc
      */
     public function getPublishers()
     {
-	    return isset($this->fields['pu']) ?
-		    $this->fields['pu'] : array();
+        return isset($this->fields['pu']) ?
+        $this->fields['pu'] : array();
     }
 
     /**
@@ -932,8 +932,8 @@ class RDSIndex extends SolrMarc
      */
     public function getRealTimeHistory()
     {
-	    // Not supported by the Solr index -- implement in child classes.
-	    return array();
+        // Not supported by the Solr index -- implement in child classes.
+        return array();
     }
 
     /**
@@ -956,8 +956,8 @@ class RDSIndex extends SolrMarc
      */
     public function getRelationshipNotes()
     {
-	    // Not currently stored in the Solr index
-	    return array();
+        // Not currently stored in the Solr index
+        return array();
     }
 
     /**
@@ -967,8 +967,8 @@ class RDSIndex extends SolrMarc
      */
     public function getSecondaryAuthors()
     {
-	    return isset($this->fields['author2']) ?
-		    $this->fields['author2'] : array();
+        return isset($this->fields['author2']) ?
+        $this->fields['author2'] : array();
     }
 
     /**
@@ -980,12 +980,12 @@ class RDSIndex extends SolrMarc
      */
     public function getSeries()
     {
-	    // Only use the contents of the series2 field if the series field is empty
-	    if (isset($this->fields['orig_reihe_display']) && !empty($this->fields['orig_reihe_display'])) {
-		    return $this->fields['orig_reihe_display'];
-	    }
-	    return isset($this->fields['orig_ureihe_display']) ?
-		    $this->fields['orig_ureihe_display'] : array();
+        // Only use the contents of the series2 field if the series field is empty
+        if (isset($this->fields['orig_reihe_display']) && !empty($this->fields['orig_reihe_display'])) {
+            return $this->fields['orig_reihe_display'];
+        }
+        return isset($this->fields['orig_ureihe_display']) ?
+        $this->fields['orig_ureihe_display'] : array();
     }
 
     /**
@@ -995,8 +995,8 @@ class RDSIndex extends SolrMarc
      */
     public function getShortTitle()
     {
-	    return isset($this->fields['ti_short']) ?
-		    $this->fields['ti_short'] : '';
+        return isset($this->fields['ti_short']) ?
+        $this->fields['ti_short'] : '';
     }
 
     /**
@@ -1006,9 +1006,9 @@ class RDSIndex extends SolrMarc
      */
     public function getSubtitle()
     {
-	    // ToDo
-	    return isset($this->fields['title_sub']) ?
-		    $this->fields['title_sub'] : '';
+        // ToDo
+        return isset($this->fields['title_sub']) ?
+        $this->fields['title_sub'] : '';
     }
 
     /**
@@ -1018,8 +1018,8 @@ class RDSIndex extends SolrMarc
      */
     public function getSystemDetails()
     {
-	    // Not currently stored in the Solr index
-	    return array();
+        // Not currently stored in the Solr index
+        return array();
     }
 
     /**
@@ -1029,19 +1029,19 @@ class RDSIndex extends SolrMarc
      */
     public function getSummary()
     {
-	    // We need to return an array, so if we have a description, turn it into an
-	    // array as needed (it should be a flat string according to the default
-	    // schema, but we might as well support the array case just to be on the safe
-	    // side:
-	    if (isset($this->fields['abstract'])
-			    && !empty($this->fields['abstract'])
-	       ) {
-		    return is_array($this->fields['abstract'])
-			    ? $this->fields['abstract'] : array($this->fields['abstract']);
-	    }
+        // We need to return an array, so if we have a description, turn it into an
+        // array as needed (it should be a flat string according to the default
+        // schema, but we might as well support the array case just to be on the safe
+        // side:
+        if (isset($this->fields['abstract'])
+            && !empty($this->fields['abstract'])
+        ) {
+            return is_array($this->fields['abstract'])
+            ? $this->fields['abstract'] : array($this->fields['abstract']);
+        }
 
-	    // If we got this far, no description was found:
-	    return array();
+        // If we got this far, no description was found:
+        return array();
     }
 
     /**
@@ -1051,8 +1051,8 @@ class RDSIndex extends SolrMarc
      */
     public function getTargetAudienceNotes()
     {
-	    // Not currently stored in the Solr index
-	    return array();
+        // Not currently stored in the Solr index
+        return array();
     }
 
     /**
@@ -1068,10 +1068,10 @@ class RDSIndex extends SolrMarc
      */
     public function getThumbnail($size = 'small')
     {
-	    if ($isbn = $this->getCleanISBN()) {
-		    return array('isn' => $isbn, 'size' => $size);
-	    }
-	    return false;
+        if ($isbn = $this->getCleanISBN()) {
+            return array('isn' => $isbn, 'size' => $size);
+        }
+        return false;
     }
 
 
@@ -1083,8 +1083,8 @@ class RDSIndex extends SolrMarc
      */
     public function getTitleStatement()
     {
-	    // Not currently stored in the Solr index
-	    return null;
+        // Not currently stored in the Solr index
+        return null;
     }
 
     /**
@@ -1094,8 +1094,8 @@ class RDSIndex extends SolrMarc
      */
     public function getTOC()
     {
-	    return isset($this->fields['contents'])
-		    ? $this->fields['contents'] : array();
+        return isset($this->fields['contents'])
+        ? $this->fields['contents'] : array();
     }
 
     /**
@@ -1114,12 +1114,12 @@ class RDSIndex extends SolrMarc
      */
     public function getURLs()
     {
-	    $myurl = array();
-	    if (isset($this->fields['url_short'])) {
-		    $myurl[] = (array('url'=>$this->fields['url_short']));
-		    return($myurl);
-	    }
-	    return array();
+        $myurl = array();
+        if (isset($this->fields['url_short'])) {
+            $myurl[] = (array('url'=>$this->fields['url_short']));
+            return($myurl);
+        }
+        return array();
     }
 
     /**
@@ -1130,14 +1130,14 @@ class RDSIndex extends SolrMarc
      */
     public function getHierarchyDriver()
     {
-	    if (null === $this->hierarchyDriver
-			    && null !== $this->hierarchyDriverManager
-	       ) {
-		    $type = $this->getHierarchyType();
-		    $this->hierarchyDriver = $type
-			    ? $this->hierarchyDriverManager->get($type) : false;
-	    }
-	    return $this->hierarchyDriver;
+        if (null === $this->hierarchyDriver
+            && null !== $this->hierarchyDriverManager
+        ) {
+            $type = $this->getHierarchyType();
+            $this->hierarchyDriver = $type
+            ? $this->hierarchyDriverManager->get($type) : false;
+        }
+        return $this->hierarchyDriver;
     }
 
     /**
@@ -1148,10 +1148,10 @@ class RDSIndex extends SolrMarc
      * @return SolrDefault
      */
     public function setHierarchyDriverManager(
-		    \VuFind\Hierarchy\Driver\PluginManager $pm
-		    ) {
-	    $this->hierarchyDriverManager = $pm;
-	    return $this;
+        \VuFind\Hierarchy\Driver\PluginManager $pm
+    ) {
+        $this->hierarchyDriverManager = $pm;
+        return $this;
     }
 
     /**
@@ -1161,8 +1161,8 @@ class RDSIndex extends SolrMarc
      */
     public function getHierarchyTopID()
     {
-	    return isset($this->fields['hierarchy_top_id'])
-		    ? $this->fields['hierarchy_top_id'] : array();
+        return isset($this->fields['hierarchy_top_id'])
+        ? $this->fields['hierarchy_top_id'] : array();
     }
 
     /**
@@ -1173,8 +1173,8 @@ class RDSIndex extends SolrMarc
      */
     public function getHierarchyTopTitle()
     {
-	    return isset($this->fields['hierarchy_top_title'])
-		    ? $this->fields['hierarchy_top_title'] : array();
+        return isset($this->fields['hierarchy_top_title'])
+        ? $this->fields['hierarchy_top_title'] : array();
     }
 
     /**
@@ -1184,54 +1184,54 @@ class RDSIndex extends SolrMarc
      */
     public function getContainingCollections()
     {
-	    // If collections are disabled or this record is not part of a hierarchy, go
-	    // no further....
-	    if (!isset($this->mainConfig->Collections->collections)
-			    || !$this->mainConfig->Collections->collections
-			    || !($hierarchyDriver = $this->getHierarchyDriver())
-	       ) {
-		    return false;
-	    }
+        // If collections are disabled or this record is not part of a hierarchy, go
+        // no further....
+        if (!isset($this->mainConfig->Collections->collections)
+            || !$this->mainConfig->Collections->collections
+            || !($hierarchyDriver = $this->getHierarchyDriver())
+        ) {
+            return false;
+        }
 
-	    // Initialize some variables needed within the switch below:
-	    $isCollection = $this->isCollection();
-	    $titles = $ids = array();
+        // Initialize some variables needed within the switch below:
+        $isCollection = $this->isCollection();
+        $titles = $ids = array();
 
-	    // Check config setting for what constitutes a collection, act accordingly:
-	    switch ($hierarchyDriver->getCollectionLinkType()) {
-		    case 'All':
-			    if (isset($this->fields['hierarchy_parent_title'])
-					    && isset($this->fields['hierarchy_parent_id'])
-			       ) {
-				    $titles = $this->fields['hierarchy_parent_title'];
-				    $ids = $this->fields['hierarchy_parent_id'];
-			    }
-			    break;
-		    case 'Top':
-			    if (isset($this->fields['hierarchy_top_title'])
-					    && isset($this->fields['hierarchy_top_id'])
-			       ) {
-				    foreach ($this->fields['hierarchy_top_id'] as $i => $topId) {
-					    // Don't mark an item as its own parent -- filter out parent
-					    // collections whose IDs match that of the current collection.
-					    if (!$isCollection
-							    || $topId !== $this->fields['is_hierarchy_id']
-					       ) {
-						    $ids[] = $topId;
-						    $titles[] = $this->fields['hierarchy_top_title'][$i];
-					    }
-				    }
-			    }
-			    break;
-	    }
+        // Check config setting for what constitutes a collection, act accordingly:
+        switch ($hierarchyDriver->getCollectionLinkType()) {
+        case 'All':
+            if (isset($this->fields['hierarchy_parent_title'])
+                && isset($this->fields['hierarchy_parent_id'])
+            ) {
+                $titles = $this->fields['hierarchy_parent_title'];
+                $ids = $this->fields['hierarchy_parent_id'];
+            }
+            break;
+        case 'Top':
+            if (isset($this->fields['hierarchy_top_title'])
+                && isset($this->fields['hierarchy_top_id'])
+            ) {
+                foreach ($this->fields['hierarchy_top_id'] as $i => $topId) {
+                    // Don't mark an item as its own parent -- filter out parent
+                    // collections whose IDs match that of the current collection.
+                    if (!$isCollection
+                        || $topId !== $this->fields['is_hierarchy_id']
+                    ) {
+                        $ids[] = $topId;
+                        $titles[] = $this->fields['hierarchy_top_title'][$i];
+                    }
+                }
+            }
+            break;
+        }
 
-	    // Map the titles and IDs to a useful format:
-	    $c = count($ids);
-	    $retVal = array();
-	    for ($i = 0; $i < $c; $i++) {
-		    $retVal[$ids[$i]] = $titles[$i];
-	    }
-	    return $retVal;
+        // Map the titles and IDs to a useful format:
+        $c = count($ids);
+        $retVal = array();
+        for ($i = 0; $i < $c; $i++) {
+            $retVal[$ids[$i]] = $titles[$i];
+        }
+        return $retVal;
     }
 
     /**
@@ -1241,26 +1241,26 @@ class RDSIndex extends SolrMarc
      */
     public function isCollection()
     {
-	    if (!($hierarchyDriver = $this->getHierarchyDriver())) {
-		    // Not a hierarchy type record
-		    return false;
-	    }
+        if (!($hierarchyDriver = $this->getHierarchyDriver())) {
+            // Not a hierarchy type record
+            return false;
+        }
 
-	    // Check config setting for what constitutes a collection
-	    switch ($hierarchyDriver->getCollectionLinkType()) {
-		    case 'All':
-			    return (isset($this->fields['is_hierarchy_id']));
-		    case 'Top':
-			    return isset($this->fields['is_hierarchy_title'])
-				    && isset($this->fields['is_hierarchy_id'])
-				    && in_array(
-						    $this->fields['is_hierarchy_id'],
-						    $this->fields['hierarchy_top_id']
-					       );
-		    default:
-			    // Default to not be a collection level record
-			    return false;
-	    }
+        // Check config setting for what constitutes a collection
+        switch ($hierarchyDriver->getCollectionLinkType()) {
+        case 'All':
+            return (isset($this->fields['is_hierarchy_id']));
+        case 'Top':
+            return isset($this->fields['is_hierarchy_title'])
+           && isset($this->fields['is_hierarchy_id'])
+           && in_array(
+               $this->fields['is_hierarchy_id'],
+               $this->fields['hierarchy_top_id']
+           );
+        default:
+            // Default to not be a collection level record
+            return false;
+        }
     }
 
     /**
@@ -1271,15 +1271,15 @@ class RDSIndex extends SolrMarc
      */
     public function getHierarchyPositionsInParents()
     {
-	    $retVal = array();
-	    if (isset($this->fields['hierarchy_parent_id'])
-			    && isset($this->fields['hierarchy_sequence'])
-	       ) {
-		    foreach ($this->fields['hierarchy_parent_id'] as $key => $val) {
-			    $retVal[$val] = $this->fields['hierarchy_sequence'][$key];
-		    }
-	    }
-	    return $retVal;
+        $retVal = array();
+        if (isset($this->fields['hierarchy_parent_id'])
+            && isset($this->fields['hierarchy_sequence'])
+        ) {
+            foreach ($this->fields['hierarchy_parent_id'] as $key => $val) {
+                $retVal[$val] = $this->fields['hierarchy_sequence'][$key];
+            }
+        }
+        return $retVal;
     }
 
     /**
@@ -1292,12 +1292,12 @@ class RDSIndex extends SolrMarc
      */
     public function getHierarchyTrees($hierarchyID = false)
     {
-	    $hierarchyDriver = $this->getHierarchyDriver();
-	    if ($hierarchyDriver && $hierarchyDriver->showTree()) {
-		    return $hierarchyDriver->getTreeRenderer($this)
-			    ->getTreeList($hierarchyID);
-	    }
-	    return false;
+        $hierarchyDriver = $this->getHierarchyDriver();
+        if ($hierarchyDriver && $hierarchyDriver->showTree()) {
+            return $hierarchyDriver->getTreeRenderer($this)
+                ->getTreeList($hierarchyID);
+        }
+        return false;
     }
 
     /**
@@ -1307,16 +1307,16 @@ class RDSIndex extends SolrMarc
      */
     public function getHierarchyType()
     {
-	    if (isset($this->fields['hierarchy_top_id'])) {
-		    $hierarchyType = isset($this->fields['hierarchytype'])
-			    ? $this->fields['hierarchytype'] : false;
-		    if (!$hierarchyType) {
-			    $hierarchyType = isset($this->mainConfig->Hierarchy->driver)
-				    ? $this->mainConfig->Hierarchy->driver : false;
-		    }
-		    return $hierarchyType;
-	    }
-	    return false;
+        if (isset($this->fields['hierarchy_top_id'])) {
+            $hierarchyType = isset($this->fields['hierarchytype'])
+            ? $this->fields['hierarchytype'] : false;
+            if (!$hierarchyType) {
+                $hierarchyType = isset($this->mainConfig->Hierarchy->driver)
+                ? $this->mainConfig->Hierarchy->driver : false;
+            }
+            return $hierarchyType;
+        }
+        return false;
     }
 
     /**
@@ -1328,10 +1328,10 @@ class RDSIndex extends SolrMarc
      */
     public function getUniqueID()
     {
-	    if (!isset($this->fields['id'])) {
-		    throw new \Exception('ID not set!');
-	    }
-	    return $this->fields['id'];
+        if (!isset($this->fields['id'])) {
+            throw new \Exception('ID not set!');
+        }
+        return $this->fields['id'];
     }
 
     /**
@@ -1345,49 +1345,49 @@ class RDSIndex extends SolrMarc
      */
     public function getXML($format)
     {
-	    // For OAI-PMH Dublin Core, produce the necessary XML:
-	    if ($format == 'oai_dc') {
-		    $dc = 'http://purl.org/dc/elements/1.1/';
-		    $xml = new \SimpleXMLElement(
-				    '<oai_dc:dc '
-				    . 'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" '
-				    . 'xmlns:dc="' . $dc . '" '
-				    . 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
-				    . 'xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ '
-				    . 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />'
-				    );
-		    $xml->addChild('title', htmlspecialchars($this->getTitle()), $dc);
-		    $primary = $this->getPrimaryAuthor();
-		    if (!empty($primary)) {
-			    $xml->addChild('creator', htmlspecialchars($primary), $dc);
-		    }
-		    $corporate = $this->getCorporateAuthor();
-		    if (!empty($corporate)) {
-			    $xml->addChild('creator', htmlspecialchars($corporate), $dc);
-		    }
-		    foreach ($this->getSecondaryAuthors() as $current) {
-			    $xml->addChild('creator', htmlspecialchars($current), $dc);
-		    }
-		    foreach ($this->getLanguages() as $lang) {
-			    $xml->addChild('language', htmlspecialchars($lang), $dc);
-		    }
-		    foreach ($this->getPublishers() as $pub) {
-			    $xml->addChild('publisher', htmlspecialchars($pub), $dc);
-		    }
-		    foreach ($this->getPublicationDates() as $date) {
-			    $xml->addChild('date', htmlspecialchars($date), $dc);
-		    }
-		    foreach ($this->getAllSubjectHeadings() as $subj) {
-			    $xml->addChild(
-					    'subject', htmlspecialchars(implode(' -- ', $subj)), $dc
-					  );
-		    }
+        // For OAI-PMH Dublin Core, produce the necessary XML:
+        if ($format == 'oai_dc') {
+            $dc = 'http://purl.org/dc/elements/1.1/';
+            $xml = new \SimpleXMLElement(
+                '<oai_dc:dc '
+                . 'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" '
+                . 'xmlns:dc="' . $dc . '" '
+                . 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+                . 'xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ '
+                . 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd" />'
+            );
+            $xml->addChild('title', htmlspecialchars($this->getTitle()), $dc);
+            $primary = $this->getPrimaryAuthor();
+            if (!empty($primary)) {
+                $xml->addChild('creator', htmlspecialchars($primary), $dc);
+            }
+            $corporate = $this->getCorporateAuthor();
+            if (!empty($corporate)) {
+                $xml->addChild('creator', htmlspecialchars($corporate), $dc);
+            }
+            foreach ($this->getSecondaryAuthors() as $current) {
+                $xml->addChild('creator', htmlspecialchars($current), $dc);
+            }
+            foreach ($this->getLanguages() as $lang) {
+                $xml->addChild('language', htmlspecialchars($lang), $dc);
+            }
+            foreach ($this->getPublishers() as $pub) {
+                $xml->addChild('publisher', htmlspecialchars($pub), $dc);
+            }
+            foreach ($this->getPublicationDates() as $date) {
+                $xml->addChild('date', htmlspecialchars($date), $dc);
+            }
+            foreach ($this->getAllSubjectHeadings() as $subj) {
+                $xml->addChild(
+                    'subject', htmlspecialchars(implode(' -- ', $subj)), $dc
+                );
+            }
 
-		    return $xml->asXml();
-	    }
+            return $xml->asXml();
+        }
 
-	    // Unsupported format:
-	    return false;
+        // Unsupported format:
+        return false;
     }
 
     /**
@@ -1400,12 +1400,12 @@ class RDSIndex extends SolrMarc
      */
     public function openURLActive($area)
     {
-	    // Only display OpenURL link if the option is turned on and we have
-	    // an ISSN.  We may eventually want to make this rule more flexible.
-	    if (!$this->getCleanISSN()) {
-		    return false;
-	    }
-	    return parent::openURLActive($area);
+        // Only display OpenURL link if the option is turned on and we have
+        // an ISSN.  We may eventually want to make this rule more flexible.
+        if (!$this->getCleanISSN()) {
+            return false;
+        }
+        return parent::openURLActive($area);
     }
 
     /**
@@ -1418,7 +1418,7 @@ class RDSIndex extends SolrMarc
      */
     public function getCitationFormats()
     {
-	    return array('APA', 'MLA');
+        return array('APA', 'MLA');
     }
 
     /**
@@ -1429,8 +1429,8 @@ class RDSIndex extends SolrMarc
      */
     public function getContainerTitle()
     {
-	    return isset($this->fields['container_title'])
-		    ? $this->fields['container_title'] : '';
+        return isset($this->fields['container_title'])
+        ? $this->fields['container_title'] : '';
     }
 
     /**
@@ -1441,8 +1441,8 @@ class RDSIndex extends SolrMarc
      */
     public function getContainerVolume()
     {
-	    return isset($this->fields['container_volume'])
-		    ? $this->fields['container_volume'] : '';
+        return isset($this->fields['container_volume'])
+        ? $this->fields['container_volume'] : '';
     }
 
     /**
@@ -1453,8 +1453,8 @@ class RDSIndex extends SolrMarc
      */
     public function getContainerIssue()
     {
-	    return isset($this->fields['container_issue'])
-		    ? $this->fields['container_issue'] : '';
+        return isset($this->fields['container_issue'])
+        ? $this->fields['container_issue'] : '';
     }
 
     /**
@@ -1465,8 +1465,8 @@ class RDSIndex extends SolrMarc
      */
     public function getContainerStartPage()
     {
-	    return isset($this->fields['container_start_page'])
-		    ? $this->fields['container_start_page'] : '';
+        return isset($this->fields['container_start_page'])
+        ? $this->fields['container_start_page'] : '';
     }
 
     /**
@@ -1476,8 +1476,8 @@ class RDSIndex extends SolrMarc
      */
     public function getContainerEndPage()
     {
-	    // not currently supported by Solr index:
-	    return '';
+        // not currently supported by Solr index:
+        return '';
     }
 
     /**
@@ -1488,8 +1488,8 @@ class RDSIndex extends SolrMarc
      */
     public function getContainerReference()
     {
-	    return isset($this->fields['container_reference'])
-		    ? $this->fields['container_reference'] : '';
+        return isset($this->fields['container_reference'])
+        ? $this->fields['container_reference'] : '';
     }
 
     /**
@@ -1499,8 +1499,8 @@ class RDSIndex extends SolrMarc
      */
     public function getSortTitle()
     {
-	    return isset($this->fields['title_sort'])
-		    ? $this->fields['title_sort'] : parent::getSortTitle();
+        return isset($this->fields['title_sort'])
+        ? $this->fields['title_sort'] : parent::getSortTitle();
     }
 
     /**
@@ -1510,8 +1510,8 @@ class RDSIndex extends SolrMarc
      */
     public function getLongLat()
     {
-	    return isset($this->fields['long_lat'])
-		    ? $this->fields['long_lat'] : false;
+        return isset($this->fields['long_lat'])
+        ? $this->fields['long_lat'] : false;
     }
 
     /**
@@ -1523,31 +1523,31 @@ class RDSIndex extends SolrMarc
      */
     public function getSchemaOrgFormatsArray()
     {
-	    $types = array();
-	    foreach ($this->getFormats() as $format) {
-		    switch ($format) {
-			    case 'Book':
-			    case 'eBook':
-				    $types['Book'] = 1;
-				    break;
-			    case 'Video':
-			    case 'VHS':
-				    $types['Movie'] = 1;
-				    break;
-			    case 'Photo':
-				    $types['Photograph'] = 1;
-				    break;
-			    case 'Map':
-				    $types['Map'] = 1;
-				    break;
-			    case 'Audio':
-				    $types['MusicAlbum'] = 1;
-				    break;
-			    default:
-				    $types['CreativeWork'] = 1;
-		    }
-	    }
-	    return array_keys($types);
+        $types = array();
+        foreach ($this->getFormats() as $format) {
+            switch ($format) {
+            case 'Book':
+            case 'eBook':
+                $types['Book'] = 1;
+                break;
+            case 'Video':
+            case 'VHS':
+                $types['Movie'] = 1;
+                break;
+            case 'Photo':
+                $types['Photograph'] = 1;
+                break;
+            case 'Map':
+                $types['Map'] = 1;
+                break;
+            case 'Audio':
+                $types['MusicAlbum'] = 1;
+                break;
+            default:
+                $types['CreativeWork'] = 1;
+            }
+        }
+        return array_keys($types);
     }
     /**
      * Get schema.org type mapping, expected to be a space-delimited string of
@@ -1558,7 +1558,7 @@ class RDSIndex extends SolrMarc
      */
     public function getSchemaOrgFormats()
     {
-	    return implode(' ', $this->getSchemaOrgFormatsArray());
+        return implode(' ', $this->getSchemaOrgFormatsArray());
     }
 
     /**
@@ -1568,7 +1568,7 @@ class RDSIndex extends SolrMarc
      */
     public function getMedienicon() 
     {
-	    return isset($this->fields['medienicon']) ? $this->fields['medienicon'] : '&nbsp;';
+        return isset($this->fields['medienicon']) ? $this->fields['medienicon'] : '&nbsp;';
     }
 
 
@@ -1577,8 +1577,9 @@ class RDSIndex extends SolrMarc
      * RDS
      * @return string
      */
-    public function getWerkInfo(){
-	    return isset($this->fields['werk_info']) ? $this->fields['werk_info'] : '';
+    public function getWerkInfo()
+    {
+        return isset($this->fields['werk_info']) ? $this->fields['werk_info'] : '';
     }
 
     /**
@@ -1586,8 +1587,9 @@ class RDSIndex extends SolrMarc
      * RDS
      * @return string
      */
-    public function getPPN() {
-	    return isset($this->fields['ppn']) ? $this->fields['ppn'] : '&nbsp;';
+    public function getPPN() 
+    {
+        return isset($this->fields['ppn']) ? $this->fields['ppn'] : '&nbsp;';
     }
 
     /**
@@ -1597,8 +1599,8 @@ class RDSIndex extends SolrMarc
      */
     public function getShortAuthors()
     {
-	    return isset($this->fields['au_display_short']) ?
-		    $this->fields['au_display_short'] : array();
+        return isset($this->fields['au_display_short']) ?
+        $this->fields['au_display_short'] : array();
     }
 
     /**
@@ -1609,30 +1611,30 @@ class RDSIndex extends SolrMarc
     public function getAuthorsLong() 
     {
 
-	    $gnd_ppn = "";
-	    $authors_long = array();
-	    if (isset($this->fields['au_display'])) {
-		    $arr_links = $this->fields['au_display'];
-		    foreach ($arr_links as $key => $link) {
-			    $gnd_ppn = "";
-			    $chk_link = $link;
-			    if (strstr($link, " ; ")) {
-				    $tmp = $link;
-				    $pos = strrpos($link, " ; ");
-				    $gnd_ppn = substr($tmp, $pos+3);
-				    $authors_long[$key]["gnd"] = $gnd_ppn;
-				    $link = substr($link, '0', $pos);
-			    }
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $authors_long[$key]["link"]=$arr_link[0];
-				    $authors_long[$key]["link_text"]=$arr_link[1];
-			    } else {
-				    $authors_long[$key]["link"]=$link;
-			    }
-		    }
-	    }
-	    return $authors_long;
+        $gnd_ppn = "";
+        $authors_long = array();
+        if (isset($this->fields['au_display'])) {
+            $arr_links = $this->fields['au_display'];
+            foreach ($arr_links as $key => $link) {
+                $gnd_ppn = "";
+                $chk_link = $link;
+                if (strstr($link, " ; ")) {
+                    $tmp = $link;
+                    $pos = strrpos($link, " ; ");
+                    $gnd_ppn = substr($tmp, $pos+3);
+                    $authors_long[$key]["gnd"] = $gnd_ppn;
+                    $link = substr($link, '0', $pos);
+                }
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $authors_long[$key]["link"]=$arr_link[0];
+                    $authors_long[$key]["link_text"]=$arr_link[1];
+                } else {
+                    $authors_long[$key]["link"]=$link;
+                }
+            }
+        }
+        return $authors_long;
     }
 
     /**
@@ -1642,24 +1644,24 @@ class RDSIndex extends SolrMarc
      */
     public function getCorporation() 
     {
-	    $co_display = array();            
-	    if (isset($this->fields['co_display'])) {
-		    $arr_links = $this->fields['co_display'];
-		    foreach ($arr_links as $key => $link) {
-			    $gnd_ppn = "";
-			    $chk_link = $link;
-			    if (strstr($link, " ; ")) {
-				    $tmp = $link;
-				    $pos = strrpos($link, " ; ");
-				    $gnd_ppn = substr($tmp, $pos+3);
-				    $co_display[$key]["gnd"] = $gnd_ppn;
-				    $link = substr($link, '0', $pos);
-				    $link = str_replace('"', '\"', $link);
-				    $co_display[$key]["link"]=$link;
-			    }
-		    }
-	    }
-	    return $co_display;
+        $co_display = array();            
+        if (isset($this->fields['co_display'])) {
+            $arr_links = $this->fields['co_display'];
+            foreach ($arr_links as $key => $link) {
+                $gnd_ppn = "";
+                $chk_link = $link;
+                if (strstr($link, " ; ")) {
+                    $tmp = $link;
+                    $pos = strrpos($link, " ; ");
+                    $gnd_ppn = substr($tmp, $pos+3);
+                    $co_display[$key]["gnd"] = $gnd_ppn;
+                    $link = substr($link, '0', $pos);
+                    $link = str_replace('"', '\"', $link);
+                    $co_display[$key]["link"]=$link;
+                }
+            }
+        }
+        return $co_display;
     }
 
     /**
@@ -1669,8 +1671,8 @@ class RDSIndex extends SolrMarc
      */
     public function getTitleShort()
     {
-	    return isset($this->fields['ti_short']) ?
-		    $this->fields['ti_short'] : '';
+        return isset($this->fields['ti_short']) ?
+        $this->fields['ti_short'] : '';
     }
 
     /**
@@ -1680,11 +1682,11 @@ class RDSIndex extends SolrMarc
      */
     public function getTitleSerie()
     {
-	    if (isset($_GET["lookfor0"])){
-		    if (preg_match("/^rn/" ,$_GET["lookfor0"][0])){
-			    $html_result = "rn";
-		    }
-	    }
+        if (isset($_GET["lookfor0"])) {
+            if (preg_match("/^rn/", $_GET["lookfor0"][0])) {
+                $html_result = "rn";
+            }
+        }
     }
 
     /**
@@ -1694,8 +1696,8 @@ class RDSIndex extends SolrMarc
      */
     public function getTitle()
     {
-	    return isset($this->fields['ti_long']) ?
-		    $this->fields['ti_long'] : '';
+        return isset($this->fields['ti_long']) ?
+        $this->fields['ti_long'] : '';
     }
 
     /**
@@ -1705,11 +1707,11 @@ class RDSIndex extends SolrMarc
      */
     public function getTitlePart()
     {
-	    $arr_link = "";
-	    if (isset($this->fields['ti_part'])) {
-		    $arr_link = explode(" ; ", $this->fields['ti_part']);
-	    }
-	    return $arr_link;
+        $arr_link = "";
+        if (isset($this->fields['ti_part'])) {
+            $arr_link = explode(" ; ", $this->fields['ti_part']);
+        }
+        return $arr_link;
     }
     /**
      * Get part of 'f-Satz' from series
@@ -1718,8 +1720,8 @@ class RDSIndex extends SolrMarc
      */
     public function getTitleLongf()
     {
-	    return isset($this->fields['ti_long_f']) ? 
-		    $this->fields['ti_long_f'] : '';
+        return isset($this->fields['ti_long_f']) ? 
+        $this->fields['ti_long_f'] : '';
     }
 
     /**
@@ -1729,7 +1731,7 @@ class RDSIndex extends SolrMarc
      */
     public function getTitleLongfsec()
     {
-	    return isset($this->fields['ti_long_f_second']) ? $this->fields['ti_long_f_second'] : '';
+        return isset($this->fields['ti_long_f_second']) ? $this->fields['ti_long_f_second'] : '';
     }
 
     /**
@@ -1739,7 +1741,7 @@ class RDSIndex extends SolrMarc
      */
     public function getTitleCut()
     {
-	    return isset($this->fields['ti_cut']) ? $this->fields['ti_cut'] : '';
+        return isset($this->fields['ti_cut']) ? $this->fields['ti_cut'] : '';
     }
     /**
      * Get main Title  
@@ -1748,7 +1750,7 @@ class RDSIndex extends SolrMarc
      */      
     public function getTitleMain()
     {
-	    return isset($this->fields['ht']) ? implode($this->fields['ht']) : '';
+        return isset($this->fields['ht']) ? implode($this->fields['ht']) : '';
     }
 
     /**
@@ -1758,7 +1760,7 @@ class RDSIndex extends SolrMarc
      */
     public function getAst()
     {
-	    return isset($this->fields['ast']) ? implode($this->fields['ast']) : '';
+        return isset($this->fields['ast']) ? implode($this->fields['ast']) : '';
     }
 
 
@@ -1770,27 +1772,27 @@ class RDSIndex extends SolrMarc
     public function getCT()
     {
 
-	    $ct_display = array();
-	    if (isset($this->fields['ct_display'])) {
-		    $arr_ct = $this->fields['ct_display'];
-		    foreach ($arr_ct as $key_list => $ct_string) {
-			    $gnd_ppn = "";
-			    $ct_list = explode(" , ", $ct_string);
-			    foreach ($ct_list as $key => $value ) {                    
-				    if (strstr($value, " ; ")) {
-					    $tmp = $value;
-					    $pos = strrpos($value, " ; ");
-					    $gnd_ppn = substr($tmp, $pos+3);
-					    $ct_display[$key_list][$key]["gnd"] = $gnd_ppn;
-					    $link = substr($value, '0', $pos);
-					    $ct_display[$key_list][$key]["link"] = trim($link);
-				    } else {
-					    $ct_display[$key_list][$key]["link"] =  $value;
-				    }
-			    }
-		    }
-	    }
-	    return $ct_display;
+        $ct_display = array();
+        if (isset($this->fields['ct_display'])) {
+            $arr_ct = $this->fields['ct_display'];
+            foreach ($arr_ct as $key_list => $ct_string) {
+                $gnd_ppn = "";
+                $ct_list = explode(" , ", $ct_string);
+                foreach ($ct_list as $key => $value ) {                    
+                    if (strstr($value, " ; ")) {
+                        $tmp = $value;
+                        $pos = strrpos($value, " ; ");
+                        $gnd_ppn = substr($tmp, $pos+3);
+                        $ct_display[$key_list][$key]["gnd"] = $gnd_ppn;
+                        $link = substr($value, '0', $pos);
+                        $ct_display[$key_list][$key]["link"] = trim($link);
+                    } else {
+                        $ct_display[$key_list][$key]["link"] =  $value;
+                    }
+                }
+            }
+        }
+        return $ct_display;
     }
 
     /**
@@ -1800,7 +1802,7 @@ class RDSIndex extends SolrMarc
      */
     public function getEditions()
     {
-	    return isset($this->fields['ausgabe']) ? implode($this->fields['ausgabe']) : '';
+        return isset($this->fields['ausgabe']) ? implode($this->fields['ausgabe']) : '';
     }
 
     /**
@@ -1810,7 +1812,7 @@ class RDSIndex extends SolrMarc
      */
     public function getUnterreihe()
     {
-	    return isset($this->fields['unterreihe']) ? $this->fields['unterreihe'] : '';
+        return isset($this->fields['unterreihe']) ? $this->fields['unterreihe'] : '';
     }
 
     /**
@@ -1820,7 +1822,7 @@ class RDSIndex extends SolrMarc
      */
     public function getPublishDisplay()
     {
-	    return isset($this->fields['pu_pp_display']) ? $this->fields['pu_pp_display'] : '';
+        return isset($this->fields['pu_pp_display']) ? $this->fields['pu_pp_display'] : '';
 
     }
 
@@ -1831,13 +1833,13 @@ class RDSIndex extends SolrMarc
      */
     public function getppNormDisplay()
     {
-	    $formats = isset($this->fields['medieninfo']) ? 
-		    $this->fields['medieninfo'] : array();
+        $formats = isset($this->fields['medieninfo']) ? 
+        $this->fields['medieninfo'] : array();
 
-	    if (!in_array('hs', $formats)) {
-		    return  isset($this->fields['pp_norm']) ? 
-			    $this->fields['pp_norm'] : '';
-	    }
+        if (!in_array('hs', $formats)) {
+            return  isset($this->fields['pp_norm']) ? 
+            $this->fields['pp_norm'] : '';
+        }
     }
 
     /**
@@ -1847,8 +1849,8 @@ class RDSIndex extends SolrMarc
      */    
     public function getPublishingYear() 
     {
-	    return isset($this->fields['py_display']) ? 
-		    implode("; ", $this->fields['py_display']) : '';
+        return isset($this->fields['py_display']) ? 
+        implode("; ", $this->fields['py_display']) : '';
     }
 
     /**
@@ -1859,7 +1861,7 @@ class RDSIndex extends SolrMarc
      */    
     public function getPY() 
     {
-	    return isset($this->fields['py']) ? $this->fields['py'] : '';
+        return isset($this->fields['py']) ? $this->fields['py'] : '';
     }
 
     /**
@@ -1870,11 +1872,11 @@ class RDSIndex extends SolrMarc
      */    
     public function getPublish() 
     {
-	    if (isset($this->fields['pp_display'])) {
-		    $arr_links = $this->fields['pp_display'];
-		    $first_item = $arr_links[0];
-	    }
-	    return $first_item;
+        if (isset($this->fields['pp_display'])) {
+            $arr_links = $this->fields['pp_display'];
+            $first_item = $arr_links[0];
+        }
+        return $first_item;
     }
 
     /**
@@ -1884,8 +1886,8 @@ class RDSIndex extends SolrMarc
      */
     public function getFormat() 
     {
-	    return isset($this->fields['medieninfo']) ? 
-		    implode($this->fields['medieninfo']) : '';
+        return isset($this->fields['medieninfo']) ? 
+        implode($this->fields['medieninfo']) : '';
     }
 
     /**
@@ -1895,7 +1897,7 @@ class RDSIndex extends SolrMarc
      */
     public function getTz() 
     {
-	    return isset($this->fields['tz']) ? implode($this->fields['tz']) : '';
+        return isset($this->fields['tz']) ? implode($this->fields['tz']) : '';
     }
 
     /**
@@ -1905,7 +1907,7 @@ class RDSIndex extends SolrMarc
      */
     public function getScope() 
     {
-	    return isset($this->fields['umfang']) ? implode($this->fields['umfang']) : '';
+        return isset($this->fields['umfang']) ? implode($this->fields['umfang']) : '';
     }
 
     /**
@@ -1915,7 +1917,7 @@ class RDSIndex extends SolrMarc
      */
     public function getISSN() 
     {
-	    return isset($this->fields['issn_display']) ? $this->fields['issn_display'] : '';
+        return isset($this->fields['issn_display']) ? $this->fields['issn_display'] : '';
     }
 
     /**
@@ -1925,8 +1927,8 @@ class RDSIndex extends SolrMarc
      */
     public function getISSNPrint() 
     {
-	    return isset($this->fields['issn_display_print']) ? 
-		    implode($this->fields['issn_display_print']) : '';
+        return isset($this->fields['issn_display_print']) ? 
+        implode($this->fields['issn_display_print']) : '';
     }
 
     /**
@@ -1936,8 +1938,8 @@ class RDSIndex extends SolrMarc
      */
     public function getISSNOnline() 
     {
-	    return isset($this->fields['issn_display_online']) ? 
-		    implode($this->fields['issn_display_online']) : '';
+        return isset($this->fields['issn_display_online']) ? 
+        implode($this->fields['issn_display_online']) : '';
     }
 
     /**
@@ -1947,7 +1949,7 @@ class RDSIndex extends SolrMarc
      */
     public function getISBN() 
     {
-	    return isset($this->fields['isbn_display']) ? $this->fields['isbn_display'] : '';
+        return isset($this->fields['isbn_display']) ? $this->fields['isbn_display'] : '';
     }
 
     /**
@@ -1957,7 +1959,7 @@ class RDSIndex extends SolrMarc
      */
     public function getEst()
     {
-	    return isset($this->fields['est']) ? implode($this->fields['est']) : '';
+        return isset($this->fields['est']) ? implode($this->fields['est']) : '';
     }
 
     /**
@@ -1967,22 +1969,22 @@ class RDSIndex extends SolrMarc
      */
     public function getEbookLink()
     {
-	    $ebook_lnk = array();
-	    if (isset($this->fields['ebook_url'])) {
-		    $arr_links = $this->fields['ebook_url'];
-		    foreach ($arr_links as $key => $link) {
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $link_text = $arr_link[1];
-				    $ebook_lnk[$key]['lnk_txt'] = $arr_link[1];
-				    $ebook_lnk[$key]['url'] = $arr_link[0];
-			    } else {
-				    $ebook_lnk[$key]['lnk_txt'] = link;
-				    $ebook_lnk[$key]['url'] = link;
-			    }
-		    }
-	    }
-	    return $ebook_lnk;
+        $ebook_lnk = array();
+        if (isset($this->fields['ebook_url'])) {
+            $arr_links = $this->fields['ebook_url'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $link_text = $arr_link[1];
+                    $ebook_lnk[$key]['lnk_txt'] = $arr_link[1];
+                    $ebook_lnk[$key]['url'] = $arr_link[0];
+                } else {
+                    $ebook_lnk[$key]['lnk_txt'] = link;
+                    $ebook_lnk[$key]['url'] = link;
+                }
+            }
+        }
+        return $ebook_lnk;
     }
 
     /**
@@ -1992,23 +1994,23 @@ class RDSIndex extends SolrMarc
      */
     public function getHandwritingDesc()
     {
-	    $hand_desc = array(); 
-	    if (isset($this->fields['hand_desc'])) {
-		    $arr_desc = $this->fields['hand_desc'];
+        $hand_desc = array(); 
+        if (isset($this->fields['hand_desc'])) {
+            $arr_desc = $this->fields['hand_desc'];
 
-		    foreach ($arr_desc as $key => $txt) {
-			    $pos = strpos($txt, ":");
-			    if ($pos !== false) {
-				    $first = substr($txt, 0, $pos);
-				    $sec = substr($txt, $pos);
-				    $hand_desc[$key]['txt1'] = $first;
-				    $hand_desc[$key]['txt2'] = $sec;                                                        
-			    } else {
-				    $hand_desc[$key]['txt1']= $txt;
-			    }
-		    }
-	    }
-	    return $hand_desc;
+            foreach ($arr_desc as $key => $txt) {
+                $pos = strpos($txt, ":");
+                if ($pos !== false) {
+                    $first = substr($txt, 0, $pos);
+                    $sec = substr($txt, $pos);
+                    $hand_desc[$key]['txt1'] = $first;
+                    $hand_desc[$key]['txt2'] = $sec;                                                        
+                } else {
+                    $hand_desc[$key]['txt1']= $txt;
+                }
+            }
+        }
+        return $hand_desc;
     }
 
     /**
@@ -2018,48 +2020,48 @@ class RDSIndex extends SolrMarc
      */
     public function getHandwritingBase()
     {
-	    $hand_basedesc = array();
-	    if (isset($this->fields['hand_basedesc'])) {
-		    $arr_desc = $this->fields['hand_basedesc'];
-		    foreach ($arr_desc as $key =>  $txt) {
-			    $title = "Beschreibstoff";
-			    $hand_basedesc[$key]['title'] = $title;
-			    $hand_basedesc[$key]['text'] = $txt;
-		    }
-	    }
-	    if (isset($this->fields['hand_basecover'])) {
-		    $arr_desc = $this->fields['hand_basecover'];
-		    foreach ($arr_desc as $key => $txt) {
-			    $title = "Einband";
-			    $hand_basedesc[$key]['title'] = $title;                                    
-			    $hand_basedesc[$key]['text'] = $txt;
-		    }
-	    }    
-	    if (isset($this->fields['hand_baserest'])) {
-		    $arr_desc = $this->fields['hand_baserest'];
-		    foreach ($arr_desc as $key => $txt) {
-			    $title = "Restaurierungsmaßnahmen";
-			    $hand_basedesc[$key]['title'] = $title;
-			    $hand_basedesc[$key]['text'] = $txt;
-		    }
-	    }    
-	    if (isset($this->fields['hand_base_c'])) {
-		    $arr_desc = $this->fields['hand_base_c'];
-		    foreach ($arr_desc as $key => $txt) {
-			    $title = "Wasserzeichen";
-			    $hand_basedesc[$key]['title'] = $title;
-			    $hand_basedesc[$key]['text'] = $txt;
-		    }
-	    }    
-	    if (isset($this->fields['hand_base_d'])) {
-		    $arr_desc = $this->fields['hand_base_d'];
-		    foreach ($arr_desc as $key => $txt) {
-			    $title = "Erhaltungszustand";
-			    $hand_basedesc[$key]['title'] = $title;
-			    $hand_basedesc[$key]['text'] = $txt;
-		    }
-	    }    
-	    return $hand_basedesc;
+        $hand_basedesc = array();
+        if (isset($this->fields['hand_basedesc'])) {
+            $arr_desc = $this->fields['hand_basedesc'];
+            foreach ($arr_desc as $key =>  $txt) {
+                $title = "Beschreibstoff";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }
+        if (isset($this->fields['hand_basecover'])) {
+            $arr_desc = $this->fields['hand_basecover'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Einband";
+                $hand_basedesc[$key]['title'] = $title;                                    
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        if (isset($this->fields['hand_baserest'])) {
+            $arr_desc = $this->fields['hand_baserest'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Restaurierungsmaßnahmen";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        if (isset($this->fields['hand_base_c'])) {
+            $arr_desc = $this->fields['hand_base_c'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Wasserzeichen";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        if (isset($this->fields['hand_base_d'])) {
+            $arr_desc = $this->fields['hand_base_d'];
+            foreach ($arr_desc as $key => $txt) {
+                $title = "Erhaltungszustand";
+                $hand_basedesc[$key]['title'] = $title;
+                $hand_basedesc[$key]['text'] = $txt;
+            }
+        }    
+        return $hand_basedesc;
     }
 
     /**
@@ -2069,17 +2071,17 @@ class RDSIndex extends SolrMarc
      */
     public function getMedium()
     {
-	    $result = "";
-	    if (isset($this->fields['medium'])) {
-		    $arr = $this->fields['medium'];
-		    foreach ($arr as $txt) {
-			    if ($tmp = strstr($txt, "handschr")) {
-				    $result = $tmp; 
-			    }
+        $result = "";
+        if (isset($this->fields['medium'])) {
+            $arr = $this->fields['medium'];
+            foreach ($arr as $txt) {
+                if ($tmp = strstr($txt, "handschr")) {
+                    $result = $tmp; 
+                }
 
-		    }
-	    }
-	    return $result;
+            }
+        }
+        return $result;
     }
     /**
      * Get an array of all the references of handwriting
@@ -2088,32 +2090,32 @@ class RDSIndex extends SolrMarc
      */
     public function getHandwritingRefValue()
     {
-	    $hand_ref = array();
-	    if (isset($this->fields['hand_refvalue'])) {
-		    $arr_desc = $this->fields['hand_refvalue'];
-		    asort($arr_desc);
-		    foreach ($arr_desc as $link) {
-			    $arr_link[] = explode(" | ", $link);
-		    }
-		    foreach ($arr_link as $key => $txt) {
-			    if ($tmp = strstr($txt[0], "1")) {
-				    $title = "Editionshinweise";
-				    $hand_ref[$key]['title'] = $title;
-				    $hand_ref[$key]['text'] = $txt[1];
-			    }
-			    if ($tmp = strstr($txt[0], "2")) {
-				    $title = "Literaturhinweise";
-				    $hand_ref[$key]['title'] = $title;
-				    $hand_ref[$key]['text'] = $txt[1];
-			    }
-			    if ($tmp = strstr($txt[0], "3")) {
-				    $title = "Sonstige Bezugswerke";
-				    $hand_ref[$key]['title'] = $title;
-				    $hand_ref[$key]['text'] = $txt[1];
-			    }
-		    }
-	    }
-	    return $hand_ref;
+        $hand_ref = array();
+        if (isset($this->fields['hand_refvalue'])) {
+            $arr_desc = $this->fields['hand_refvalue'];
+            asort($arr_desc);
+            foreach ($arr_desc as $link) {
+                $arr_link[] = explode(" | ", $link);
+            }
+            foreach ($arr_link as $key => $txt) {
+                if ($tmp = strstr($txt[0], "1")) {
+                    $title = "Editionshinweise";
+                    $hand_ref[$key]['title'] = $title;
+                    $hand_ref[$key]['text'] = $txt[1];
+                }
+                if ($tmp = strstr($txt[0], "2")) {
+                    $title = "Literaturhinweise";
+                    $hand_ref[$key]['title'] = $title;
+                    $hand_ref[$key]['text'] = $txt[1];
+                }
+                if ($tmp = strstr($txt[0], "3")) {
+                    $title = "Sonstige Bezugswerke";
+                    $hand_ref[$key]['title'] = $title;
+                    $hand_ref[$key]['text'] = $txt[1];
+                }
+            }
+        }
+        return $hand_ref;
     }
 
     /**
@@ -2123,20 +2125,20 @@ class RDSIndex extends SolrMarc
      */
     public function getFn() 
     {
-	    $fn_array = array();
-	    if (isset($this->fields['fn_display'])) {
-		    $arr_links = $this->fields['fn_display'];
-		    foreach ($arr_links as $key => $link) {
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $fn_array[$key]['text'] = $arr_link[0];
-				    $fn_array[$key]['url'] = $arr_link[1];
-			    } else {
-				    $fn_array[$key]['text'] = $link;
-			    }
-		    }
-	    }
-	    return $fn_array;
+        $fn_array = array();
+        if (isset($this->fields['fn_display'])) {
+            $arr_links = $this->fields['fn_display'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $fn_array[$key]['text'] = $arr_link[0];
+                    $fn_array[$key]['url'] = $arr_link[1];
+                } else {
+                    $fn_array[$key]['text'] = $link;
+                }
+            }
+        }
+        return $fn_array;
     }
 
     /**
@@ -2146,7 +2148,7 @@ class RDSIndex extends SolrMarc
      */
     public function getFnAttWork() 
     {
-	    return isset($this->fields['fn_beigWerke']) ? $this->fields['fn_beigWerke'] : '';
+        return isset($this->fields['fn_beigWerke']) ? $this->fields['fn_beigWerke'] : '';
     }
 
     /**
@@ -2156,7 +2158,7 @@ class RDSIndex extends SolrMarc
      */
     public function getFnEnthWerk() 
     {
-	    return isset($this->fields['fn_enthWerke']) ? $this->fields['fn_enthWerke'] : '';
+        return isset($this->fields['fn_enthWerke']) ? $this->fields['fn_enthWerke'] : '';
     }
 
     /**
@@ -2166,7 +2168,7 @@ class RDSIndex extends SolrMarc
      */
     public function getFnEbook() 
     {
-	    return isset($this->fields['fn_ebooks']) ? $this->fields['fn_ebooks'] : '';
+        return isset($this->fields['fn_ebooks']) ? $this->fields['fn_ebooks'] : '';
     }
 
     /**
@@ -2176,8 +2178,8 @@ class RDSIndex extends SolrMarc
      */
     public function getSekundaer() 
     {
-	    return isset ($this->fields['sekundaer']) ? 
-		    $this->fields['sekundaer'] : array();
+        return isset ($this->fields['sekundaer']) ? 
+        $this->fields['sekundaer'] : array();
     }
     /**
      * Get an array of all 'rvk' notations associated with the record.
@@ -2186,20 +2188,20 @@ class RDSIndex extends SolrMarc
      */
     public function getNotation() 
     {
-	    $arr_not = array();
-	    if (isset($this->fields['rvk_display'])) {
-		    $arr_links = $this->fields['rvk_display'];
-		    foreach ($arr_links as $key => $link) {
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $arr_not[$key]['url'] = $arr_link[0];
-				    $arr_not[$key]['txt'] = $arr_link[1];
-			    } else {
-				    $arr_not[$key]['url'] = $link;
-			    }
-		    }
-	    }
-	    return  $arr_not;
+        $arr_not = array();
+        if (isset($this->fields['rvk_display'])) {
+            $arr_links = $this->fields['rvk_display'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $arr_not[$key]['url'] = $arr_link[0];
+                    $arr_not[$key]['txt'] = $arr_link[1];
+                } else {
+                    $arr_not[$key]['url'] = $link;
+                }
+            }
+        }
+        return  $arr_not;
     }
 
 
@@ -2210,7 +2212,7 @@ class RDSIndex extends SolrMarc
      */
     public function getHss() 
     {
-	    return isset($this->fields['hss']) ? $this->fields['hss'] : '';
+        return isset($this->fields['hss']) ? $this->fields['hss'] : '';
     }
 
     /**
@@ -2220,7 +2222,7 @@ class RDSIndex extends SolrMarc
      */
     public function getFnInterpret() 
     {
-	    return isset($this->fields['fn_interpret']) ? $this->fields['fn_interpret'] : '';
+        return isset($this->fields['fn_interpret']) ? $this->fields['fn_interpret'] : '';
     }
 
     /**
@@ -2230,43 +2232,43 @@ class RDSIndex extends SolrMarc
      */
     public function getJournalInfo()
     { 
-	    $zs_array = array();
-	    $zdb_nr = $this->getZdbNr();
-	    if (isset($this->fields['zs_hinweis'])) {
-		    $arr_links = $this->fields['zs_hinweis'];
-		    foreach ($arr_links as $key => $link) {
+        $zs_array = array();
+        $zdb_nr = $this->getZdbNr();
+        if (isset($this->fields['zs_hinweis'])) {
+            $arr_links = $this->fields['zs_hinweis'];
+            foreach ($arr_links as $key => $link) {
 
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    if (substr_count($zdb_nr, $arr_link[0])> 0) {
-					    if ($arr_link[2] != "") {
-						    $zs_array[$key]['pre-text'] = $arr_link[1];
-						    $zs_array[$key]['id'] = $arr_link[0];
-						    $zs_array[$key]['text'] = $arr_link[2];
-						    /*    $html_result .= $arr_link[1].": <a href="
-							  .$baseURI."/RDSIndex/Results?lookfor0[]=id:"
-							  .urlencode($arr_link[0])."&type0[]=ex&submit=Suchen>"
-							  .$arr_link[2]."</a><br/>"; */
-					    }
-					    if ($arr_link[2] == "" && $arr_link[1] != "") {
-						    $zs_array[$key] ['id'] = $arr_link[0];
-						    $zs_array[$key]['text'] = $arr_link[1];
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    if (substr_count($zdb_nr, $arr_link[0])> 0) {
+                        if ($arr_link[2] != "") {
+                            $zs_array[$key]['pre-text'] = $arr_link[1];
+                            $zs_array[$key]['id'] = $arr_link[0];
+                            $zs_array[$key]['text'] = $arr_link[2];
+                            /*    $html_result .= $arr_link[1].": <a href="
+                            .$baseURI."/RDSIndex/Results?lookfor0[]=id:"
+                            .urlencode($arr_link[0])."&type0[]=ex&submit=Suchen>"
+                            .$arr_link[2]."</a><br/>"; */
+                        }
+                        if ($arr_link[2] == "" && $arr_link[1] != "") {
+                            $zs_array[$key] ['id'] = $arr_link[0];
+                            $zs_array[$key]['text'] = $arr_link[1];
 
-						    // $html_result .= "<a href=".$baseURI."/RDSIndex/Results?lookfor0[]=id:"
-						    //	    .urlencode($arr_link[0])."&type0[]=ex&submit=Suchen>".$arr_link[1]."</a><br/>";
-					    }
-				    } else {
-					    $zs_array[$key]['pre-text'] = $arr_link[1];
-					    //$html_result .= $arr_link[1];
-					    if ($arr_link[2] != "") {
-						    $zs_array[$key]['text'] = $arr_link[2]; 
-					    }
-					    //  $html_result .= ": ". $arr_link[2];
-				    }
-			    }
-		    }
-	    }
-	    return $zs_array;
+                            // $html_result .= "<a href=".$baseURI."/RDSIndex/Results?lookfor0[]=id:"
+                            //	    .urlencode($arr_link[0])."&type0[]=ex&submit=Suchen>".$arr_link[1]."</a><br/>";
+                        }
+                    } else {
+                        $zs_array[$key]['pre-text'] = $arr_link[1];
+                        //$html_result .= $arr_link[1];
+                        if ($arr_link[2] != "") {
+                            $zs_array[$key]['text'] = $arr_link[2]; 
+                        }
+                        //  $html_result .= ": ". $arr_link[2];
+                    }
+                }
+            }
+        }
+        return $zs_array;
     }
 
     /**
@@ -2276,7 +2278,7 @@ class RDSIndex extends SolrMarc
      */
     public function getZdbNr()
     {
-	    return isset($this->fields['zdb_nr']) ? $this->fields['zdb_nr'] : '';
+        return isset($this->fields['zdb_nr']) ? $this->fields['zdb_nr'] : '';
     }
 
     /**
@@ -2286,8 +2288,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkTitle()
     {
-	    return isset($this->fields['orig_titel_display']) ? 
-		    implode($this->fields['orig_titel_display']) : '';
+        return isset($this->fields['orig_titel_display']) ? 
+        implode($this->fields['orig_titel_display']) : '';
     }
 
     /**
@@ -2297,8 +2299,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkAut() 
     {
-	    return isset($this->fields['orig_aut_display']) ? 
-		    implode($this->fields['orig_aut_display']) : '';
+        return isset($this->fields['orig_aut_display']) ? 
+        implode($this->fields['orig_aut_display']) : '';
     }
     /**
      * Get corporation (cjk) 
@@ -2307,8 +2309,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkCorp() 
     {
-	    return isset($this->fields['orig_koerp_display']) ? 
-		    implode($this->fields['orig_koerp_display']) : '';
+        return isset($this->fields['orig_koerp_display']) ? 
+        implode($this->fields['orig_koerp_display']) : '';
     }
     /**
      * Get publisher  (cjk)
@@ -2317,8 +2319,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkPp() 
     {
-	    return isset($this->fields['orig_verlag_display']) ? 
-		    implode($this->fields['orig_verlag_display']) : '';
+        return isset($this->fields['orig_verlag_display']) ? 
+        implode($this->fields['orig_verlag_display']) : '';
     }
     /**
      * Get issue (cjk)
@@ -2327,8 +2329,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkEdition() 
     {
-	    return isset($this->fields['orig_verlag_display']) ? 
-		    implode($this->fields['orig_verlag_display']) : '';
+        return isset($this->fields['orig_verlag_display']) ? 
+        implode($this->fields['orig_verlag_display']) : '';
     }
     /**
      * Get footnote (cjk)
@@ -2337,8 +2339,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkFN() 
     {
-	    return isset($this->fields['orig_fussnote_display']) ? 
-		    implode($this->fields['orig_fussnote_display']) : '';
+        return isset($this->fields['orig_fussnote_display']) ? 
+        implode($this->fields['orig_fussnote_display']) : '';
     }
     /**
      * Get fn extended (cjk)
@@ -2347,8 +2349,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkFNEnth() 
     {
-	    return isset($this->fields['orig_fn_enthaltene_display']) ? 
-		    $this->fields['orig_fn_enthaltene_display'] : '';
+        return isset($this->fields['orig_fn_enthaltene_display']) ? 
+        $this->fields['orig_fn_enthaltene_display'] : '';
     }
     /**
      * Get  volume (cjk)
@@ -2357,8 +2359,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkScope() 
     {
-	    return isset($this->fields['orig_umfang_display']) ? 
-		    implode($this->fields['orig_umfang_display']) : '';
+        return isset($this->fields['orig_umfang_display']) ? 
+        implode($this->fields['orig_umfang_display']) : '';
     }
     /**
      * Get series (cjk)
@@ -2367,8 +2369,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkReihe() 
     {
-	    return isset($this->fields['orig_reihe_display']) ? 
-		    $this->fields['orig_reihe_display'] : '';
+        return isset($this->fields['orig_reihe_display']) ? 
+        $this->fields['orig_reihe_display'] : '';
     }
 
     /**
@@ -2378,8 +2380,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkUReihe() 
     {
-	    return isset($this->fields['orig_ureihe_display']) ? 
-		    implode($this->fields['orig_ureihe_display']) : '';
+        return isset($this->fields['orig_ureihe_display']) ? 
+        implode($this->fields['orig_ureihe_display']) : '';
     }
 
     /**
@@ -2389,8 +2391,8 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkAst() 
     {
-	    return isset($this->fields['orig_ast_display']) ? 
-		    implode($this->fields['orig_ast_display']) : '';
+        return isset($this->fields['orig_ast_display']) ? 
+        implode($this->fields['orig_ast_display']) : '';
     }
 
 
@@ -2401,19 +2403,19 @@ class RDSIndex extends SolrMarc
      */
     public function getWerk()
     {
-	    $werk_lnk = array();
-	    if (isset($this->fields['band_werk'])) {
-		    $arr_links = $this->fields['band_werk'];
-		    foreach ($arr_links as $key => $link) {
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $werk_lnk[$key]['lnk_txt'] = $arr_link[1];
-				    $werk_lnk[$key]['id'] = $arr_link[0];
-				    $werk_lnk[$key]['bnd'] = $arr_link[2];
-			    }
-		    }
-	    }
-	    return $werk_lnk;
+        $werk_lnk = array();
+        if (isset($this->fields['band_werk'])) {
+            $arr_links = $this->fields['band_werk'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $werk_lnk[$key]['lnk_txt'] = $arr_link[1];
+                    $werk_lnk[$key]['id'] = $arr_link[0];
+                    $werk_lnk[$key]['bnd'] = $arr_link[2];
+                }
+            }
+        }
+        return $werk_lnk;
     }
 
     /**
@@ -2423,7 +2425,7 @@ class RDSIndex extends SolrMarc
      */
     public function getArticleInfo()
     {
-	    return isset($this->fields['aufsatz']) ? $this->fields['aufsatz'] : '';
+        return isset($this->fields['aufsatz']) ? $this->fields['aufsatz'] : '';
     }
 
     /**
@@ -2433,22 +2435,22 @@ class RDSIndex extends SolrMarc
      */
     public function getSeriesTit() 
     {
-	    $series_lnk = array();
-	    if (isset($this->fields['serie_tit'])) {
-		    $arr_links = $this->fields['serie_tit'];
-		    foreach ($arr_links as $key => $link) {
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $series_lnk[$key]['id'] = $arr_link[0];
-				    $series_lnk[$key]['lnk_txt'] = $arr_link[1];
-				    $series_lnk[$key]['bnd'] = $arr_link[2];
-			    } else {
-				    $series_lnk[$key]['id'] = $link;
-				    $series_lnk[$key]['lnk_txt'] = $link;
-			    }
-		    }
-	    }
-	    return $series_lnk;
+        $series_lnk = array();
+        if (isset($this->fields['serie_tit'])) {
+            $arr_links = $this->fields['serie_tit'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $series_lnk[$key]['id'] = $arr_link[0];
+                    $series_lnk[$key]['lnk_txt'] = $arr_link[1];
+                    $series_lnk[$key]['bnd'] = $arr_link[2];
+                } else {
+                    $series_lnk[$key]['id'] = $link;
+                    $series_lnk[$key]['lnk_txt'] = $link;
+                }
+            }
+        }
+        return $series_lnk;
     }
 
     /**
@@ -2458,18 +2460,18 @@ class RDSIndex extends SolrMarc
      */
     public function getCjkSeriesTit() 
     {
-	    $series_lnk = array();
-	    if (isset($this->fields['orig_serie_tit'])) {
-		    $arr_links = $this->fields['orig_serie_tit'];
-		    foreach ($arr_links as $key => $link) {
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    $series_lnk[$key]['id'] = $arr_link[0];
-				    $series_lnk[$key]['lnk_txt'] = $arr_link[1];
-			    }
-		    }
-	    }
-	    return $series_lnk;
+        $series_lnk = array();
+        if (isset($this->fields['orig_serie_tit'])) {
+            $arr_links = $this->fields['orig_serie_tit'];
+            foreach ($arr_links as $key => $link) {
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    $series_lnk[$key]['id'] = $arr_link[0];
+                    $series_lnk[$key]['lnk_txt'] = $arr_link[1];
+                }
+            }
+        }
+        return $series_lnk;
     }
 
     /**
@@ -2479,7 +2481,7 @@ class RDSIndex extends SolrMarc
      */
     public function getNatInfo()
     {
-	    return isset($this->fields['nat_info']) ? $this->fields['nat_info'] : '';
+        return isset($this->fields['nat_info']) ? $this->fields['nat_info'] : '';
     }
 
     /**
@@ -2489,7 +2491,7 @@ class RDSIndex extends SolrMarc
      */
     public function getAbstract() 
     {
-	    return isset($this->fields['abstract']) ? $this->fields['abstract'] : '';
+        return isset($this->fields['abstract']) ? $this->fields['abstract'] : '';
     }
 
     /**
@@ -2499,57 +2501,75 @@ class RDSIndex extends SolrMarc
      */
     public function getLinks() 
     {
-	    $link_array = array();
-	    $jahr = "";
-	    if (isset($this->fields['url_info'])) {
-		    $arr_links = $this->fields['url_info'];
-		    foreach ($arr_links as $key => $link) {
-			    $jahr = "";
-			    $link_text = "";
-			    if (strstr($link, "|")) {
-				    $arr_link = explode(" | ", $link);
-				    if (strstr($arr_link[1], " ; ")) {
-					    $arr_jahr = explode(" ; ", $arr_link[1]);
-					    $jahr = $arr_jahr[1];
-					    $link_text = $arr_jahr[0];
-					    $link_array[$key]['url']= $arr_link[0];
-				    } else {
-					    $link_text = $arr_link[1];
-					    $link_array[$key]['url']= $arr_link[0];
-				    }
+        $link_array = array();
+        $jahr = "";
+        if (isset($this->fields['url_info'])) {
+            $arr_links = $this->fields['url_info'];
+            foreach ($arr_links as $key => $link) {
+                $jahr = "";
+                $link_text = "";
+                if (strstr($link, "|")) {
+                    $arr_link = explode(" | ", $link);
+                    if (strstr($arr_link[1], " ; ")) {
+                        $arr_jahr = explode(" ; ", $arr_link[1]);
+                        $jahr = $arr_jahr[1];
+                        $link_text = $arr_jahr[0];
+                        $link_array[$key]['url']= $arr_link[0];
+                    } else {
+                        $link_text = $arr_link[1];
+                        $link_array[$key]['url']= $arr_link[0];
+                    }
 
-				    switch (trim($link_text)){
-					    case "R":
-						    $link_array[$key]['txt'] = "Elektronische Ressource: Zugang über Resolving-System";
-						    break;
-					    case "Digitalisierung":
-						    $link_array[$key]['txt'] = "Elektronische Ressource: Zugang zum Digitalisat";
-						    break;
-					    case "EZB":
-						    $link_array[$key]['txt'] = "Elektronische Ressource: Zugang EZB";
-						    break;
-					    case "DBIS":
-						    $link_array[$key]['txt'] = "Elektronische Ressource: Zugang über DBIS";
-						    break;
-					    default:
-						    $link_array[$key]['txt'] = $link_text;
-						    break;
-				    }
+                    switch (trim($link_text)){
+                    case "R":
+                        $link_array[$key]['txt'] = "Elektronische Ressource: Zugang über Resolving-System";
+                        break;
+                    case "Digitalisierung":
+                        $link_array[$key]['txt'] = "Elektronische Ressource: Zugang zum Digitalisat";
+                        break;
+                    case "EZB":
+                        $link_array[$key]['txt'] = "Elektronische Ressource: Zugang EZB";
+                        break;
+                    case "DBIS":
+                        $link_array[$key]['txt'] = "Elektronische Ressource: Zugang über DBIS";
+                        break;
+                    default:
+                        $link_array[$key]['txt'] = $link_text;
+                        break;
+                    }
 
-				    // Links fuer zeitschriften und co nur bei Bestandanzeige *** TODO didnt find any examples TODO ****
-				    if (preg_match("/Verlag/", $link) && (!preg_match("/DBIS/", $link) && !preg_match("/EZB/", $link))) {
-					    $link_array[$key]['txt'] = "Elektronische Ressource: Zugang beim Produzenten";
-					    $link_array[$key]['jahr'] = $jahr;
-				    }
-				    if (!preg_match("/Verlag/", $link) && !preg_match("/Nationalbibliothek/", $link)) {
-					    $link_array[$key]['jahr'] = $jahr;
-				    }
-			    }
-		    }
+                    // Links fuer zeitschriften und co nur bei Bestandanzeige *** TODO didnt find any examples TODO ****
+                    if (preg_match("/Verlag/", $link) && (!preg_match("/DBIS/", $link) && !preg_match("/EZB/", $link))) {
+                        $link_array[$key]['txt'] = "Elektronische Ressource: Zugang beim Produzenten";
+                        $link_array[$key]['jahr'] = $jahr;
+                    }
+                    if (!preg_match("/Verlag/", $link) && !preg_match("/Nationalbibliothek/", $link)) {
+                        $link_array[$key]['jahr'] = $jahr;
+                    }
+                }
+            }
 
-	    }
-	    return $link_array;
+        }
+        return $link_array;
     }
+
+    /**
+     * Get the local data set. 
+     *
+     * @return array
+     */
+    public function getLok()
+    {
+        if (isset($this->fields['loksatz'])) {
+            foreach ($this->fields['loksatz'] as $lok) {
+                    $obj[] = json_decode($lok, true);
+            }
+            return $obj;
+        } else { 
+            return ""; 
+        }
+    }
+
 
     /**
      * Get the lokal notations. 
@@ -2558,7 +2578,7 @@ class RDSIndex extends SolrMarc
      */
     public function getLokNotation()
     {
-	    return isset($this->fields['zr']) ? $this->fields['zr'] : '';
+        return isset($this->fields['zr']) ? $this->fields['zr'] : '';
     }
 
     /**
@@ -2568,7 +2588,7 @@ class RDSIndex extends SolrMarc
      */
     public function getLokCt()
     {
-	    return isset($this->fields['zs']) ? $this->fields['zs'] : '';
+        return isset($this->fields['zs']) ? $this->fields['zs'] : '';
     }
 
     /**
@@ -2576,8 +2596,9 @@ class RDSIndex extends SolrMarc
      *
      * @return array
      */
-    public function getZsVerlauf(){
-	    return isset($this->fields['zs_verlauf']) ? implode($this->fields['zs_verlauf']) : '';
+    public function getZsVerlauf()
+    {
+        return isset($this->fields['zs_verlauf']) ? implode($this->fields['zs_verlauf']) : '';
     }
 
     /**
@@ -2585,8 +2606,9 @@ class RDSIndex extends SolrMarc
      *
      * @return array
      */
-    public function getRegister(){
-	    return isset($this->fields['register']) ? implode($this->fields['register']) : '';
+    public function getRegister()
+    {
+        return isset($this->fields['register']) ? implode($this->fields['register']) : '';
     }
 
     /**
@@ -2596,22 +2618,22 @@ class RDSIndex extends SolrMarc
      * @access protected
      */
     /*    public function getFormats()
-	  {
-	  $formats = isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
+    {
+    $formats = isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
 
-	  if (in_array('book', $formats)) {
-	  $formats[] = 'Book';
-	  }
+    if (in_array('book', $formats)) {
+    $formats[] = 'Book';
+    }
 
-	  if (in_array('article', $formats)) {
-	  $formats[] = 'Article';
-	  }
+    if (in_array('article', $formats)) {
+    $formats[] = 'Article';
+    }
 
-	  if (in_array('zeitschrift', $formats) || in_array('journal', $formats)) {
-	  $formats[] = 'Journal';
-	  }
+    if (in_array('zeitschrift', $formats) || in_array('journal', $formats)) {
+    $formats[] = 'Journal';
+    }
 
-	  return $formats;
-	  }
+    return $formats;
+    }
      */
 }
