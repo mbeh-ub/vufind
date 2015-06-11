@@ -518,8 +518,8 @@ class RDSIndex extends SolrMarc
      */
     public function getLanguages()
     {
-        return isset($this->fields['la']) ?
-        $this->fields['la'] : '';
+	    return isset($this->fields['la']) ?
+		    $this->fields['la'] : [];
     }
 
     /**

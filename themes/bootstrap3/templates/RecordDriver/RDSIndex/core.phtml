@@ -29,7 +29,8 @@
 
   <div class="col-sm-9">
     <h4 property="name">
-    <? if (!empty($this->driver->getAst())): ?>[<?=$this->escapeHtml($this->driver->getAst())?>]<? endif; ?>
+    <? $ast = $this->driver->getAst();
+     if (!empty($ast)): ?>[<?=$this->escapeHtml($this->driver->getAst())?>]<? endif; ?>
     	<?=$this->escapeHtml($this->driver->getTitle())?></h4>
     <? $summary = $this->driver->getSummary(); $summary = isset($summary[0]) ? $this->escapeHtml($summary[0]) : false; ?>
     <? if ($summary): ?>
