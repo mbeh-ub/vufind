@@ -1,4 +1,9 @@
 <h1>RDSIndex Holdings</h1>
+<? var_dump($this->driver->getLok()) ?>
+<br />****************<br />
+<? var_dump($this->driver->getRealTimeHoldings()) ?>
+<br />****************<br />
+<? var_dump($this->RDSIndexHolding()->createHTML(null,null)) ?>
 <?
     // Set up convenience variables:
     $account = $this->auth()->getManager();
