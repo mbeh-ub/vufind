@@ -25,12 +25,12 @@
     <div class="rds_subnav">
         <ul>
             <?if (isset($this->searchType) && $this->searchType == 'advanced'):?>
-            <li><a href="/<?=$this->searchClassId ?>/Search">Einfache Suche</li>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Home">Einfache Suche</li>
             <?else:?>
-            <li><a href="/<?=$this->searchClassId ?>/Advanced">Erweitert Suche</li>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Advanced">Erweitert Suche</li>
             <? endif;?>
-            <li><a href="/Search/History">Frühere Suchen</a></li>
-            <li><a href="/MyResearch">Merkliste</a></li>
+            <li><a href="<?=$this->url('home') ?>Search/History">Frühere Suchen</a></li>
+            <li><a href="<?=$this->url('home') ?>MyResearch">Merkliste</a></li>
         </ul>        
     </div>
 	</div>

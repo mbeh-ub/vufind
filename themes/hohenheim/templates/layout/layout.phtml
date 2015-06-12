@@ -6,26 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 
-<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/jquery/jquery-ui-1.8.7.custom/css/smoothness/jquery-ui-1.8.7.custom.css" />
-<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/styles.css" />
-<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/cd.css" />
-<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/location.css" />
-<link rel="stylesheet" type="text/css" media="screen, projection" href="https://hohsearch.uni-hohenheim.de/opac/interface/themes/rds/css/rds.css" />
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/stylesheet_15060e1fe4-65ec1c875b6443f2673a4399e86120c6.css?1418796385" media="all">
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/layout-6bbf15efda49cf47da2f2c233e25b29b.css" media="all">
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/jquery-ui-1.10.2.all.min-e9753b0000eb9471db894f466cd4e282.css?1418796385" media="all">
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/site17f0f-e4e72f519f5d278ff5ee4af699b24a4c.css" media="all">
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/site2c2b8-0d2b467c0b624bba776256c1f152aa35.css" media="all">
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/typo3temp/compressor/fixtures-995a6acd8d5d99d97d0c9778341a290c.css" media="all">
-<link rel="stylesheet" type="text/css" href="https://hohsearch-info.uni-hohenheim.de/fileadmin/einrichtungen/hohsearch/template/css/hohsearch-relaunch.css" media="all" />
-<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/jquery-1.9.1.min.js?1405954852" type="text/javascript"></script>
-<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/jquery-ui.min.js?1409124159" type="text/javascript"></script>
-<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/head.min34e9.js?1405954852" type="text/javascript"></script>
-<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/MultiContentTabs.js?1409470683" type="text/javascript"></script>
-<script src="https://hohsearch-info.uni-hohenheim.de/typo3conf/ext/uni_layout/Resources/Public/JavaScript/MainNav.js?1412691256" type="text/javascript"></script>
-
-
-
     <?=$this->headMeta()?>
     <?=$this->headTitle()?>
     <?
@@ -95,8 +75,6 @@
     <?=$this->headScript()?>
     
     
-    <link rel="stylesheet" type="text/css" href="/themes/rds/css/overwrite.css" media="all">
-<link rel="stylesheet" type="text/css" href="/themes/hohenheim/css/overwrite.css" media="all">
   </head>
   <body>
     <? // Set up the search box -- there are three possible cases:
@@ -148,7 +126,7 @@
           <section class="navigation-main__section" id="nav-themenbereiche">
             <h6 class="navigation-main__section-title">Themenbereiche</h6>
             <ul>
-              <li class="nav-section nav-section__level-1"><a href="<?=$this->serverUrl() . '/RDSIndex/Home'?>"  data-nav-toggle="level-1" class="nav-section__toggle">HohSearch</a></li>
+              <li class="nav-section nav-section__level-1"><a href="<?=$this->serverUrl() . $this->url('home') . 'RDSIndex/Home'?>"  data-nav-toggle="level-1" class="nav-section__toggle">HohSearch</a></li>
               <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103627?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Bibliothekskonto</a></li>
               <li class="nav-section nav-section__level-1 "><a href="https://hohsearch-info.uni-hohenheim.de/103790?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Systematik</a></li>
               <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103628?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Infos zur Ausleihe</a></li>
@@ -198,11 +176,11 @@
 
     <!-- breadcrumbs -->
 
-    <? $this->serverUrl();
+    <? 
       $alreadyDefinedBreadcrumbs = $this->layout()->breadcrumbs;
-    
-      $this->layout()->breadcrumbs = '<li class=""><a href="/RDSIndex/Home">' . $this->transEsc('Startseite') . '</a>';
-      $this->layout()->breadcrumbs .= '<li class="active">' . $this->transEsc('Suche');
+   
+      $this->layout()->breadcrumbs  = '<li class=""><a href="' . $this->url('home') . 'RDSIndex/Home">' . $this->transEsc('Startseite') . '</a></li>';
+      $this->layout()->breadcrumbs .= '<li class="active">' . $this->transEsc('Suche') . '</li>';
       $this->layout()->breadcrumbs .= $alreadyDefinedBreadcrumbs;
     ?>
  

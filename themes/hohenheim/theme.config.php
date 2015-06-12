@@ -1,12 +1,18 @@
 <?php
+
+$stylesheets = [];
+foreach (glob($this->baseDir . '/'. $this->currentTheme . '/css/*.css') as $stylesheet) {
+  $stylesheets[] = basename($stylesheet);
+}
+
+$javascripts = [];
+foreach (glob($this->baseDir . '/'. $this->currentTheme . '/js/*.js') as $javascript) {
+  $javascripts[] = basename($javascript);
+}
+
 return array(
     'extends' => 'rds',
-    'css' => array(
-	'overwrite.css',
-	'hohenheim-cd.css',
-        'hohenheim-location.css',
-    ),
-    'js' => array(
-    ),
+    'css' => $stylesheets,
+    'js' => $javascripts,
     'favicon' => 'hohenheim-favicon.ico',
 );

@@ -2,9 +2,8 @@
 return array(
     'extends' => 'bootstrap3',
     'css' => array(
-	'overwrite.css',
-	'rds-cd.css',
-        'rds-medienicons.css',
+	    'rds.css',
+      'rds-medienicons.css',
     ),
     'js' => array(
     ),

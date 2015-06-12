@@ -104,3 +104,16 @@ color: #b2b4b3;
 	display: inline;
 	padding: 0px 12px 0px 24px;
 }
+
+[class*="span"] {
+    margin-left: 0px;
+} 
+
+.control-group {
+ float: right;
+}
+
+#langForm {
+ float: left;
+}
+
