@@ -6,3 +6,10 @@ ChangeLog
 TAGS
 *~
 vendor/.git
+.buildpath
+.project
+.settings/
+vendor/
+.vendor/bin/
+.vendor/phpunit/
+.vendor/sebastian/
