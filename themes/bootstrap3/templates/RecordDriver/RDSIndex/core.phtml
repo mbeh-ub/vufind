@@ -437,6 +437,10 @@
 	      <? endif; ?>
 	      <? if (!empty($field['id'])): ?>
 	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['text'])?></a>
+	      <? else: ?>
+	          <? if (!empty($field['text'])): ?>
+	       	  <?=$this->escapeHtml($field['text'])?>
+		  <? endif; ?>
 	      <? endif; ?>
 	  <? endforeach; ?></td>
         </tr>
@@ -463,11 +467,20 @@
         </tr>
       <? endif; ?>
 
-      <? $serie = $this->driver->getCjkSeriesTit(); if (!empty($serie)): ?>
+      <? $seriecjk = $this->driver->getCjkSeriesTit(); if (!empty($seriecjk)): ?>
         <tr>
           <th><?=$this->transEsc('RDS_CJK_SERIE')?>: </th>
-          <td><? $i = 0; foreach ($serie as $field): ?><?=($i++ == 0)?'':'<br />'?>
+          <td><? $i = 0; foreach ($seriecjk as $field): ?><?=($i++ == 0)?'':'<br />'?>
 	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $ungReihe = $this->driver->getUngezReihe(); if (!empty($ungezReihe)): ?>
+        <tr>
+          <th><?=$this->transEsc('Series')?>: </th>
+          <td><? $i = 0; foreach ($ungReihe as $field): ?><?=($i++ == 0)?'':' ; '?>
+	      <?=$this->escapeHtml($field)?></a>
 	  <? endforeach; ?></td>
         </tr>
       <? endif; ?>
