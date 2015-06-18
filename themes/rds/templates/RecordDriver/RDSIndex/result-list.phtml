@@ -3,7 +3,7 @@
       <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title getFull" data-view="<?=$this->params->getOptions()->getListViewOption()?>">
       <?
         $summHighlightedTitle = $this->driver->getHighlightedTitle();
-        $summTitle = $this->driver->getTitle();
+        $summTitle = $this->driver->getTitleShort();
         if (!empty($summHighlightedTitle)) {
           echo $this->highlight($this->addEllipsis($summHighlightedTitle, $summTitle));
         } else if (!empty($summTitle)) {
@@ -37,7 +37,11 @@
         <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title">
         <?
           $summHighlightedTitle = $this->driver->getHighlightedTitle();
+	  $summAst = $this->driver->getAst();
           $summTitle = $this->driver->getTitleShort();
+	  if (!empty($summAst)) {
+	    ?>[ <? echo $this->escapeHtml($summAst);?> ] <?
+	  }
           if (!empty($summHighlightedTitle)) {
             echo $this->highlight($this->addEllipsis($summHighlightedTitle, $summTitle));
           } else if (!empty($summTitle)) {
@@ -50,44 +54,44 @@
       </div>
 <? endif; ?>
 
-      <div>
-        <? if($this->driver->isCollection()): ?>
-          <?=implode('<br>', array_map(array($this, 'escapeHtml'), $this->driver->getSummary())); ?>
-        <? else: ?>
-          <? $summAuthor = $this->driver->getPrimaryAuthor(); if (!empty($summAuthor)): ?>
-          <?=$this->transEsc('by')?>
-          <a href="<?=$this->record($this->driver)->getLink('author', $summAuthor)?>"><?
-            $summHighlightedAuthor = $this->driver->getHighlightedAuthor();
-            echo !empty($summHighlightedAuthor)
-                ? $this->highlight($summHighlightedAuthor)
-                : $this->escapeHtml($summAuthor);
-          ?></a>
-          <? endif; ?>
+   <div>
+   <? $au_short = $this->driver->getShortAuthors(); ?>
+   <? if (isset($au_short) && !empty($au_short)): ?>
+	<? $i = 0; foreach ($au_short as $field): ?><?=($i++ == 0)?'':' ; '?>
+	<?=$this->escapeHtml($field)?>
+	<? endforeach; ?>
 
-          <? $journalTitle = $this->driver->getContainerTitle(); $summDate = $this->driver->getPublicationDates(); ?>
-          <? if (!empty($journalTitle)): ?>
-            <?=!empty($summAuthor) ? '<br />' : ''?>
-            <?=$this->transEsc('Published in')?>
-            <? $containerID = $this->driver->getContainerRecordID(); ?>
-            <? /* TODO: handle highlighting more elegantly here: */?>
-            <a href="<?=($containerID ? $this->recordLink()->getUrl("VuFind|$containerID") : $this->record($this->driver)->getLink('journaltitle', str_replace(array('{{{{START_HILITE}}}}', '{{{{END_HILITE}}}}'), '', $journalTitle)))?>"><?=$this->highlight($journalTitle) ?></a>
-            <?=!empty($summDate) ? ' (' . $this->escapeHtml($summDate[0]) . ')' : ''?>
-          <? elseif (!empty($summDate)): ?>
-            <?=!empty($summAuthor) ? '<br />' : ''?>
-            <?=$this->transEsc('Published') . ' ' . $this->escapeHtml($summDate[0])?>
-          <? endif; ?>
-          <? $summInCollection = $this->driver->getContainingCollections(); if (!empty($summInCollection)): ?>
-            <? foreach ($summInCollection as $collId => $collText): ?>
-              <div>
-                <b><?=$this->transEsc("in_collection_label")?></b>
-                <a class="collectionLinkText" href="<?=$this->url('collection', array('id' => $collId))?>?recordID=<?=urlencode($this->driver->getUniqueID())?>">
-                  <?=$this->escapeHtml($collText)?>
-                </a>
-              </div>
-            <? endforeach; ?>
-          <? endif; ?>
-        <? endif; ?>
-      </div>
+    <? else: ?>
+	<? $co_display = $this->driver->getCorporation(); ?>
+	 <? if (isset($co_display) && !empty($co_display)): ?>
+		<? $i = 0; foreach ($co_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+		<?=$this->escapeHtml($field['link'])?>
+		<? endforeach; ?>
+	<? else: ?>
+		 <? $pp = $this->driver->getPublisher() ?>
+		 <? if (isset($pp) && !empty($pp)): ?>
+		 	[<?=$this->escapeHtml($pp)?>]
+		 <? endif; ?>
+	<? endif; ?>
+   <? endif; ?>
+   <? $py = $this->driver->getPublishingYear(); ?>
+   <? $summpy = $this->driver->getPy(); ?>
+	<? if (isset($py) && !empty($py)): ?>
+  	 	<? if ( !empty($summpy) && $summpy != '0' && $summpy != '9999'): ?>
+			<?=$this->escapeHtml($py)?>
+		<? endif; ?>
+   	<? endif; ?>
+   </div>
+
+     <?  /* TODO if 21 100 31 */ ?>
+     <? $shortLink = $this->driver->getShortLinks(); ?>
+     <div>
+     <? if (isset($shortLink) && !empty($shortLink)): ?>
+     	<a href="<?=$this->escapeHtml($shortLink) ?>" target="_blank"> &rarr; <?=$this->transEsc('RDS_FULLTEXT_LINK') ?> </a>
+     <? endif; ?>
+     </div>
+     <?  /* TODO End  if 21 100 31 */ ?>
+
 
       <? if(!$this->driver->isCollection()): ?>
         <? if ($snippet = $this->driver->getHighlightedSnippet()): ?>
@@ -100,30 +104,7 @@
         <? endif; ?>
       <? endif; ?>
 
-      <?
-      /* Display information on duplicate records if available */
-      $dedupData = $this->driver->getDedupData();
-      if ($dedupData): ?>
-      <div class="dedupInformation">
-      <?
-        $i = 0;
-        foreach ($dedupData as $source => $current) {
-          if (++$i == 1) {
-            ?><span class="currentSource"><a href="<?=$this->recordLink()->getUrl($this->driver)?>"><?=$this->transEsc("source_$source", array(), $source)?></a></span><?
-          } else {
-            if ($i == 2) {
-              ?> <span class="otherSources">(<?=$this->transEsc('Other Sources')?>: <?
-            } else {
-              ?>, <?
-            }
-            ?><a href="<?=$this->recordLink()->getUrl($current['id'])?>"><?=$this->transEsc("source_$source", array(), $source)?></a><?
-          }
-        }
-        if ($i > 1) {
-          ?>)</span><?
-        }?>
-      </div>
-      <? endif; ?>
+
 
       <div class="callnumAndLocation ajax-availability hidden">
         <? if ($this->driver->supportsAjaxStatus()): ?>
@@ -150,8 +131,8 @@
         $openUrl = $this->driver->getOpenURL();
         $openUrlActive = $this->driver->openURLActive('results');
         $urls = $this->record($this->driver)->getLinkDetails();
-        if ($openUrlActive || !empty($urls)): ?>
-        <? if ($openUrlActive): ?>
+        /* if ($openUrlActive || !empty($urls)): ?>
+        <?  if ($openUrlActive): ?>
           <br/>
           <?=$this->openUrl($openUrl)?>
           <? if ($this->driver->replaceURLsWithOpenURL()) $urls = array(); // clear URL list if replace setting is active ?>
@@ -163,7 +144,6 @@
           <? endforeach; ?>
         <? endif; ?>
       <? endif; ?>
-
       <?=str_replace('class="', 'class="label label-info ', $this->record($this->driver)->getFormatList())?>
 
       <? if (!$openUrlActive && empty($urls) && $this->driver->supportsAjaxStatus()): ?>
@@ -171,8 +151,9 @@
           <span class="label label-default"><?=$this->transEsc('Loading')?>...</span>
         </span>
       <? endif; ?>
-      <?=$this->record($this->driver)->getPreviews()?>
+      <?=$this->record($this->driver)->getPreviews() */ ?>
     </div>
+
     <div class="col-xs-3 right hidden-print">
       <? /* Display qrcode if appropriate: */ ?>
       <? if ($QRCode = $this->record($this->driver)->getQRCode("results")): ?>
