@@ -144,8 +144,8 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
            // set RDS_LOCATION and RDS_STATUS based on daia
            if (in_array($lok_set["bib_sigel"],$this->adis_clients)) {
               foreach ($daia as $daia_set) {
-                  $lok_mergeResult["RDS_LEA"] = TEST; 
-                 if (strtolower($daia_set["callnumber"]))==(strtolower($lok_set["signatur"])) {
+                  $lok_mergeResult["RDS_LEA"] = "TEST"; 
+                 if ((strtolower($daia_set["callnumber"]))==(strtolower($lok_set["signatur"]))) {
 	            $lok_mergeResult["RDS_LOCATION"] = $daia_set.location;
                     if ($daia_set.availability) {
                        $lok_mergeResult["RDS_STATUS"] = "RDS_AVAIL";
