@@ -9,7 +9,7 @@
 ?>
 <div style="border: 0px solid red;">
 
-  <div class="rds_title">Katalog plus </div>
+  <div class="rds_title"><?=$this->transEsc('RDS_CATALOG_TITLE')?></div>
 
   <div class="rds_searchbox">
     <nav class="nav searchbox">
@@ -25,18 +25,18 @@
     <div class="rds_subnav">
         <ul>
             <?if (isset($this->searchType) && $this->searchType == 'advanced'):?>
-            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Home">Einfache Suche</li>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Home"><?=$this->transEsc('RDS_BASIC_SEARCH')?></li>
             <?else:?>
-            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Advanced">Erweitert Suche</li>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Advanced"><?=$this->transEsc('RDS_ADVANCED_SEARCH')?></li>
             <? endif;?>
-            <li><a href="<?=$this->url('home') ?>Search/History">Frühere Suchen</a></li>
-            <li><a href="<?=$this->url('home') ?>MyResearch">Merkliste</a></li>
+            <li><a href="<?=$this->url('home') ?>Search/History"><?=$this->transEsc('RDS_RDSHistory')?></a></li>
+            <li><a href="<?=$this->url('home') ?>MyResearch"><?=$this->transEsc('RDS_RDSFavorites')?></a></li>
         </ul>        
     </div>
 	</div>
 
   <div class="rds_subnav_infotext">
-  	Bücher & mehr: Bestand der Hohenheimer Bibliotheken, inkl. lizenzfreie elektronische Ressourcen und E-Books der Nationallizenzen.
+  	<?=$this->transEsc('RDS_SUBNAV_INFOTEXT_' . $this->searchClassId)?>
   </div>
   
 </div>
