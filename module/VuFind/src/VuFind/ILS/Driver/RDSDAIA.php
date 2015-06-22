@@ -139,6 +139,7 @@ class RDSDAIA extends DAIA
  
         return (["status" => $status,
             "availability" => $availability,
+            "notes" => $message,
             "duedate" => $duedate]);
     }
 

@@ -136,28 +136,82 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
              }
            }
            // set RDS_HOLDING_LEAK 
-           // RDS_INTERN RDS_PROVENIENCE RDS_LOCAL_NOTATION RDS_LEA
+           if (isset($lok_set["lueckenangabe8033"])) {
+             $lok_mergeResult["RDS_HOLDING_LEAK"] = $lok_set["lueckenangabe8033"];
+           }
+           // RDS_INTERN /* only for Freiburg FRIAS and Ordinariat */
+           // RDS_PROVENIENCE 
+           if (isset($lok_set["lok_prov"])) {
+             foreach ($lok_set["lok_prov"] as $provience) {
+                // split ids and text
+                if (preg_match('/ \| /', $provience)) {
+                   $prov_list = explode(" | ", $provience);
+                   // split id in provid and dnbid
+                   if (preg_match('/ ; /', $prov_list[0])) {
+                      $prov_id = explode(" ; ", $prov_list[0]);
+                      $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_id[0] . " prnname " . $prov_list[1] . " bndid: " . $prov_id[1];
+                   } else {
+                      $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_list[0] . " prnname " . $prov_list[1];
+                   }
+                } else {
+                   $lok_mergeResult["RDS_PROVENIENCE"] = "prn: $provience";
+                }
+             }
+           }
+           //RDS_LOCAL_NOTATION RDS_LEA
            // set RDS_LOCATION (may be modified by daia)
            if (isset($lok_set["zusatz_standort"])) {
              $lok_mergeResult["RDS_LOCATION"] = $lok_set["zusatz_standort"];
            }
            // set RDS_LOCATION and RDS_STATUS based on daia
            if (in_array($lok_set["bib_sigel"],$this->adis_clients)) {
-              foreach ($daia as $daia_set) {
-                  $lok_mergeResult["RDS_LEA"] = "TEST"; 
-                 if ((strtolower($daia_set["callnumber"]))==(strtolower($lok_set["signatur"]))) {
-	            $lok_mergeResult["RDS_LOCATION"] = $daia_set.location;
-                    if ($daia_set.availability) {
-                       $lok_mergeResult["RDS_STATUS"] = "RDS_AVAIL";
+             foreach ($daia as $loc_daia) {
+                // ToDo eliminate PHP Warning
+                foreach ($loc_daia as $items) {
+                  foreach ($items as $item) {
+                    if ($item["callnumber"] == $lok_set["signatur"]) {
+                      $lok_mergeResult["RDS_LOCATION"] = $item["location"]; 
+                      $localstatus = "";
+                      switch ($item["status"]) {
+                         case "borrowable": $localstatus = "RDS_AVAIL"; break;
+                         case "order": $localstatus = "RDS_ORDER"; break;
+                         case "unknown": 
+                             if ($item["notes"] == "provided") {
+                                 $localstatus = "RDS_WAITING";
+                             }
+                             if ($item["notes"] == "missing") {
+                                 $localstatus = "RDS_MISSING";
+                             }
+                         break;
+                         case "lent": 
+                             switch ($item["notes"]) {
+                                 case "transaction": $localstatus = "RDS_TRANSACTION"; break;
+                                 case "ordered": $localstatus = "RDS_STATUS_ORDERED"; break;
+                                 case "not yet ordered": $localstatus = "RDS_STATUS_MARKED"; break;
+                                 default: $localstatus = "RDS_UNAVAILABLE";
+                                   if ($item["duedate"]) {
+                                     $localstatus .= " RDS_AVAIL_EXPECTED: " . $item["duedate"];
+                                   }
+                                 break;
+                             }
+                         break;
+                         case "present":
+                             if ($lok_set["status"] == "p") {
+                                 $localstatus = "RDS_REF_STOCK_SPECIAL";
+                             } else {
+                                 $localstatus = "RDS_REF_STOCK_TEXT";
+                             }
+                         break;
+                      }
+                      $lok_mergeResult["RDS_STATUS"] = $localstatus;
                     }
-                 }
-             
-              }
+                  }
+                }
+             }
            }
            $result[$lok_set["bib_sigel"]][] = $lok_mergeResult;
         }
         return $result;
-        return ["100" => [["RDS_SIGNATURE" => "LS 123", "RDS_LOCATION" => "oben"],["RDS_SIGNATURE" => "LS 321", "RDS_LOCATION" => "unten"]], "100-11" => [["RDS_SIGNATURE" => "BL 123", "RDS_LOCATION" => "links"],["RDS_SIGNATURE" => "BL 321", "RDS_LOCATION" => "rechts"]]];
     }
 
     /**
