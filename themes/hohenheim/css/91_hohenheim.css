@@ -95,6 +95,17 @@ body {
 	
 }
 
+/* override css rules form hohenheimer default stylesheets (*_cached_*.css) */
 
+.fa-angle-down:before{
+  content: ""
+}
 
-.fa-angle-down:before{content:""}
+.navbar-form {
+  padding: 0px;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
