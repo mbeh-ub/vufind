@@ -34,7 +34,7 @@
   ?>
     <? if ($adis_link): /* colspan = 2 */ ?>
       <tr>
-      <td colspan="2" class="bibname">
+      <td colspan="3" class="bibname">
       <? if ($bib_link): ?>
       <a href="<?=$this->transEsc($bib_link)?>" target="_blank"><?=$bib_key?> <?=$this->transEsc($bib_name)?></a>
       <? else: ?>
@@ -47,7 +47,7 @@
       </tr>
     <? else: /* colspan=3 */ ?>
       <tr>
-      <td colspan="3" class="bibname">
+      <td colspan="4" class="bibname">
       <a href="<?=$this->transEsc($bib_link)?>" target="_blank"><?=$bib_key?> <?=$this->transEsc($bib_name)?></a>
       </td>
       </tr>
@@ -58,12 +58,8 @@
       <? if ($ex_value): ?> 
         <tr class="<?=$ex_name?>">
         <th><?=$this->transEsc($ex_name)?></th>
-        <td colspan="2"> 
-        <? if ($ex_name=="RDS_LOCATION"): ?> 
-           <?=$this->translate($ex_value)?>
-        <? else: ?>
+        <td colspan="3"> 
            <?=$ex_value?>
-        <? endif ?>
         </td>
       <? endif; ?>
     <? endforeach /* end foreach exemplar content */ ?>

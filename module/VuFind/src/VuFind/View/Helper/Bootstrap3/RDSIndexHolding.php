@@ -27,6 +27,7 @@
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
 namespace VuFind\View\Helper\Bootstrap3;
+use     VuFind\I18n\Translator\TranslatorAwareInterface;
 
 /**
  * RDSIndexHolding view helper
@@ -38,8 +39,10 @@ namespace VuFind\View\Helper\Bootstrap3;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
-class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
+class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements TranslatorAwareInterface
 {
+    use \VuFind\I18n\Translator\TranslatorAwareTrait;
+
     /**
      * List of adis client 
      *
@@ -150,6 +153,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
                    if (preg_match('/ ; /', $prov_list[0])) {
                       $prov_id = explode(" ; ", $prov_list[0]);
                       $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_id[0] . " prnname " . $prov_list[1] . " bndid: " . $prov_id[1];
+                      $lok_mergeResult["RDS_PROVENIENCE"] .=  "<a class='dnb' href=''  target='_blank' title='" . $this->translate('RDS_PERS_DNB') . "'></a>";
                    } else {
                       $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_list[0] . " prnname " . $prov_list[1];
                    }
@@ -158,10 +162,18 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
                 }
              }
            }
-           //RDS_LOCAL_NOTATION RDS_LEA
+           //RDS_LOCAL_NOTATION  /* only for PH Freiburg */
+           // set RDS_LEA /* only for Hohenheim, may similar for Freiburg mybib */
+           // ToDo check offline and zeitschrift
+           if (($lok_set["bib_sigel"] == "100") && (($lok_set["zusatz_standort"]!="11") && ($lok_set["zusatz_standort"]!="31"))) {
+              $lok_mergeResult["RDS_LEA"] = $this->translate("RDS_LEA_TEXT") . ": <a href='" . $this->translate("RDS_LEA_LINK") . $lok_set["t_idn"] . "' target='LEA'>" . $this->translate("RDS_LEA_LINK_TEXT") . "</a>";
+           }
            // set RDS_LOCATION (may be modified by daia)
            if (isset($lok_set["zusatz_standort"])) {
-             $lok_mergeResult["RDS_LOCATION"] = $lok_set["zusatz_standort"];
+             $lok_mergeResult["RDS_LOCATION"] = $this->translate($lok_set["zusatz_standort"]);
+             if (isset($lok_set["signatur"]) && isset($lok_set["standort"])) {
+                $lok_mergeResult["RDS_LOCATION"] .= $this->translate("RDS_LOCSIG") . " " . $lok_set["standort"]; 
+             }
            }
            // set RDS_LOCATION and RDS_STATUS based on daia
            if (in_array($lok_set["bib_sigel"],$this->adis_clients)) {
@@ -170,7 +182,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
                 foreach ($loc_daia as $items) {
                   foreach ($items as $item) {
                     if ($item["callnumber"] == $lok_set["signatur"]) {
-                      $lok_mergeResult["RDS_LOCATION"] = $item["location"]; 
+                      $lok_mergeResult["RDS_LOCATION"] .= " " . $this->translate($item["location"]); 
                       $localstatus = "";
                       switch ($item["status"]) {
                          case "borrowable": $localstatus = "RDS_AVAIL"; break;
@@ -190,7 +202,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
                                  case "not yet ordered": $localstatus = "RDS_STATUS_MARKED"; break;
                                  default: $localstatus = "RDS_UNAVAILABLE";
                                    if ($item["duedate"]) {
-                                     $localstatus .= " RDS_AVAIL_EXPECTED: " . $item["duedate"];
+                                     $localstatus .= $this->translate("RDS_AVAIL_EXPECTED") . $item["duedate"];
                                    }
                                  break;
                              }
@@ -209,6 +221,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper
                 }
              }
            }
+	   // ToDo sorting $lok_mergeResult
            $result[$lok_set["bib_sigel"]][] = $lok_mergeResult;
         }
         return $result;
