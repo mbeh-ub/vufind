@@ -59,7 +59,11 @@
         <tr class="<?=$ex_name?>">
         <th><?=$this->transEsc($ex_name)?></th>
         <td colspan="2"> 
-        <?=$ex_value?>
+        <? if ($ex_name=="RDS_LOCATION"): ?> 
+           <?=$this->translate($ex_value)?>
+        <? else: ?>
+           <?=$ex_value?>
+        <? endif ?>
         </td>
       <? endif; ?>
     <? endforeach /* end foreach exemplar content */ ?>
