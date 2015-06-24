@@ -48,6 +48,37 @@ use DOMDocument, VuFind\Exception\ILS as ILSException,
  */ 
 class RDSDAIA extends DAIA 
 {
+    /**
+     * DAIA summaryKey 
+     *
+     * @var string
+     */
+    protected $summaryKey = null;
+
+    /**
+     * DAIA summaryValue
+     *
+     * @var string
+     */
+    protected $summaryValue = null;
+
+    /**
+     * Initialize the driver.
+     *
+     * Validate configuration and perform all resource-intensive tasks needed to
+     * make the driver active.
+     *
+     * @throws ILSException
+     * @return void
+     */
+    public function init()
+    {
+       parent::init();
+       if (isset($this->config['DAIA']['summaryKey']) && isset($this->config['DAIA']['summaryValue'])) {
+           $summaryKey = $this->config['DAIA']['summaryKey'];
+           $summaryValue = $this->config['DAIA']['summaryValue'];
+       } 
+    }
 
     /**
      * Calaculate Status and Availability of an item
