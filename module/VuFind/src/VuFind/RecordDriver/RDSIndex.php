@@ -1571,6 +1571,15 @@ class RDSIndex extends SolrMarc
         return isset($this->fields['medienicon']) ? $this->fields['medienicon'] : '&nbsp;';
     }
 
+    /**
+     * Get the volume info   
+     * RDS
+     * @return string
+     */
+    public function getVolumeDisplay() 
+    {
+        return isset($this->fields['bnd_display']) ? implode($this->fields['bnd_display']) : '';
+    }
 
     /**
      * Get the info if serie 
@@ -1677,7 +1686,7 @@ class RDSIndex extends SolrMarc
     }
 
     /**
-     * Get the info if its a 'rn'-search. TODO !!
+     * TODO Get the info if its a 'rn'-search. TODO !!
      * RDS
      * @return string
      */
@@ -2557,13 +2566,14 @@ class RDSIndex extends SolrMarc
     /**
     * Fuer die Url Anzeige von Tuebingen und Hohenheim in der Trefferliste
     * RDS
+    * @return String
     */
     public function getShortLinks()
     {
         if (isset($this->fields['url_short'])) {
             return $this->fields['url_short'] ; 
-        }
-        else { return ''; 
+        } else { 
+            return ''; 
         }
     }
 
@@ -2579,23 +2589,14 @@ class RDSIndex extends SolrMarc
         $value = $this->getONLINE();
         if (strstr($value, "offline")) {
             if (isset($this->fields['url_long'])) {
-                $arr_links = $this->fields['url_long'];
-                  $last_item = end($arr_links);
-                foreach ($arr_links as $link) {
-                      $chk_link = $link;
+                $arr_links = $this->fields['url_long'];                
+                foreach ($arr_links as $key => $link) {
                     if (strstr($link, "|")) {
                            $arr_link = explode(" | ", $link);
-                                  $link_text = $arr_link[1];
-                                         $html_result .= "<a href='".$arr_link[0]."' target='_blank'>".$link_text."</a>";
-                        if ($chk_link != $last_item) {
-                                $html_result .=" <br />" ;
-                        }
-                    }
-                    else{
-                           $html_result .= "<a href='".$link."' target='_blank' >".$link."</a>";
-                        if ($chk_link != $last_item) {
-                                $html_result .=" <br />" ;
-                        }
+                           $link_array[$key]['url'] = $arr_link[0];
+                        $link_array[$key]['txt'] = $arr_link[1];
+                    } else {
+                        $link_array[$key]['url'] = $link;
                     }
                 }
             }
@@ -2611,114 +2612,149 @@ class RDSIndex extends SolrMarc
     */
      public function getLongLinksTab3()
      {
-        $html_result = "";
+        $link_array = array();
         $value = $this->getONLINE();
         if (strstr($value, "online")) {
             if (isset($this->fields['url_long'])) {
-                 $arr_links = $this->fields['url_long'];
-                      $last_item = end($arr_links);
-                foreach ($arr_links as $link) {
-                      $chk_link = $link;
+                $arr_links = $this->fields['url_long'];
+                foreach ($arr_links as $key => $link) {
                     if (strstr($link, "|")) {
-                           $arr_link = explode(" | ", $link);
-                                  $link_text = $arr_link[1];
-                                         $html_result .= "<a href='".$arr_link[0]."' target='_blank'>".$link_text."</a>";
-                        if ($chk_link != $last_item) {
-                                $html_result .=" <br />" ;
-                        }
-                    }
-                    else{
-                           $html_result .= "<a href='".$link."' target='_blank' >".$link."</a>";
-                        if ($chk_link != $last_item) {
-                                $html_result .=" <br />" ;
-                        }
+                            $arr_link = explode(" | ", $link);
+                                $link_array[$key]['url'] = $arr_link[0];
+                        $link_array[$key]['txt'] = $arr_link[1];
+                    } else {
+                        $link_array[$key]['url'] = $link;
                     }
                 }
             }
         }
-        return $html_result;
+        return $link_array;
      }
 
-        /**
-     * Get the local data set. 
-     * RDS
-     * @return array
-     */
-                                    public function getLok()
-                                    {
+      /**
+      * Get the local data set. 
+      * RDS
+      * @return array
+      */
+        public function getLok()
+        {
             if (isset($this->fields['loksatz'])) {
                 foreach ($this->fields['loksatz'] as $lok) {
-                        $obj[] = json_decode($lok, true);
+                    $obj[] = json_decode($lok, true);
                 }
                 return $obj;
             } else { 
                 return ""; 
             }
-                                    }
+        }
 
-                                    /**
-     * Get the lokal notations. 
-     * RDS
-     * @return array
-     */
-                                    public function getLokNotation()
-                                    {
-                                        return isset($this->fields['zr']) ? $this->fields['zr'] : '';
-                                    }
+        /**
+      * Get the lokal notations. 
+      * RDS
+      * @return array
+      */
+        public function getLokNotation()
+        {
+            return isset($this->fields['zr']) ? $this->fields['zr'] : '';
+        }
 
-                                    /**
-     * Get an array of all the local subjects associated with the record.
-     * RDS
-     * @return array
-     */
-                                    public function getLokCt()
-                                    {
-                                        return isset($this->fields['zs']) ? $this->fields['zs'] : '';
-                                    }
+        /**
+      * Get an array of all the local subjects associated with the record.
+      * RDS
+      * @return array
+      */
+        public function getLokCt()
+        {
+            return isset($this->fields['zs']) ? $this->fields['zs'] : '';
+        }
 
-                                    /**
-     * Get overview about jounals publication associated with the record.
-     * RDS
-     * @return array
-     */
-                                    public function getZsVerlauf()
-                                    {
-                                        return isset($this->fields['zs_verlauf']) ? implode($this->fields['zs_verlauf']) : '';
-                                    }
+        /**
+      * Get overview about jounals publication associated with the record.
+      * RDS
+      * @return array
+      */
+        public function getZsVerlauf()
+        {
+            return isset($this->fields['zs_verlauf']) ? implode($this->fields['zs_verlauf']) : '';
+        }
 
-                                    /**
-     * Get Cumulative Index associated with the record. *** TODO ulm only TODO ***
-     * RDS
-     * @return array
-     */
-                                    public function getRegister()
-                                    {
-                                        return isset($this->fields['register']) ? implode($this->fields['register']) : '';
-                                    }
+        /**
+      * Get Cumulative Index associated with the record. *** TODO ulm only TODO ***
+      * RDS
+      * @return array
+      */
+        public function getRegister()
+        {
+            return isset($this->fields['register']) ? implode($this->fields['register']) : '';
+        }
 
-                                    /**
-     * Get an array of all the formats associated with the record.
-     *
-     * @return array
-     * @access protected
-     */
-                                    /*    public function getFormats()
-                                    {
-                                    $formats = isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
+     
+        /**
+      * Get information if record is online
+      * RDS
+      * @return array
+      */
+        public function getONLINE() 
+        {
+            if (isset($this->fields['tz'])) {
+                $zj_check = $this->fields['tz'];
+                foreach ($zj_check as $zj_data) {
+                    if ($zj_data === 'ebook') {
+                        return 'online';
+                    }
+                }
+            }
+            if (isset($this->fields['tz'])) {
+                $zj_check = $this->fields['tz'];
+                foreach ($zj_check as $zj_data) {
+                    if ($zj_data === 'cofz') {
+                        return 'online';
+                    }
+                }
+            }
+            if (isset($this->fields['zj'])) {
+                $zj_check = $this->fields['zj'];
+                foreach ($zj_check as $zj_data) {
+                    if ($zj_data === 'LFER') {
+                        return 'online';
+                    }
+                }
+            }
+            if (isset($this->fields['az'])) {
+                $zj_check = $this->fields['az'];
+                foreach ($zj_check as $zj_data) {
+                    if ($zj_data === 'ebok') {
+                        return 'online';
+                    }
+                }
+            }
+            return 'offline';
+        }
 
-                                    if (in_array('book', $formats)) {
-                                    $formats[] = 'Book';
-                                    }
 
-                                    if (in_array('article', $formats)) {
-                                    $formats[] = 'Article';
-                                    }
+        /**
+      * Get an array of all the formats associated with the record.
+      *
+      * @return array
+      * @access protected
+      */
+        /*    public function getFormats()
+        {
+        $formats = isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
 
-                                    if (in_array('zeitschrift', $formats) || in_array('journal', $formats)) {
-                                    $formats[] = 'Journal';
-                                    }
+        if (in_array('book', $formats)) {
+        $formats[] = 'Book';
+        }
 
-                                    return $formats;
-                                    }
-                                    */
+        if (in_array('article', $formats)) {
+        $formats[] = 'Article';
+        }
+
+        if (in_array('zeitschrift', $formats) || in_array('journal', $formats)) {
+        $formats[] = 'Journal';
+        }
+
+        return $formats;
+        }
+        */
 }

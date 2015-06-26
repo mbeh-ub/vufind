@@ -42,6 +42,21 @@
           </td>
         </tr>
       <? endif; ?>
+   
+<? // TODO **** not for all bibs => tue, blb, ulm NOT tested *** TODO ?>
+   <? $url_lnk2 = $this->driver->getLongLinksTab2(); ?>
+      <? if (isset($url_lnk2) && !empty($url_lnk2)): ?>
+      <? $contentDisplayed = true; ?>
+        <tr>
+        <th><?=$this->transEsc('Links')?>: </th>
+           <td property="creator">
+            <? $i = 0; foreach ($url_lnk2 as $field): ?><?=($i++ == 0)?'':'<br />'?>
+            <a href="<?=$field['url']?>"><?=$this->escapeHtml($field['txt'])?></a>
+            <? endforeach; ?>
+          </td>
+        </tr>
+      <? endif; ?>
+
 <? // TODO **** not for all bibs  *** TODO ?>
    <? $rvk_no = $this->driver->getNotation(); if (!empty($rvk_no)): ?>
    <? $contentDisplayed = true; ?>
