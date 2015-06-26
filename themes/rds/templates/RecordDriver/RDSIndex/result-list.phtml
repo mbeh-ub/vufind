@@ -2,7 +2,38 @@
     <div class="col-xs-11 middle">
       <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title getFull" data-view="<?=$this->params->getOptions()->getListViewOption()?>">
       <?
-        $summHighlightedTitle = $this->driver->getHighlightedTitle();
+          $summHighlightedTitle = $this->driver->getHighlightedTitle();
+	  $summAst = $this->driver->getAst();
+          $summTitle = $this->driver->getTitleShort();
+	  // TODO Bei der RN Suche wird das angezeigt TODO
+	  $summTitleSerie = $this->driver->getTitleSerie();
+	  $summVolume = $this->driver->getVolumeDisplay();
+	  $summEditions = $this->driver->getEditions();
+	  if (!empty($summTitleSerie)) {
+	  	if (!empty($summVolume)) {
+			$this->escapeHtml($summVolume);
+		}
+	  }
+	  // TODO Ende
+	  if (!empty($summAst)) {
+	    ?>[ <? echo $this->escapeHtml($summAst);?> ] <?
+	  }
+          if (!empty($summHighlightedTitle)) {
+	    
+            echo $this->highlight($this->addEllipsis($summHighlightedTitle, $summTitle));
+	    if (!empty($summEditions)) {
+	    	?> - <? echo $this->escapeHtml($summEditions);
+	    }
+          } else if (!empty($summTitle)) {
+            echo $this->escapeHtml($this->truncate($summTitle, 180));
+	    if (!empty($summEditions)) {
+	    	 ?> - <? echo $this->escapeHtml($summEditions);
+	    }
+
+          } else {
+            echo $this->transEsc('Title not available');
+          }
+       /* $summHighlightedTitle = $this->driver->getHighlightedTitle();
         $summTitle = $this->driver->getTitleShort();
         if (!empty($summHighlightedTitle)) {
           echo $this->highlight($this->addEllipsis($summHighlightedTitle, $summTitle));
@@ -10,7 +41,7 @@
           echo $this->escapeHtml($this->truncate($summTitle, 180));
         } else {
           echo $this->transEsc('Title not available');
-        }
+        }*/
       ?>
       </a>
 <div id="loading_<?=preg_replace("/\W/", "_", $this->driver->getUniqueID())?>" class="hidden"><p><?=$this->transEsc("Loading")?>... <img src="<?=$this->imageLink('ajax_loading.gif')?>" /></p></div>
@@ -39,20 +70,41 @@
           $summHighlightedTitle = $this->driver->getHighlightedTitle();
 	  $summAst = $this->driver->getAst();
           $summTitle = $this->driver->getTitleShort();
+	  // TODO Bei der RN Suche wird das angezeigt TODO
+	  $summTitleSerie = $this->driver->getTitleSerie();
+	  $summVolume = $this->driver->getVolumeDisplay();
+	  $summEditions = $this->driver->getEditions();
+	  if (!empty($summTitleSerie)) {
+	  	if (!empty($summVolume)) {
+			$this->escapeHtml($summVolume);
+		}
+	  }
+	  // TODO Ende
 	  if (!empty($summAst)) {
 	    ?>[ <? echo $this->escapeHtml($summAst);?> ] <?
 	  }
           if (!empty($summHighlightedTitle)) {
+	    
             echo $this->highlight($this->addEllipsis($summHighlightedTitle, $summTitle));
+	    if (!empty($summEditions)) {
+	    	 echo $this->escapeHtml($summEditions);
+	    }
           } else if (!empty($summTitle)) {
             echo $this->escapeHtml($this->truncate($summTitle, 180));
+	    if (!empty($summEditions)) {
+	    	 echo $this->escapeHtml($summEditions);
+	    }
+
           } else {
             echo $this->transEsc('Title not available');
           }
+
         ?>
         </a>
       </div>
 <? endif; ?>
+
+
 
    <div>
    <? $au_short = $this->driver->getShortAuthors(); ?>
