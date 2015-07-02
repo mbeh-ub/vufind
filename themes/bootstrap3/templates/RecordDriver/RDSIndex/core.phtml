@@ -306,7 +306,7 @@
 
  <? // TODO not tested TODO ?>
      <? $ebook_lnk = $this->driver->getEbookLink(); ?>
-      <? if (isset($ebook_lnk) && !empty($ebook_lnk) && strstr($ppn, "NL")): ?>
+      <? if (isset($ebook_lnk) && !empty($ebook_lnk) && preg_match("/^[A-Z].*/", $ppn)): ?>
       <tr>
         <th><?=$this->transEsc('Links')?>: </th>
         <td><? $i = 0; foreach ($ebook_lnk as $field): ?><?=($i++ == 0)?'':'<br />'?>
