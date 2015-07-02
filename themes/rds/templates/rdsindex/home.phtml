@@ -4,7 +4,7 @@
 
   // Disable top search box -- this page has a special layout.
   $this->layout()->searchbox = false;
-
+  
   // Set default value if necessary:
   if (!isset($this->searchClassId)) {
     $this->searchClassId = 'RDSIndex';
@@ -16,7 +16,6 @@
   $advSearch = $options->getAdvancedSearchAction();
   
   $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('RDSIndex') . '</li>';
-  
 ?>
 
 <div>

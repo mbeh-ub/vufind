@@ -1,8 +1,7 @@
 <?
-  if ($this->layout()->renderSearchbox != false) {
+  if (!isset($this->layout()->renderSearchbox) || $this->layout()->renderSearchbox != false) {
     $this->layout()->searchbox = $this->render('search/searchbox.phtml');
   }
-  
 ?>
 
 <div style="border: 0px solid red;">
