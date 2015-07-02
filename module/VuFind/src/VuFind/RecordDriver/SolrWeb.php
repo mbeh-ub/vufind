@@ -50,7 +50,7 @@ class SolrWeb extends SolrDefault
     public function __construct($mainConfig = null, $recordConfig = null,
         $searchSettings = null
     ) {
-        $this->preferredSnippetFields = ['description', 'fulltext'];
+        $this->preferredSnippetFields = ['description', 'content'];
         parent::__construct($mainConfig, $recordConfig, $searchSettings);
     }
 
@@ -82,7 +82,7 @@ class SolrWeb extends SolrDefault
      */
     public function getLastModified()
     {
-        return isset($this->fields['last_modified'])
-            ? $this->fields['last_modified'] : '';
+        return isset($this->fields['changed'])
+            ? $this->fields['changed'] : '';
     }
 }
