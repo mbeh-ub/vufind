@@ -15,7 +15,7 @@
   $basicSearch = $options->getSearchAction();
   $advSearch = $options->getAdvancedSearchAction();
 
-  $this->layout()->breadcrumbs = false;
+  $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('RDSProxy') . '</li>';
 ?>
 
 <div>
@@ -23,16 +23,8 @@
 	<? $this->layout()->navigation = $this->render('layout/navigation.phtml');?>
   <?=$this->layout()->navigation ?>
 
-
 	<div class="rds_info">
-
+		<?=$this->transEsc("RDS_HOME_INFO_" . $this->searchClassId);?>
 	</div>
-
-	<div class="rds_content">
-    Die Literatursuchmaschine der Universität Hohenheim<br />
-    Suchen Sie parallel in den Beständen der Hohenheimer Bibliotheken (Bücher & mehr) sowie in weiteren Literaturnachweisen (Artikel & mehr).<br /> 
-    Zugriff auf lizenzierte E-Medien erhalten Sie im Universitätsnetz. Angehörige der Universität haben nach Login auch Vollzugriff auf den Bereich "Artikel & mehr".
-	</div>
-
 
 </div>
