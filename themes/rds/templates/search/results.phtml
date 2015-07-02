@@ -81,11 +81,13 @@
         <? else: ?>
           <p class="lead"><?=$this->transEsc('nohit_heading')?></p>
         <? endif; ?>
-        <p class="adv_search_links">
+        <? if ($this->searchType == 'advanced'): ?>
+        	<p class="adv_search_links">
               <a href="<?=$this->url($advSearch)?>?edit=<?=$this->escapeHtmlAttr($searchId)?>"><?=$this->transEsc("Edit this Advanced Search")?></a> |
               <a href="<?=$this->url($advSearch)?>"><?=$this->transEsc("Start a new Advanced Search")?></a> |
               <a href="<?=$this->url($searchHome)?>"><?=$this->transEsc("Start a new Basic Search")?></a>
-        </p>
+        	</p>
+        <? endif; ?>
       </div>
 
       <? if ($recordTotal > 0): ?>
