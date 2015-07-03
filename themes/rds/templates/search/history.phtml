@@ -3,10 +3,12 @@
   $this->headTitle($this->translate('Search History'));
 
   // Set up breadcrumbs:
-  $this->layout()->breadcrumbs = '<li><a href="' .  $this->url('myresearch-home') . '">' . $this->transEsc('Your Account') . '</a></li>'
-    . '<li class="active">' . $this->transEsc('History') . '</li>';
+  $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('History') . '</li>';
   $this->searchParams();
-  $this->searchClassId = "RDSIndex";
+  // Set default value if necessary:
+  if (!isset($this->searchClassId)) {
+    $this->searchClassId = 'Solr';
+  }
   
 ?>
 
