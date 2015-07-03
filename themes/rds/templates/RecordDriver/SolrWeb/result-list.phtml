@@ -28,7 +28,7 @@
 
   <div class="resultItemLine3">
     <? $lastMod = $this->driver->getLastModified(); if (!empty($lastMod)): ?>
-      <br /><?=$this->transEsc('Last Modified')?>: <?=$this->escapeHtml(trim(str_replace(array('T', 'Z'), ' ', $lastMod)))?>
+      <?=$this->transEsc('Last Modified')?>: <?=$this->escapeHtml(trim(date("d.m.Y", strtotime($lastMod))))?>
     <? endif; ?>
   </div>
 </div>
