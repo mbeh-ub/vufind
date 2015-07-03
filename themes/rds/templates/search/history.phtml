@@ -6,15 +6,13 @@
   $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('History') . '</li>';
   $this->searchParams();
   // Set default value if necessary:
-  if (!isset($this->searchClassId)) {
-    $this->searchClassId = 'Solr';
-  }
   
+  $this->searchClassId = 'SolrWeb';
 ?>
 
-<div class="row">
+<div>
 
-	<? $this->layout()->navigation = $this->render('layout/navigation.phtml');?>
+	<? $this->layout()->navigation = $this->render('web/navigation.phtml');?>
   <?=$this->layout()->navigation ?>
 
   <div class="<?=$this->layoutClass('mainbody')?>">
