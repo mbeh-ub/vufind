@@ -164,6 +164,7 @@ $config = [
             'VuFind\Mailer' => 'VuFind\Mailer\Factory',
             'VuFind\Recaptcha' => 'VuFind\Service\Factory::getRecaptcha',
             'VuFind\RecommendPluginManager' => 'VuFind\Service\Factory::getRecommendPluginManager',
+            'VuFind\RecordCache' => 'VuFind\Service\Factory::getRecordCache',
             'VuFind\RecordDriverPluginManager' => 'VuFind\Service\Factory::getRecordDriverPluginManager',
             'VuFind\RecordLoader' => 'VuFind\Service\Factory::getRecordLoader',
             'VuFind\RecordRouter' => 'VuFind\Service\Factory::getRecordRouter',
@@ -223,6 +224,7 @@ $config = [
         'pgsql_seq_mapping'  => [
             'comments'       => ['id', 'comments_id_seq'],
             'oai_resumption' => ['id', 'oai_resumption_id_seq'],
+            'record'         => ['id', 'record_id_seq'],
             'resource'       => ['id', 'resource_id_seq'],
             'resource_tags'  => ['id', 'resource_tags_id_seq'],
             'search'         => ['id', 'search_id_seq'],
@@ -230,8 +232,9 @@ $config = [
             'tags'           => ['id', 'tags_id_seq'],
             'user'           => ['id', 'user_id_seq'],
             'user_list'      => ['id', 'user_list_id_seq'],
-            'user_resource'  => ['id', 'user_resource_id_seq']
+            'user_resource'  => ['id', 'user_resource_id_seq'],
         ],
+
         // This section contains service manager configurations for all VuFind
         // pluggable components:
         'plugin_managers' => [
@@ -336,6 +339,7 @@ $config = [
                     'changetracker' => 'VuFind\Db\Table\ChangeTracker',
                     'comments' => 'VuFind\Db\Table\Comments',
                     'oairesumption' => 'VuFind\Db\Table\OaiResumption',
+                    'record' => 'VuFind\Db\Table\Record',
                     'resourcetags' => 'VuFind\Db\Table\ResourceTags',
                     'search' => 'VuFind\Db\Table\Search',
                     'session' => 'VuFind\Db\Table\Session',
@@ -347,7 +351,7 @@ $config = [
                 ],
             ],
             'hierarchy_driver' => [
-                'factories' => [
+               'factories' => [
                     'default' => 'VuFind\Hierarchy\Driver\Factory::getHierarchyDefault',
                     'flat' => 'VuFind\Hierarchy\Driver\Factory::getHierarchyFlat',
                 ],
@@ -514,6 +518,7 @@ $config = [
 		    'RDSIndex' => 'VuFind\Search\Factory\RDSIndexBackendFactory',
                     'RDSProxy' => 'VuFind\Search\Factory\RDSProxyBackendFactory',
                     'Primo' => 'VuFind\Search\Factory\PrimoBackendFactory',
+                    'RecordCache' => 'VuFind\Search\Factory\RecordCacheBackendFactory',
                     'Solr' => 'VuFind\Search\Factory\SolrDefaultBackendFactory',
                     'SolrAuth' => 'VuFind\Search\Factory\SolrAuthBackendFactory',
                     'SolrReserves' => 'VuFind\Search\Factory\SolrReservesBackendFactory',
