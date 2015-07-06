@@ -1,0 +1,30 @@
+<?
+  // Set page title.
+  $this->headTitle($this->translate('RDSWeb'));
+
+  // Disable top search box -- this page has a special layout.
+  $this->layout()->searchbox = false;
+  
+  // Set default value if necessary:
+  if (!isset($this->searchClassId)) {
+    $this->searchClassId = 'SolrWeb';
+  }
+
+  // Load search actions and settings (if any):
+  $options = $this->searchOptions($this->searchClassId);
+  $basicSearch = $options->getSearchAction();
+  $advSearch = $options->getAdvancedSearchAction();
+  
+  $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('RDSWeb') . '</li>';
+?>
+
+<div>
+	
+	<? $this->layout()->navigation = $this->render('web/navigation.phtml');?>
+  <?=$this->layout()->navigation ?>
+
+	<div class="rds_info">
+		<?=$this->transEsc("RDS_HOME_INFO_" . $this->searchClassId);?>
+	</div>
+
+</div>

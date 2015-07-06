@@ -1,0 +1,42 @@
+<?
+  if (isset($this->renderSearchbox) && $this->renderSearchbox == false) {
+    $this->layout()->searchbox = "";
+  } else {
+    $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+  }
+  
+  
+?>
+<div style="border: 0px solid red;">
+
+  <div class="rds_title"><?=$this->transEsc('RDS_CATALOG_TITLE')?></div>
+
+  <div class="rds_searchbox">
+    <nav class="nav searchbox">
+      <?=$this->layout()->searchbox ?>
+    </nav>
+  </div>
+
+	<div>
+    <div class="rds_searchTabs">
+      <?= $this->render('search/searchTabs'); ?>
+    </div>
+
+    <div class="rds_subnav">
+        <ul>
+            <?if (isset($this->searchType) && $this->searchType == 'advanced'):?>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Home"><?=$this->transEsc('RDS_BASIC_SEARCH')?></li>
+            <?else:?>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Advanced"><?=$this->transEsc('RDS_ADVANCED_SEARCH')?></li>
+            <? endif;?>
+            <li><a href="<?=$this->url('home') ?>Search/History"><?=$this->transEsc('RDS_RDSHistory')?></a></li>
+            <li><a href="<?=$this->url('home') ?>MyResearch"><?=$this->transEsc('RDS_RDSFavorites')?></a></li>
+        </ul>        
+    </div>
+	</div>
+
+  <div class="rds_subnav_infotext">
+  	<?=$this->transEsc('RDS_SUBNAV_INFOTEXT_' . $this->searchClassId)?>
+  </div>
+  
+</div>

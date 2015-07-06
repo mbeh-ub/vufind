@@ -65,7 +65,7 @@ class Socket implements HttpAdapter, StreamInterface
         'ssltransport'          => 'ssl',
         'sslcert'               => null,
         'sslpassphrase'         => null,
-        'sslverifypeer'         => true,
+        'sslverifypeer'         => false,
         'sslcafile'             => null,
         'sslcapath'             => null,
         'sslallowselfsigned'    => false,

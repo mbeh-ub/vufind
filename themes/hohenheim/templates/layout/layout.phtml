@@ -1,0 +1,248 @@
+<?=$this->doctype('HTML5')?>
+<html lang="<?=$this->layout()->userLang?>">
+  <head>
+    <?$this->headThemeResources()?>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+    <?=$this->headMeta()?>
+    <?=$this->headTitle()?>
+    <?
+      // Set up OpenSearch link:
+      $this->headLink(
+        array(
+          'href' => $this->url('search-opensearch') . '?method=describe',
+          'type' => 'application/opensearchdescription+xml',
+          'title' => $this->transEsc('Library Catalog Search'),
+          'rel' => 'search'
+        )
+      );
+    ?>
+    <?=$this->headLink()?>
+    <?=$this->headStyle()?>
+    <?
+      // Set global path for Javascript code:
+      $this->headScript()->prependScript("path = '" . rtrim($this->url('home'), '/') . "';");
+
+      // Deal with cart stuff:
+      if (!isset($this->renderingError)) {
+        $cart = $this->cart();
+        $this->jsTranslations()->addStrings(
+          array(
+            'bulk_email_success' => 'bulk_email_success',
+            'bulk_save_success' => 'bulk_save_success',
+            'close' => 'close',
+            'loading' => 'Loading',
+            'sms_success' => 'sms_success',
+            'number_thousands_separator' => ['number_thousands_separator', null, ',']
+          )
+        );
+        if ($cart->isActive()) {
+          $this->headScript()->appendFile("vendor/cookies.js");
+          $this->headScript()->appendFile("cart.js");
+          $domain = $cart->getCookieDomain();
+          $this->headScript()->appendScript(
+            'var cartCookieDomain = ' . (!empty($domain) ? "'$domain'" : 'false') . ';'
+          );
+          $this->jsTranslations()->addStrings(
+            array(
+              'bulk_noitems_advice' => 'bulk_noitems_advice',
+              'confirmDelete' => 'confirm_delete',
+              'confirmEmpty' => 'bookbag_confirm_empty',
+              'viewBookBag' => 'View Book Bag',
+              'addBookBag' => 'Add to Book Bag',
+              'removeBookBag' => 'Remove from Book Bag',
+              'itemsAddBag' => 'items_added_to_bookbag',
+              'itemsInBag' => 'items_already_in_bookbag',
+              'bookbagMax' => $cart->getMaxSize(),
+              'bookbagFull' => 'bookbag_full_msg',
+              'bookbagStatusFull' => 'bookbag_full',
+              'no_tags' => 'No Tags'
+            )
+          );
+        }
+        $this->headScript()->appendScript($this->jsTranslations()->getScript());
+      }
+
+      // Session keep-alive
+      if ($this->KeepAlive()) {
+          $this->headScript()->appendScript('var keepAliveInterval = '
+            . $this->KeepAlive());
+          $this->headScript()->appendFile("keep_alive.js");
+      }
+    ?>
+    <?=$this->headScript()?>
+    
+    
+  </head>
+  <body>
+    <? // Set up the search box -- there are three possible cases:
+      // 1. No search box was set; we should default to the normal box
+      // 2. It was set to false; we should display nothing
+      // 3. It is set to a custom string; we should display the provided version
+      // Set up default search box if no data was provided from the template;
+      // this covers case 1.  Cases 2 and 3 are then covered by logic below.
+      if (!isset($this->layout()->searchbox)) {
+        $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+      }
+    ?>
+    <header role="banner" class="header-site hidden-print">
+      <div class="container">
+        <a class="sr-only" href="#content"><?=$this->transEsc('Skip to content') ?></a>
+        <?=$this->render('header.phtml')?>
+      </div>
+ </header>
+
+ <nav class="navigation-main ">
+    <div class="navigation-main__wrp-1">
+      <div class="navigation-main__wrp-2"> 
+        
+        
+        <!--
+				button group
+
+				additional classes:
+				.navigation-main__button_active = active button (used on search and login buttons)
+			-->
+      	<form method="post" name="langForm" action="" id="langForm">
+					<input type="hidden" name="mylang">
+        </form>
+
+        <div class="navigation-main__button-group"> 
+        	<a class="navigation-main__button navigation-main__button-navigation" data-gremlin="MobileNavToggle"><i></i><span>Navigation</span></a> 
+        	<a class="navigation-main__button navigation-main__button-search" href="#nav-panel-search" tabindex="10" data-gremlin="NavbarToggle"><i></i><span>Suche</span></a> 
+          <? $newLang = ($this->layout()->userLang == 'de' ? ['en','English'] : ['de','Deutsch']); ?>            
+       	  <a class="navigation-main__language-select" href="#" onclick="document.langForm.mylang.value='<?=$newLang[0]?>';document.langForm.submit()"><?=$newLang[1]?></a>
+       	</div>
+        
+        <!--
+				navigation content
+			-->
+        
+        <div class="navigation-main__toggle-content" data-gremlin="SiteNavigation,MobileNavigation">
+          <div class="navigation-main-flyout-cover-strap"></div>
+          <div class="navigation-main-flyout-cover-head"></div>
+          <section class="navigation-main__section" id="nav-themenbereiche">
+            <h6 class="navigation-main__section-title">Themenbereiche</h6>
+            <ul>
+              <li class="nav-section nav-section__level-1"><a href="<?=$this->serverUrl() . $this->url('home') . 'RDSIndex/Home'?>"  data-nav-toggle="level-1" class="nav-section__toggle">HohSearch</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103627?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Bibliothekskonto</a></li>
+              <li class="nav-section nav-section__level-1 "><a href="https://hohsearch-info.uni-hohenheim.de/103790?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Systematik</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103628?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Infos zur Ausleihe</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103711?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Fachdatenbanken</a></li>
+              <li class="nav-section nav-section__level-1"><a href="https://hohsearch-info.uni-hohenheim.de/103629?&amp;N=1"  data-nav-toggle="level-1" class="nav-section__toggle">Hilfe</a></li>
+                            <li class="nav-section nav-section__level-1"><a href="http://rdsui2.ub.uni-freiburg.de/MyResearch"  data-nav-toggle="level-1" class="nav-section__toggle">Merkliste</a></li>
+            </ul>
+          </section>
+          <!-- /section --> 
+          
+        </div>
+        <!-- /toggle-content --> 
+        
+      </div>
+      <!-- /wrp-2 --> 
+    </div>
+    <!-- /wrp-1 -->
+    
+     <div class="navigation-main__wrp-3" data-gremlin="SiteNavObserver">
+      <div id="nav-panel-search" class="navigation-main__panel navigation-main__panel-search" data-gremlin="Navbar">       
+        <!-- site search -->
+        <div class="site-search">
+          <form class="form-inline" id="tx-solr-search-form-breadcrumb" role="form" action="/103440?N=1">
+            <div class="site-search__col-1">
+              <label for="tx-solr-q-breadcrumb" class="sr-only">Suche</label>
+              <input name="tx_solr[q]" autocomplete="off" id="tx-solr-q-breadcrumb" class="ac_input ui-autocomplete-input form-control site-search__form-search" placeholder="Suchbegriff, Name, Studiengang …" type="text">
+            </div>
+            <div class="site-search__col-2">
+              <button type="submit" id="suchbutton" class="btn btn-primary site-search__form-submit"> <span>Suchen</span><i></i> </button>
+            </div>
+          </form>
+        </div>
+        <!-- /site-search --> 
+        
+      </div>
+      <!-- /panel-search --> 
+      
+      <!-- /panel-login --> 
+      
+    </div>
+    <!-- /wrp-3 --> 
+
+  </nav>
+
+ <div data-gremlin="Site" class="site"> 
+    
+
+    <!-- breadcrumbs -->
+
+    <? 
+      $alreadyDefinedBreadcrumbs = $this->layout()->breadcrumbs;
+   
+      $this->layout()->breadcrumbs  = '<li class=""><a href="' . $this->url('home') . 'RDSIndex/Home">' . $this->transEsc('Startseite') . '</a></li>';
+      $this->layout()->breadcrumbs .= '<li class="active">' . $this->transEsc('Suche') . '</li>';
+      $this->layout()->breadcrumbs .= $alreadyDefinedBreadcrumbs;
+    ?>
+ 
+    <section class="container">
+      <div class="row">
+        <nav class="breadcrumbs">
+              <? if((!isset($this->layout()->showBreadcrumbs) || $this->layout()->showBreadcrumbs == true)
+                    && !empty($this->layout()->breadcrumbs)
+                    && $this->layout()->breadcrumbs !== false
+        ): ?>
+          <ul class="breadcrumb hidden-print">
+          <? if(is_array($this->layout()->breadcrumbs)): ?>
+            <? if(count($this->layout()->breadcrumbs) > 1): ?>
+              <?=$this->render('breadcrumbs/multi.phtml', array(
+                  'parents' => $this->layout()->breadcrumbs,
+                  'title'   => $this->layout()->title,
+                  'end'     => $this->layout()->breadcrumbEnd,
+                  'from'    => $this->layout()->from
+                )) ?>
+            <? else: ?>
+              <?=$this->render('breadcrumbs/default.phtml', array(
+                  'parents' => $this->layout()->breadcrumbs,
+                  'title'   => $this->layout()->title
+                )) ?>
+            <? endif; ?>
+          <? else: ?>
+            <?=$this->layout()->breadcrumbs ?>
+          <? endif; ?>
+          </ul>
+        <? endif; ?>
+        </nav>
+      </div>
+    </section>
+    <!-- / breadcrumbs --> 
+
+    
+    <div role="main" class="main template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?>">
+      <div class="container">
+        <?=$this->layout()->content ?>
+      </div>
+    </div>
+    
+    
+    <footer role="contentinfo" class="hidden-print footer-site">
+      <div class="container">
+        <?=$this->render('footer.phtml')?>
+      </div>
+    </footer>
+    <!-- MODAL IN CASE WE NEED ONE -->
+    <div id="modal" class="modal fade hidden-print" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 id="modalTitle" class="modal-title"></h4>
+          </div>
+          <div class="modal-body"><?=$this->transEsc('Loading') ?>...</div>
+        </div>
+      </div>
+    </div>
+    <?=$this->googleanalytics()?>
+    <?=$this->piwik()?>
+
+  </body>
+</html>
