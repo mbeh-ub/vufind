@@ -548,6 +548,7 @@ class DAIA extends AbstractBase implements
                 }
                 $messageElements
                     = $itemlist->item($c)->getElementsByTagName('message');
+	/*	
                 if ($messageElements->length > 0) {
                     for ($m = 0; $messageElements->item($m) !== null; $m++) {
                         $errno = $messageElements->item($m)->attributes
@@ -562,7 +563,8 @@ class DAIA extends AbstractBase implements
                             $this->debug($logString);
                         }
                     }
-                }
+                }*/
+		
 
                 //$loanAvail = 0;
                 //$loanExp = 0;

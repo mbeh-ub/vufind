@@ -1,0 +1,69 @@
+<br />****** Index - Lokalsatz **********<br />
+<? var_dump($this->driver->getLok()) ?>
+<br />****** DAIA - Verfügbarkeit **********<br />
+<? var_dump($this->driver->getRealTimeHoldings()) ?>
+<br />****** gemergte Struktur **********<br />
+
+<? 
+    // Set up convencience variables:
+    $lok = $this->driver->getLok();
+    $daia = $this->driver->getRealTimeHoldings();
+    $holdings = $this->RDSIndexHolding()->mergeData($lok, $daia);
+?>
+<? var_dump($holdings) ?> 
+<br />****************<br />
+
+<?
+    // Show volume link
+    $medIcon = $this->driver->getMedienicon(); 
+    $ppn = $this->driver->getPPN(); 
+    $werk = $this->driver->getWerkInfo(); 
+?>
+<? if ($werk == '1' && $medIcon != 'zeitschr'): ?>
+    <div class="rds_volume_link">
+    <a href="<?=$this->record($this->driver)->getLink('rn', $ppn)?>"><?=$this->transEsc('RDS_BAND_LINK')?></a>
+    </div>
+<? endif; ?>
+
+<? foreach ($holdings as $bib_key => $bibholding): ?>
+  <table class="rds_holding_table table table-striped">
+  <? if (isset($bib_key)):  
+    $bib_name=$this->RDSIndexHolding()->getBibName($bib_key);
+    $bib_link=$this->RDSIndexHolding()->getBibLink($bib_key); 
+    $adis_link=$this->RDSIndexHolding()->getAdisLink($bib_key);
+  ?>
+    <? if ($adis_link): /* colspan = 2 */ ?>
+      <tr>
+      <td colspan="3" class="bibname">
+      <? if ($bib_link): ?>
+      <a href="<?=$this->transEsc($bib_link)?>" target="_blank"><?=$bib_key?> <?=$this->transEsc($bib_name)?></a>
+      <? else: ?>
+      <?=$bib_key?> <?=$this->transEsc($bib_name)?>
+      <? endif; ?>
+      </td>
+      <td class="biblink">
+      <a href=<?=$adis_link?>><?=$this->transEsc('RDS_AUSLEIHE')?></a> 
+      </td>
+      </tr>
+    <? else: /* colspan=3 */ ?>
+      <tr>
+      <td colspan="4" class="bibname">
+      <a href="<?=$this->transEsc($bib_link)?>" target="_blank"><?=$bib_key?> <?=$this->transEsc($bib_name)?></a>
+      </td>
+      </tr>
+    <? endif; ?>
+  <? endif; ?>
+  <? foreach ($bibholding as $exemplar): ?>
+    <? foreach ($exemplar as $ex_name => $ex_value): ?>
+      <? if ($ex_value): ?> 
+        <tr class="<?=$ex_name?>">
+        <th><?=$this->transEsc($ex_name)?></th>
+        <td colspan="3"> 
+           <?=$ex_value?>
+        </td>
+      <? endif; ?>
+    <? endforeach /* end foreach exemplar content */ ?>
+  <? endforeach /* end foreach exemplar block */ ?> 
+  </table>
+<? endforeach; /* end foreach bib_sigel */ ?>
+

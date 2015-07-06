@@ -1,0 +1,133 @@
+<?
+    // Set page title.
+    $this->headTitle($this->translate('RDSIndexDescription') . ': ' . $this->driver->getBreadcrumb());
+
+    // Grab clean ISBN for convenience:
+    $isbn = $this->driver->getCleanISBN();
+?>
+<table class="table table-striped" summary="<?=$this->transEsc('Description')?>">
+  <? $summ = $this->driver->getSummary(); if (!empty($summ)): ?>
+    <? $contentDisplayed = true; ?>
+    <tr>
+      <th><?=$this->transEsc('Summary')?>: </th>
+      <td>
+        <? foreach ($summ as $field): ?>
+          <?=$this->escapeHtml($field)?><br/>
+        <? endforeach; ?>
+      </td>
+    </tr>
+  <? endif; ?>
+
+   <? $abstract = $this->driver->getAbstract(); if (!empty($nat_info)): ?>
+   <? $contentDisplayed = true; ?>
+        <tr>
+         <th><?=$this->transEsc('Abstract')?>: </th>
+         <td><? $i = 0; foreach ($abstract as $value): ?><?=($i++ == 0)?'':'<br />'?>
+        <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+   <? endif; ?>
+
+   <? $url_lnk = $this->driver->getLinks(); ?>
+      <? if (isset($url_lnk) && !empty($url_lnk)): ?>
+      <? $contentDisplayed = true; ?>
+        <tr>
+        <th><?=$this->transEsc('Links')?>: </th>
+           <td property="creator">
+            <? $i = 0; foreach ($url_lnk as $field): ?><?=($i++ == 0)?'':'<br />'?>
+            <a href="<?=$field['url']?>"><?=$this->escapeHtml($field['txt'])?></a>
+              <? if (isset($field['jahr']) && !empty($field['jahr'])): ?>
+               ( <?=$this->escapeHtml($field['jahr'])?> )
+              <? endif; ?>
+            <? endforeach; ?>
+          </td>
+        </tr>
+      <? endif; ?>
+   
+<? // TODO **** not for all bibs => tue, blb, ulm NOT tested *** TODO ?>
+   <? $url_lnk2 = $this->driver->getLongLinksTab2(); ?>
+      <? if (isset($url_lnk2) && !empty($url_lnk2)): ?>
+      <? $contentDisplayed = true; ?>
+        <tr>
+        <th><?=$this->transEsc('Links')?>: </th>
+           <td property="creator">
+            <? $i = 0; foreach ($url_lnk2 as $field): ?><?=($i++ == 0)?'':'<br />'?>
+            <a href="<?=$field['url']?>"><?=$this->escapeHtml($field['txt'])?></a>
+            <? endforeach; ?>
+          </td>
+        </tr>
+      <? endif; ?>
+
+<? // TODO **** not for all bibs  *** TODO ?>
+   <? $rvk_no = $this->driver->getNotation(); if (!empty($rvk_no)): ?>
+   <? $contentDisplayed = true; ?>
+        <tr>
+         <th><?=$this->transEsc('Notation')?>: </th>
+         <td><? $i = 0; foreach ($rvk_no as $field): ?><?=($i++ == 0)?'':'<br />'?>
+          <a href="<?=$this->record($this->driver)->getLink('rvk', $field['url'])?>"><?=$this->escapeHtml($field['url'])?></a>
+	  <? if (isset($field['txt']) && !empty($field['txt'])): ?>
+	  <?=$this->escapeHtml($field['txt'])?>
+	     <? endif; ?>
+	  <? endforeach; ?></td>
+        </tr>
+   <? endif; ?>
+
+<? /* This for HOhenheim, Tuebingen Ulm ... TODO */ ?>
+   <? $rvk_no = $this->driver->getNotation(); $lok_no = $this->driver->getLokNotation();?>
+   <? if ((!empty($rvk_no)) || (!empty($lok_no))): ?>
+   <? $contentDisplayed = true; ?>
+        <tr>
+         <th><?=$this->transEsc('RDS_SY')?>: </th>
+         <td><? if (!empty($rvk_no)): ?>
+	 <? $i = 0; foreach ($rvk_no as $field): ?><?=($i++ == 0)?'':'<br />'?>
+          <a href="<?=$this->record($this->driver)->getLink('rvk', $field['url'])?>"><?=$this->escapeHtml($field['url'])?></a>
+	  <? if (isset($field['txt']) && !empty($field['txt'])): ?>
+	  <?=$this->escapeHtml($field['txt'])?>
+	     <? endif; ?>
+	  <? endforeach; ?>
+	  <? endif; ?>
+	  <? if (!empty($lok_no)): ?>
+	    <? if (!empty($rvk_no)): ?><br /><? endif; ?>
+	     <? $i = 0; foreach ($lok_no as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	         <a href="<?=$this->record($this->driver)->getLink('zr', $field)?>"><?=$this->escapeHtml($field)?></a>
+		 <?=$this->transEsc('BB_'.$field)?>
+	     <? endforeach; ?>
+	  <? endif; ?>
+<? /* TODO END */ ?>	  
+	  
+	  </td>
+        </tr>
+   <? endif; ?>
+
+  <? $ct_display = $this->driver->getCT(); ?>
+  <? if (isset($ct_display) && !empty($ct_display)): ?>
+  <? $contentDisplayed = true; ?>
+    <tr>
+    <th><?=$this->transEsc('Subjects')?>: </th>
+    <td property="creator">
+      <? $i = 0; foreach ($ct_display as $ct_field): ?><?=($i++ == 0)?'':'<br />'?>
+        <? $i = 0; foreach ($ct_field as $field): ?><?=($i++ == 0)?'':'/'?>
+          <a href="<?=$this->record($this->driver)->getLink('ct', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+          <? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+            <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_CT_DNB')?>"></a>
+          <? endif; ?>
+       <? endforeach; ?>
+     <? endforeach; ?>
+    </td>
+    </tr>
+  <? endif; ?>
+
+   <? $lokct = $this->driver->getLokCt(); if (!empty($lokct)): ?>
+   <? $contentDisplayed = true; ?>
+        <tr>
+         <th><?=$this->transEsc('RDS_LOK_CT')?>: </th>
+         <td><? $i = 0; foreach ($lokct as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	 <a href="<?=$this->record($this->driver)->getLink('zs', $value)?>"><?=$this->escapeHtml($value)?></a>
+        <? endforeach; ?></td>
+        </tr>
+   <? endif; ?>
+
+
+  <? if (!isset($contentDisplayed) || !$contentDisplayed): // Avoid errors if there were no rows above ?>
+    <tr><td><?=$this->transEsc('no_description')?></td></tr>
+  <? endif; ?>
+</table>

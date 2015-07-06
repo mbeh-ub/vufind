@@ -1,0 +1,566 @@
+<div class="row" vocab="http://schema.org/" resource="#record" typeof="<?=$this->driver->getSchemaOrgFormats()?> Product">
+  <div class="col-sm-3">
+    <div class="text-center">
+      <? /* Display thumbnail if appropriate: */ ?>
+      <? $mediumThumb = $this->record($this->driver)->getThumbnail('medium'); $largeThumb = $this->record($this->driver)->getThumbnail('large'); ?>
+      <? if ($mediumThumb): ?>
+        <? if ($largeThumb): ?><a href="<?=$this->escapeHtmlAttr($largeThumb)?>"><? endif; ?>
+          <img alt="<?=$this->transEsc('Cover Image')?>" class="recordcover" src="<?=$this->escapeHtmlAttr($mediumThumb);?>"/>
+        <? if ($largeThumb): ?></a><? endif; ?>
+      <? else: ?>
+        <img src="<?=$this->url('cover-unavailable')?>" class="recordcover" alt="<?=$this->transEsc('No Cover Image')?>"/>
+      <? endif; ?>
+
+      <? /* Display qrcode if appropriate: */ ?>
+      <? $QRCode = $this->record($this->driver)->getQRCode("core"); ?>
+      <? if($QRCode): ?>
+        <span class="hidden-xs">
+          <br/><img alt="<?=$this->transEsc('QR Code')?>" class="qrcode" src="<?=$this->escapeHtmlAttr($QRCode);?>"/>
+        </span>
+      <? endif; ?>
+    </div>
+
+    <? // if you have a preview tab but want to move or remove the preview link
+       // from this area of the record view, this can be split into
+       // getPreviewData() (should stay here) and
+       // getPreviewLink() (can go in your desired tab) ?>
+    <?=$this->record($this->driver)->getPreviews()?>
+  </div>
+
+  <div class="col-sm-9">
+    <h4 property="name">
+    <? $ast = $this->driver->getAst();
+     if (!empty($ast)): ?>[<?=$this->escapeHtml($this->driver->getAst())?>]<? endif; ?>
+    	<?=$this->escapeHtml($this->driver->getTitle())?></h4>
+    <? $summary = $this->driver->getSummary(); $summary = isset($summary[0]) ? $this->escapeHtml($summary[0]) : false; ?>
+    <? if ($summary): ?>
+      <p><?=$this->truncate($summary, 300)?></p>
+
+      <? if(strlen($summary) > 300): ?>
+        <p><a href='<?=$this->recordLink()->getTabUrl($this->driver, 'Description')?>#tabnav'><?=$this->transEsc('Full description')?></a></p>
+      <? endif; ?>
+    <? endif; ?>
+
+    <? if ($this->userlist()->getMode() !== 'disabled'): ?>
+      <? /* Display the lists that this record is saved to */ ?>
+      <div class="savedLists hidden alert alert-info" id="savedLists">
+        <strong><?=$this->transEsc("Saved in")?>:</strong>
+      </div>
+    <? endif; ?>
+
+    <?/* Display Main Details */?>
+    <table class="table table-striped" summary="<?=$this->transEsc('Bibliographic Details')?>">
+
+    <?/* 
+     <? $journalTitle = $this->driver->getContainerTitle(); if (!empty($journalTitle)): ?>
+      <tr>
+        <th><?=$this->transEsc('Published in')?>:</th>
+        <td>
+          <? $containerID = $this->driver->getContainerRecordID(); ?>
+          <a href="<?=($containerID ? $this->recordLink()->getUrl("VuFind|$containerID") : $this->record($this->driver)->getLink('journaltitle', $journalTitle))?>"><?=$this->escapeHtml($journalTitle)?></a>
+          <? $ref = $this->driver->getContainerReference(); if (!empty($ref)) { echo $this->escapeHtml($ref); } ?>
+        </td>
+      </tr>
+      <? endif; ?>
+    */ ?>
+
+      <? $medIcon = $this->driver->getMedienicon(); ?>
+      <? $ppn = $this->driver->getPPN(); ?>
+      <? $werk = $this->driver->getWerkInfo(); if ($werk == '1' && $medIcon != 'zeitschr'): ?>
+        <tr>
+          <th></th>
+          <td><a href="<?=$this->record($this->driver)->getLink('rn', $ppn)?>"><?=$this->transEsc('RDS_BAND_LINK')?></a>
+	  </td>
+        </tr>
+      <? endif; ?>
+
+      <? $titleLong_f = $this->driver->getTitleLongf(); $titleLong_f_sec = $this->driver->getTitleLongfsec(); ?>
+      <? if (!empty($titleLong_f)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_COLL_TITLE')?>: </th>
+        <td>
+          <?=$this->escapeHtml($titleLong_f)?>
+	  <? if (!empty($titleLong_f_sec)): ?>
+	  	<? foreach($titleLong_f_sec as $field): ?>
+			<?=$this->escapeHtml($field)?>
+		<? endforeach; ?>
+	  <? endif; ?>
+        </td>
+      </tr>
+      <? endif; ?>
+      
+      <? $titlePart = $this->driver->getTitlePart(); if (!empty($titlePart)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_TITLE_PART')?>: </th>
+          <td><? $i = 0; foreach ($titlePart as $part): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($part)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $titleCjkAst = $this->driver->getCjkAst(); ?>
+      <? $titleCjkPart = $this->driver->getCjkTitle(); if (!empty($titleCjkPart)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_TITLE')?>: </th>
+          <td>
+	  <?= $this->escapeHtml($titleCjkPart)?>
+	  <? if (!empty($$titleCjkAst)): ?>
+	  	<?= $this->escapeHtml($titleCjkAst)?>
+	  <? endif; ?>
+	  
+	  </td>
+        </tr>
+      <? endif; ?>
+
+<? // TODO only for Hohenheim???? TODO ?>
+      <? $titleCut = $this->driver->getTitleCut(); if (!empty($titleCut)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_TITLECUT')?>: </th>
+        <td><? $i = 0; foreach ($titleCut as $cut): ?><?=($i++ == 0)?'':'<br />'?>
+	<?=$this->escapeHtml($cut)?><? endforeach; ?>
+        </td>
+      </tr>
+      <? endif; ?>
+<? // END TODO  ?>
+
+      <? $ureihe = $this->driver->getUnterreihe(); if (!empty($ureihe)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_UREIHE')?>: </th>
+          <td><?= $this->escapeHtml($ureihe)?></td>
+        </tr>
+      <? endif; ?>
+	
+      <? $cjkureihe = $this->driver->getCjkUreihe(); if (!empty($cjkureihe)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_UREIHE')?>: </th>
+          <td><?= $this->escapeHtml($cjkureihe)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $authors_long = $this->driver->getAuthorsLong(); ?>
+      <? if (isset($authors_long) && !empty($authors_long)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_PERSON')?>: </th>
+        <td property="author">
+	<? $i = 0; foreach ($authors_long as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<a href="<?=$this->record($this->driver)->getLink('author', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+	<a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_PERS_DNB')?>"></a>
+	<? $myau = explode(",",$field['link']);
+	$mywiki = str_replace(' ', '_', trim($myau[1])) . "_" . $myau[0];
+	?>
+	<a class="wikipedia" href="<?=$this->record($this->driver)->getLink('wiki', $mywiki)?>" target="_blank" title="<?=$this->transEsc('RDS_PERS_WIKI')?>"></a>
+	<? endif; ?>
+	 <? endforeach; ?>
+	</td>
+      </tr>
+      <? endif; ?>
+	
+      <? $cjkauthor = $this->driver->getCjkAut(); if (!empty($cjkauthor)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_AUT')?>: </th>
+          <td><?= $this->escapeHtml($cjkauthor)?></td>
+        </tr>
+      <? endif; ?>
+
+<? /* only for PHFR TODO not tested TODO */ ?>
+      <? $fn_beigwerk = $this->driver->getFnAttWork(); if (!empty($fn_beigwerk)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_FN_BEIGWERK')?>: </th>
+          <td><?= $this->escapeHtml($fn_beigwerk)?></td>
+        </tr>
+      <? endif; ?>
+<? /* END TODO */ ?>
+
+     <? $co_display = $this->driver->getCorporation(); ?>	
+      <? if (isset($co_display) && !empty($co_display)): ?>
+      <tr>
+        <th><?=$this->transEsc('Corporate Author')?>: </th>
+        <td property="creator">
+	<? $i = 0; foreach ($co_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<a href="<?=$this->record($this->driver)->getLink('corporate', $field['link'])?>"><?=$this->escapeHtml($field['link'])?></a>
+	<? if (isset($field['gnd']) && !empty($field['gnd'])): ?>
+	        <a class="dnb" href="<?=$this->record($this->driver)->getLink('gnd', $field['gnd'])?>" target="_blank" title="<?=$this->transEsc('RDS_CO_DNB')?>"></a>
+	<? endif; ?>
+	<? endforeach; ?>
+	</td>
+      </tr>
+      <? endif; ?>
+
+      <? $cjkco = $this->driver->getCjkCorp(); if (!empty($cjkco)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_CO')?>: </th>
+          <td><?= $this->escapeHtml($cjkco)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $edition = $this->driver->getEditions(); if (!empty($edition)): ?>
+        <tr>
+          <th><?=$this->transEsc('Edition')?>: </th>
+          <td><?= $this->escapeHtml($edition)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $cjkedition = $this->driver->getCjkEdition(); if (!empty($cjkedition)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_AUSGABE')?>: </th>
+          <td><?= $this->escapeHtml($cjkedition)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $pu_pp_display = $this->driver->getPublishDisplay() ?>
+      <? $pp_norm_display = $this->driver->getppNormDisplay() ?>
+      <? if (isset($pu_pp_display) && !empty($pu_pp_display)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_PUBLISH')?>: </th>
+          <td>
+	  <? $i = 0; foreach ($pu_pp_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+		<?=$this->escapeHtml($field)?>	
+	   <? endforeach; ?>
+	   <? if (isset($pp_norm_display) && !empty($pp_norm_display)): ?>
+		<br/ ><span class='handwriting'><?=$this->transEsc('RDS_HAND_NORM')?>: </span>
+	   	<? $i = 0; foreach ($pp_norm_display as $field): ?><?=($i++ == 0)?'':'<br />'?>
+		<?=$this->escapeHtml($field)?>
+		 <? endforeach; ?>
+	   <? endif; ?>
+	  </td>
+        </tr>
+      <? endif; ?>
+      
+      <? $cjkpb = $this->driver->getCjkPp(); if (!empty($cjkpb)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_PUBLISH')?>: </th>
+          <td><?= $this->escapeHtml($cjkedition)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $info = $this->driver->getZsVerlauf(); if (!empty($info)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_PUB_RUN')?>: </th>
+          <td><?= $this->escapeHtml($info)?></td>
+        </tr>
+      <? endif; ?>
+
+
+      <? /* only for Ulm  TODO not tested TODO */ ?>
+      <? $reg = $this->driver->getRegister(); if (!empty($reg)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_REGISTER')?>: </th>
+          <td><?= $this->escapeHtml($reg)?></td>
+        </tr>
+      <? endif; ?>
+      <? /* TODO END */ ?>
+
+      <? $langs = $this->driver->getLanguages(); if (!empty($langs)): ?>
+        <tr>
+          <th><?=$this->transEsc('Language')?>: </th>
+          <td><? $i = 0; foreach ($langs as $lang): ?><?=($i++ == 0)?'':', '?>
+	  <?= $this->transEsc($lang)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $scope = $this->driver->getScope(); if (!empty($scope)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_SCOPE')?>: </th>
+          <td><?= $this->escapeHtml($scope)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $cjk_scope = $this->driver->getCjkScope(); if (!empty($cjk_scope)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_SCOPE')?>: </th>
+          <td><?= $this->escapeHtml($cjk_scope)?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $isbn = $this->driver->getISBN(); if (!empty($isbn)): ?>
+        <tr>
+          <th><?=$this->transEsc('ISBN')?>: </th>
+          <td><? $i = 0; foreach ($isbn as $text): ?><?=($i++ == 0)?'':'<br />'?>
+	    <?= $this->escapeHtml($text)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+     <? $issnprint =  $this->driver->getISSNPrint(); $issnonline =  $this->driver->getISSNOnline(); ?>	
+      <? $issn = $this->driver->getISSN(); if (!empty($issn)): ?>
+        <tr>
+          <th><?=$this->transEsc('ISSN')?>: </th>
+          <td><? $i = 0; foreach ($issn as $text): ?><?=($i++ == 0)?'':'<br />'?><?= $this->escapeHtml($text)?><? endforeach; ?>
+	  <? // TODO only for Hohenheim TODO ?>
+	  <? if (!empty($issnprint)): ?>
+	  <br /> <?=$this->transEsc('RDS_ISSNPRINT')?>: <?= $this->escapeHtml($issnprint)?>	
+	   <? endif; ?>
+	  <? if (!empty($issnonline)): ?>
+	  <br /> <?=$this->transEsc('RDS_ISSNONLINE')?>: <?= $this->escapeHtml($issnonline)?>	
+	   <? endif; ?>	  
+	   <? // END  TODO ?>
+	  </td>
+        </tr>
+      <? endif; ?>
+
+      <? $est = $this->driver->getEst(); if (!empty($est)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_EST')?>: </th>
+          <td><?= $this->escapeHtml($est)?></td>
+        </tr>
+      <? endif; ?>
+
+ <? // TODO not tested TODO ?>
+     <? $ebook_lnk = $this->driver->getEbookLink(); ?>
+      <? if (isset($ebook_lnk) && !empty($ebook_lnk) && preg_match("/^[A-Z].*/", $ppn)): ?>
+      <tr>
+        <th><?=$this->transEsc('Links')?>: </th>
+        <td><? $i = 0; foreach ($ebook_lnk as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<a href="<?=$field['url']?>"><?=$this->escapeHtml($field['lnk_txt'])?></a>
+	 <? endforeach; ?>
+	</td>
+      </tr>
+      <? endif; ?>
+ <? // TODO End ?>
+	
+      <? $hand = $this->driver->getHandwritingDesc(); if (!empty($hand)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_DESCR')?>: </th>
+          <td>
+	      <? $i = 0; foreach ($hand as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	      <span class='handwriting'> <?= $this->escapeHtml($value['txt1'])?></span>
+	      <? if(isset($value['txt2'])): ?> <?= $this->escapeHtml($value['txt2'])?><? endif; ?>
+	      <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hand_base = $this->driver->getHandwritingBase(); if (!empty($hand_base)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_STOCK')?>: </th>
+          <td>
+	      <? $i = 0; foreach ($hand_base as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	      <span class='handwriting'> <?= $this->escapeHtml($value['title'])?>:</span>
+	      <?= $this->escapeHtml($value['text'])?>
+	      <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hand_ref = $this->driver->getHandwritingRefValue(); if (!empty($hand_ref)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_REFVALUE')?>: </th>
+          <td>
+	      <? $i = 0; foreach ($hand_ref as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	      <span class='handwriting'> <?= $this->escapeHtml($value['title'])?>:</span>
+	      <?= $this->escapeHtml($value['text'])?>
+	      <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $medium = $this->driver->getMedium(); if (!empty($medium)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_MEDIUM')?>: </th>
+        <td><?=$this->transEsc($medium)?></td>
+      </tr>
+      <? endif; ?>
+
+      <? $fn = $this->driver->getFN(); $sek = $this->driver->getSekundaer(); ?>
+      <? if (isset($fn) && !empty($fn)): ?>
+      <tr>
+        <th><?=$this->transEsc('RDS_FN')?>: </th>
+        <td><? $i = 0; foreach ($fn as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	<?=$this->escapeHtml($field['text'])?>
+	<? if (isset($field['url']) && !empty($field['url'])): ?>
+	<a href="<?=$field['url']?>"><?=$this->escapeHtml($field['url'])?></a>
+	<? endif; ?>
+	 <? endforeach; ?>
+	 <? if (isset($sek) && !empty($sek)): ?>
+	 <br />
+	 <? $i = 0; foreach ($sek as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	 	<?=$this->escapeHtml($field)?>
+	 <? endforeach; ?>
+	 <? endif; ?>
+	</td>
+      </tr>
+      <? endif; ?>
+	
+      <? $cjkfn = $this->driver->getCjkFN(); if (!empty($cjkfn)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_FN')?>: </th>
+          <td><?= $this->escapeHtml($cjkfn)?></td>
+        </tr>
+      <? endif; ?>
+
+<? // TODO not tested  TODO ?>
+      <? $fn_enthWek = $this->driver->getFnEnthWerk(); if (!empty($fn_enthWek)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_FN_ENTHWERK')?>: </th>
+          <td><? $i = 0; foreach ($fn_enthWek as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $fn_ebook = $this->driver->getFnEbook(); if (!empty($fn_ebook)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_FN_EBOOK')?>: </th>
+          <td><? $i = 0; foreach ($fn_ebook as $value): ?><?=($i++ == 0)?'':' ; '?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+<? // TODO END TODO ?>
+
+      <? $cjkfn_enthWek = $this->driver->getCjkFNEnth(); if (!empty($cjkfn_enthWek)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_FN_ENTH')?>: </th>
+          <td><? $i = 0; foreach ($cjkfn_enthWek as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $hss = $this->driver->getHss(); if (!empty($hss)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_HSS')?>: </th>
+          <td><? $i = 0; foreach ($hss as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+<? // TODO not tested  TODO ?>
+      <? $fn_interpret = $this->driver->getFnInterpret(); if (!empty($fn_interpret)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_NOTE')?>: </th>
+          <td><? $i = 0; foreach ($fn_interpret as $value): ?><?=($i++ == 0)?'':'<br />'?>
+	  <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+<? // TODO END TODO ?>
+
+      <? $zs_info = $this->driver->getJournalInfo(); if (!empty($zs_info)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_BIBL_ZUS1')?>: </th>
+          <td><? $i = 0; foreach ($zs_info as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <? if (!empty($field['pre-text'])): ?>
+	  	<?=$this->escapeHtml($field['pre-text'])?> :
+	      <? endif; ?>
+	      <? if (!empty($field['id'])): ?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['text'])?></a>
+	      <? else: ?>
+	          <? if (!empty($field['text'])): ?>
+	       	  <?=$this->escapeHtml($field['text'])?>
+		  <? endif; ?>
+	      <? endif; ?>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $inf = $this->driver->getArticleInfo(); ?>
+      <? $werk_info = $this->driver->getWerk(); if (!empty($werk_info)): ?>
+        <tr>
+          <th><? if ($inf == "0"){ echo $this->transEsc('RDS_WERK'); } else{ echo $this->transEsc('RDS_IN'); } ?>: </th>
+          <td><? $i = 0; foreach ($werk_info as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?>
+	      <? if (!empty($field['bnd'])): ?> ; <?=$this->escapeHtml($field['bnd'])?><? endif; ?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $serie = $this->driver->getSeriesTit(); if (!empty($serie)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_SERIE')?>: </th>
+          <td><? $i = 0; foreach ($serie as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?>
+	       <? if (!empty($field['bnd'])): ?> ; <?=$this->escapeHtml($field['bnd'])?><? endif; ?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $seriecjk = $this->driver->getCjkSeriesTit(); if (!empty($seriecjk)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_CJK_SERIE')?>: </th>
+          <td><? $i = 0; foreach ($seriecjk as $field): ?><?=($i++ == 0)?'':'<br />'?>
+	      <a href="<?=$this->record($this->driver)->getLink('id', $field['id'])?>"><?=$this->escapeHtml($field['lnk_txt'])?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $ungReihe = $this->driver->getUngezReihe(); if (!empty($ungezReihe)): ?>
+        <tr>
+          <th><?=$this->transEsc('Series')?>: </th>
+          <td><? $i = 0; foreach ($ungReihe as $field): ?><?=($i++ == 0)?'':' ; '?>
+	      <?=$this->escapeHtml($field)?></a>
+	  <? endforeach; ?></td>
+        </tr>
+      <? endif; ?>
+
+      <? $nat_info = $this->driver->getNatInfo(); if (!empty($nat_info)): ?>
+        <tr>
+          <th><?=$this->transEsc('RDS_NATINFO')?>: </th>
+            <td><? $i = 0; foreach ($nat_info as $value): ?><?=($i++ == 0)?'':' ; '?>
+              <?= $this->escapeHtml($value)?><? endforeach; ?></td>
+          </tr>
+       <? endif; ?>
+
+
+      <? $childRecordCount = $this->driver->tryMethod('getChildRecordCount'); if ($childRecordCount): ?>
+      <tr>
+        <th><?=$this->transEsc('child_records')?>: </th>
+        <td>
+          <a href="<?=$this->recordLink()->getChildRecordSearchUrl($this->driver)?>"><?=$this->transEsc('child_record_count', array('%%count%%' => $childRecordCount))?></a>
+        </td>
+      </tr>
+      <? endif; ?>
+
+      <?
+        $openUrl = $this->driver->openURLActive('record') ? $this->driver->getOpenURL() : false;
+        // Account for replace_other_urls setting
+        $urls = ($openUrl && $this->driver->replaceURLsWithOpenURL()) ? array() : $this->record($this->driver)->getLinkDetails();
+      ?>
+      <? if (!empty($urls) || $openUrl): ?>
+      <tr>
+        <th><?=$this->transEsc('Online Access')?>: </th>
+        <td>
+          <? foreach ($urls as $current): ?>
+            <a href="<?=$this->escapeHtmlAttr($this->proxyUrl($current['url']))?>"><?=$this->escapeHtml($current['desc'])?></a><br/>
+          <? endforeach; ?>
+          <? if ($openUrl): ?>
+            <?=$this->openUrl($openUrl)?><br/>
+          <? endif; ?>
+        </td>
+      </tr>
+      <? endif; ?>
+
+      <? $recordLinks = $this->driver->getAllRecordLinks(); ?>
+      <? if(!empty($recordLinks)): ?>
+        <tr>
+          <th><?=$this->transEsc('Related Items')?>:</th>
+          <td>
+            <? foreach ($recordLinks as $recordLink): ?>
+              <?=$this->transEsc($recordLink['title'])?>:
+              <a href="<?=$this->recordLink()->related($recordLink['link'])?>"><?=$this->escapeHtml($recordLink['value'])?></a><br />
+            <? endforeach; ?>
+            <? /* if we have record links, display relevant explanatory notes */
+              $related = $this->driver->getRelationshipNotes();
+              if (!empty($related)): ?>
+                <? foreach ($related as $field): ?>
+                  <?=$this->escapeHtml($field)?><br/>
+                <? endforeach; ?>
+            <? endif; ?>
+          </td>
+        </tr>
+      <? endif; ?>
+
+      <? if ($this->usertags()->getMode() !== 'disabled'): ?>
+        <? $tagList = $this->driver->getTags(); ?>
+        <tr>
+          <th><?=$this->transEsc('Tags')?>: </th>
+          <td>
+            <span class="pull-right">
+              <i class="fa fa-plus"></i> <a id="tagRecord" class="modal-link" href="<?=$this->recordLink()->getActionUrl($this->driver, 'AddTag')?>" title="<?=$this->transEsc('Add Tag')?>"><?=$this->transEsc('Add Tag')?></a>
+            </span>
+            <div id="tagList">
+              <? if (count($tagList) > 0): ?>
+                <? $i = 0; foreach ($tagList as $tag): ?><?=($i++ == 0)?'':', '?><a href="<?=$this->url('tag-home')?>?lookfor=<?=urlencode($tag->tag)?>"><?=$this->escapeHtml($tag->tag)?></a> (<?=$this->escapeHtml($tag->cnt)?>)<? endforeach; ?>
+              <? else: ?>
+                <?=$this->transEsc('No Tags')?>, <?=$this->transEsc('Be the first to tag this record')?>!
+              <? endif; ?>
+            </div>
+          </td>
+        </tr>
+      <? endif; ?>
+    </table>
+    <?/* End Main Details */?>
+  </div>
+</div>

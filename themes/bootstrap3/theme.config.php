@@ -8,6 +8,7 @@ return array(
         'compiled.css',
         'vendor/font-awesome.min.css',
         'vendor/bootstrap-slider.css',
+	'rdsindex.css',
         'print.css:print',
     ),
     'js' => array(
@@ -36,6 +37,7 @@ return array(
             'highlight' => 'VuFind\View\Helper\Bootstrap3\Highlight',
             'search' => 'VuFind\View\Helper\Bootstrap3\Search',
             'vudl' => 'VuDL\View\Helper\Bootstrap3\VuDL',
+            'rdsindexholding' => 'VuFind\View\Helper\Bootstrap3\RDSIndexHolding',
         )
     )
 );
