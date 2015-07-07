@@ -2601,7 +2601,7 @@ class RDSIndex extends SolrMarc
                 }
             }
         }
-        return $link_array();
+        return $link_array;
     }
 
     /**
@@ -2631,7 +2631,7 @@ class RDSIndex extends SolrMarc
         return $link_array;
      }
 
-      /**
+        /**
       * Get the local data set. 
       * RDS
       * @return array
@@ -2737,7 +2737,7 @@ class RDSIndex extends SolrMarc
       *
       * @return array
       * @access protected
-      */
+     */
         /*    public function getFormats()
         {
         $formats = isset($this->fields['medieninfo']) ? $this->fields['medieninfo'] : array();
@@ -2756,5 +2756,442 @@ class RDSIndex extends SolrMarc
 
         return $formats;
         }
+
+        public function getHoldingsMetadata() {
+        global $interface;
+
+        $DAIAListSettings = getExtraConfigArray('RDSCommon');
+        $DAIAList = $DAIAListSettings['DAIA']['config'];
+        $DAIAConfig=array();
+        $Short=array();
+        $getDAIA=0;
+        $DAIAResult=array();
+        $DAIAShortResult=array();
+        $DAIALBResult=array();
+
+        foreach ($DAIAList as $DAIAConfigFile) {
+        $DAIAConfig=getExtraConfigArray($DAIAConfigFile);
+        $bib="";
+
+        if (preg_match("/_/",$DAIAConfigFile)) {
+        $bib_config = explode('_',$DAIAConfigFile);
+        $bib = $bib_config[1];
+        }
+
+        foreach ($DAIAConfig as $DAIAKey => $DAIAvalues) {
+        if ($DAIAKey == 'Allow') {
+        foreach ($DAIAvalues as $DAIAAllowKey => $DAIAAllowValue) {
+        foreach($DAIAAllowValue as $DAIAAllowItem) {
+        if (isset($this->fields[$DAIAAllowKey])) {
+        if (in_array($DAIAAllowItem,$this->fields[$DAIAAllowKey])) {
+        $getDAIA=1;
+        }
+
+        }
+        }
+        }
+        }
+        }
+        if ($getDAIA) {
+        $daia_answer = new DAIAAnalyser($DAIAConfigFile);
+        $lppn = $this->getPPN();
+        if (preg_match("/_/",$lppn)) {
+        $slppn=explode('_',$lppn);
+        try {
+        $daia_answer->fetchID($slppn[0]);
+        } catch (Exception $e) { }
+        } else {
+        try {
+        $daia_answer->fetchID($lppn);
+        } catch (Exception $e) { }
+        }
+        $DAIAResult[$bib] = $daia_answer->getShort();
+        $DAIAShortResult[$bib] = $daia_answer->getVeryShort();
+        $DAIALBResult[$bib] = $daia_answer->getLBShort();
+        $getDAIA=0;
+        }
+        }
+        $interface->assign("summShortDAIA", $DAIAShortResult);
+        $interface->assign("summLBDAIA", $DAIALBResult);
+        $interface->assign("summALLDAIA", $DAIAResult);
+
+
+        //$interface->assign("summALLDAIA", $Short);
+        $interface->assign('summLok', $this->getLok());
+        $interface->assign('holdingsMetadata', $this->getHoldings($patron));
+
+        return 'RecordDrivers/RDSIndex/holdings.tpl';
+        }
+
+        public function getMoreLikeThisMetadata() {
+        global $configArray;
+
+        $rdsRecommendations = isset($configArray['RDSRecommendations']['engine']) ? $configArray['RDSRecommendations']['engine'] : "";
+        if ( $rdsRecommendations != "MoreLikeThis" ) {
+        return null;
+        }
+
+        global $interface;
+
+        // TODO: Set $type, $core, $url explicitly to null.
+        //       So that the defaults from config.ini will be used
+        $db = ConnectionManager::connectToIndex($type, $core, $url);
+        $similar = $db->getMoreLikeThis($this->getPPN());
+
+        if (count($similar['response']['docs']) > 0) {
+        $interface->assign('similarRecords', $similar['response']['docs']);
+        }
+
+        return 'RecordDrivers/RDSIndex/more-like-this.tpl';
+        }
+
+        protected function getAuthorsForCOinS() {
+        global $configArray;
+        $authors = array();
+        if(isset($this->fields['au_display'])){
+        $arr_links = $this->fields['au_display'];
+        $last_item = end($arr_links);
+        foreach ($arr_links as $link) {
+        if(strstr($link, "|")){
+        $arr_link = explode(" | ", $link);
+        $authors[] = $arr_link[0];
+        }
+        else{
+        $authors[] = $link;
+        }
+        }
+        }
+        return $authors;
+        }
         */
+        /**
+ * Assign necessary Smarty variables and return a template name to
+ * load in order to export the record in the requested format.  For
+ * legal values, see getExportFormats().  Returns null if format is
+ * not supported.
+ * @param string $format Export format to display.
+ * @return string        Name of Smarty template file to display.
+ * @access public
+ */
+        /*public function getExport($format) {
+        global $interface;
+        $exportTemplate = parent::getExport($format);
+
+        require_once("RecordDrivers/RDSDataProvider/RDSDataProviderIndex.php");
+        $dpIndex = new RDSDataProviderIndex($this->fields, $this);
+
+
+        switch(strtolower($format)) {
+        case 'bibtex':
+        header('Content-type: application/x-bibtex; charset=utf-8');
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterBibTeX.php");
+        $rdsBibTeXFormatter = new RDSFormatterBibTeX($dpIndex);
+        $interface->assign('bibTeX', $rdsBibTeXFormatter->getFormattedRecord());
+        $exportTemplate = 'RecordDrivers/RDSIndex/export-bibtex.tpl';
+        break;
+        case 'ris':
+        header('Content-type: application/x-research-info-systems; charset=utf-8');
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterRIS.php");
+        $rdsRISFormatter = new RDSFormatterRIS($dpIndex);
+        $interface->assign('ris', $rdsRISFormatter->getFormattedRecord());
+        $exportTemplate = 'RecordDrivers/RDSIndex/export-ris.tpl';
+        break;
+        case 'html':
+        header('Content-type: text/html; charset=utf-8');
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterHTML.php");
+        $rdsHTMLFormatter = new RDSFormatterHTML($dpIndex);
+        $interface->assign('html', $rdsHTMLFormatter->getFormattedRecord());
+        $exportTemplate = 'RecordDrivers/RDSIndex/export-html.tpl';
+        break;
+        case 'marc':
+        header('Content-type: application/x-research-info-systems; charset=utf-8');
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterMARC.php");
+        $rdsMARCFormatter = new RDSFormatterMARC($dpIndex);
+        $interface->assign('marc', $rdsMARCFormatter->getFormattedRecord());
+        $exportTemplate = 'RecordDrivers/RDSIndex/export-marc.tpl';
+        break;
+        }
+
+        return $exportTemplate;
+        }
+        */
+
+
+        /**
+ * @return array Strings representing export formats.
+ * @access public
+ */
+        /*public function getExportFormats()
+        {
+        global $configArray;
+
+        $formats = parent::getExportFormats();
+
+        $active = isset($configArray['Export']) ? $configArray['Export'] : array();
+        $additional = array('RIS', 'HTML');
+        // Check which additional formats are currently active:
+        foreach ($additional as $current) {
+        if ($active[$current]) {
+        $formats[] = $current;
+        }
+        }
+
+        return $formats;
+        }
+
+        public function getRecordDetails() {
+        $recordDetails = array(
+        'id'      => $this->getPPN(),
+        'isbn'    => $this->getISBN(),
+        'author'  => $this->getAuthorsShort(),
+        'title'   => $this->getTitleShort(),
+        'format'  => $this->getFormat()
+        );
+
+        return $recordDetails;
+        }
+
+        protected function getISSNs(){
+        return $this->getISSN();
+        }
+
+        protected function getISBNs(){
+        return $this->getISBN();
+        }
+
+        protected function getBibUserPermission(){
+        global $user;
+
+        if (isset($user) && $user->college == "IS_BIB_USER") {
+        return true;
+        }
+
+        return false;
+        }
+
+        protected function getMyBibUserPermission(){
+        global $user;
+        if (isset($user) && $user->major == "IS_MYBIB_USER") { 
+        return true;
+        }
+        return false;
+        }
+
+        protected function getRDSPermission() {
+        global $user;
+
+        if (isset($user) && $user->home_library == "HAS_PERMISSION") {
+        return true;
+        }
+        return false;
+        }
+
+
+
+        public function getOpenURL() {
+
+        $openURL = parent::getOpenURL();
+
+        // Dissemble the URL:
+        $parts = explode('&', $openURL);
+        $params = array();
+        foreach ($parts as $part) {
+        $tmp = explode('=', $part);
+        $params[$tmp[0]] = urldecode($tmp[1]);
+        }
+
+        $params['rft.creator'] =  '';
+        $params['rft.au'] =  '';
+
+        $authors = array();
+        foreach ( $this->getAuthorsForCOinS() as $author) {
+        $authors[] = $author;
+        }
+
+        $params['rft.place']   = $this->getPublish();
+
+        $isbn = $this->getCleanISBN();
+        if ($isbn) {
+        $params['rft.isbn'] = $isbn;
+        }
+
+        $issn = $this->getCleanISSN();
+        if ($issn) {
+        $params['rft.issn'] = $issn;
+        }
+
+        $params['rft.title']   = $this->getTitleMain();
+        $params['rft.date']    = $this->getPY();
+
+        $formats = $this->getFormats();
+        if (in_array('book', $formats)) {
+        $format = 'Book';
+        } else if ( in_array('zeitschrift', $formats)) {
+        $format = 'Journal';
+        } else {
+        $format = $formats[0];
+        }
+        switch($format) {
+        case 'Book':
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:book';
+        $params['rft.btitle']   = $this->getTitleMain();
+
+        break;
+        case 'Journal':
+        $params['rft_val_fmt'] = 'info:ofi/fmt:kev:mtx:journal';
+        $params['rft.atitle'] = $this->getTitleMain();
+        $params['rft.genre'] = 'journal';
+        $params['rft.jtitle'] = $this->getTitleMain();
+        break;
+        default:
+        break;
+        }
+        $params['rft_id']=$this->getPersistentLink();
+
+        $pages = $this->getUmfang();
+        if (isset($pages)) {
+        $params['rft.tpages']=$this->getUmfang();
+        }
+
+        $series = $this->getSeries();
+        if ($series != '') {
+        $params['rft.series']=$series;
+        }
+
+
+        // Assemble the URL:
+        $parts = array();
+        foreach ($params as $key => $value) {
+        $parts[] = $key . '=' . urlencode($value);
+        }
+        foreach ($authors as $author) {
+        $authorFields = explode(',', $author);
+        if (strpos($author, ',') !== false) {
+        $firstLastArr = explode(',', $author);
+        $parts[] = 'rft.aufirst=' . trim($firstLastArr[1]);
+        $parts[] = 'rft.aulast=' . trim($firstLastArr[0]);
+        }
+
+        $parts[] = 'rft.au=' . urlencode($author);
+        }
+
+
+        return implode('&', $parts);
+        }
+
+        public function getPersistentLink() {
+        $RDSCommonConfig = getExtraConfigArray('RDSCommon');
+        $persistentLinkUrl = (isset($RDSCommonConfig['Common']['persistent_link_url'])) ? $RDSCommonConfig['Common']['persistent_link_url'] : "http://" . $_SERVER['HTTP_HOST'] . "/persistentid:";
+        return $persistentLinkUrl . $this->getPPN();
+        }
+
+        public function checkProv() {
+        if (isset($this->fields['az'])) {
+        $zj_check = $this->fields['az'];
+        foreach ($zj_check as $zj_data) {
+        if ($zj_data === 'prov') { return true; }
+        }
+        }
+        return false;
+        }
+
+        */
+
+        /**
+         * Assign necessary Smarty variables and return a template name to
+         * load in order to set neccessary html div and script tags for BibTip.
+         *
+         * @return string Name of Smarty template file to display.
+         * @access public
+         */
+        /*public function getBibtipTags()
+        {
+        global $configArray;
+        global $interface;
+
+        if (isset($configArray['RDSRecommendations']['enabled'])
+        && $configArray['RDSRecommendations']['enabled']
+        && isset($configArray['RDSRecommendations']['engine'])
+        && $configArray['RDSRecommendations']['engine'] == "BibTip"
+        && isset($configArray['RDSRecommendations']['bibtipJsUrl'])
+        ) {
+        $interface->assign('bibtipEnabled', true);
+        }
+
+        $interface->assign('bibtipUrl', $configArray['RDSRecommendations']['bibtipJsUrl']);
+        }*/
+
+        /*	public function getOpenURLContextObject() {
+        require_once("RecordDrivers/RDSDataProvider/RDSDataProviderIndex.php");
+        $dpIndex = new RDSDataProviderIndex($this->fields, $this);
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterCOinS.php");
+        $rdsCOinSFormatter = new RDSFormatterCOinS($dpIndex);
+        $openURLcontextObject = $rdsCOinSFormatter->getFormattedRecord();
+
+        return $openURLcontextObject;
+        }
+
+        protected function setRDSDebug() {
+        global $isRDSDebug, $interface;
+
+        if ($isRDSDebug) {
+        $interface->assign('isRDSDebug', true);
+
+        require_once("RecordDrivers/RDSDataProvider/RDSDataProviderIndex.php");
+        $dpIndex = new RDSDataProviderIndex($this->fields, $this);
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterBibTeX.php");
+        $rdsBibTeXFormatter = new RDSFormatterBibTeX($dpIndex);
+        $bibTeX = $rdsBibTeXFormatter->getFormattedRecord();
+        $interface->assign('bibTeX', $bibTeX);
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterRIS.php");
+        $rdsRISFormatter = new RDSFormatterRIS($dpIndex);
+        $ris = $rdsRISFormatter->getFormattedRecord();
+        $interface->assign('ris', $ris);
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterField.php");
+        $rdsFieldFormatter = new RDSFormatterField($dpIndex);
+        $fields = $rdsFieldFormatter->getFormattedRecord();
+        $interface->assign('index', $fields);
+
+        require_once("RecordDrivers/RDSFormatter/RDSFormatterCOinS.php");
+        $rdsCOinSFormatter = new RDSFormatterCOinS($dpIndex);
+        $fields = $rdsCOinSFormatter->getFormattedRecordForDebug();
+        $interface->assign('coins', $fields);
+        }
+        }
+
+        protected function getThumbnailLink()
+        {
+        global $configArray;
+
+        $thumbnailLink = $configArray['buchhandel']['url'];
+
+        if ($isn = $this->getCleanISBN()) {
+        if (strlen($isn) != 13) {
+        $ISBN = new ISBN($isn);
+        $isn = $ISBN->get13();
+        }
+        return $thumbnailLink . $isn;
+        }
+        return $thumbnailLink;
+        }
+
+        protected function getBookcover()
+        {
+        global $configArray;
+
+        if (isset($configArray['Content']['coverimages'])) {
+        return true;
+        } else { return false; }
+
+        }
+        */
+
 }
