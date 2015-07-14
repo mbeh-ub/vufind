@@ -15,4 +15,10 @@ return array(
     'css' => $stylesheets,
     'js' => $javascripts,
     'favicon' => 'hohenheim-favicon.ico',
+    'helpers' => array(
+        'invokables' => array(
+            'rdsindexholding' => 'VuFind\View\Helper\Hohenheim\RDSIndexHolding',
+        )
+    )
+
 );
