@@ -143,6 +143,10 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
              $lok_mergeResult["RDS_HOLDING_LEAK"] = $lok_set["lueckenangabe8033"];
            }
            // RDS_INTERN /* only for Freiburg FRIAS and Ordinariat */
+           if (isset($lok_set["int_verm"])) {
+             $lok_mergeResult["RDS_INTERN"] = $lok_set["int_verm"];
+           }
+
            // RDS_PROVENIENCE 
            if (isset($lok_set["lok_prov"])) {
              foreach ($lok_set["lok_prov"] as $provience) {
@@ -175,6 +179,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
                 $lok_mergeResult["RDS_LOCATION"] .= $this->translate("RDS_LOCSIG") . " " . $lok_set["standort"]; 
              }
            }
+
            // check summary
            if ($this->checkSummary($lok_set)) {
              $borrowable = 0;
