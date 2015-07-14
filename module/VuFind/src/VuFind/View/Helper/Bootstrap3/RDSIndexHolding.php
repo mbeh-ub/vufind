@@ -96,7 +96,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
     {
 	$result=[];
         // $this->lok=$lok;
-        // $this->daia=$daia;
+        $this->daia=$daia;
 
         // Iteration based on the lok data
         foreach ($lok as $lok_set) {
@@ -175,6 +175,43 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
                 $lok_mergeResult["RDS_LOCATION"] .= $this->translate("RDS_LOCSIG") . " " . $lok_set["standort"]; 
              }
            }
+           // check summary
+           if ($this->checkSummary($lok_set)) {
+             $borrowable = 0;
+             $lent = 0;
+             $present = 0;
+             $unknown = 0;
+             $lok_mergeResult["RDS_STATUS"] = "";
+             foreach ($daia as $loc_daia) {
+                // ToDo eliminate PHP Warning and replace location
+                foreach ($loc_daia as $items) {
+                  foreach ($items as $item) {
+                    if ($item["summary"]) {
+                      $lastlocation = $item["location"];
+                      switch ($item["status"]) {
+                         case "borrowable": $borrowable++; break;
+                         case "order": $borrowable++; break;
+                         case "unknown": $unknown++; break;
+                         case "lent": $lent++; break;
+                         case "present": $present++; break;
+                      }
+                    }
+                  }
+                }
+             }
+             if ($borrowable > 0) {
+                $lok_mergeResult["RDS_STATUS"] = $borrowable . " " . $this->translate("RDS_AVAIL") . " ";
+             }
+             if ($lent > 0) {
+                $lok_mergeResult["RDS_STATUS"] .= $lent . " " . $this->translate("RDS_UNAVAILABLE") . " ";
+             }
+             if ($present > 0) {
+                 $lok_mergeResult["RDS_STATUS"] .= $present . " " . $this->translate("RDS_REF_STOCK_TEXT") . " ";
+             }
+             if ($unknown > 0) {
+                 $lok_mergeResult["RDS_STATUS"] .= $unknown . " " . $this->translate("UNKOWN");
+             }
+           } else {
            // set RDS_LOCATION and RDS_STATUS based on daia
            if (in_array($lok_set["bib_sigel"],$this->adis_clients)) {
              foreach ($daia as $loc_daia) {
@@ -197,12 +234,12 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
                          break;
                          case "lent": 
                              switch ($item["notes"]) {
-                                 case "transaction": $localstatus = "RDS_TRANSACTION"; break;
-                                 case "ordered": $localstatus = "RDS_STATUS_ORDERED"; break;
-                                 case "not yet ordered": $localstatus = "RDS_STATUS_MARKED"; break;
-                                 default: $localstatus = "RDS_UNAVAILABLE";
+                                 case "transaction": $localstatus = $this->translate("RDS_TRANSACTION"); break;
+                                 case "ordered": $localstatus = $this->translate("RDS_STATUS_ORDERED"); break;
+                                 case "not yet ordered": $localstatus = $this->translate("RDS_STATUS_MARKED"); break;
+                                 default: $localstatus = $this->translate("RDS_UNAVAILABLE") . " ";
                                    if ($item["duedate"]) {
-                                     $localstatus .= $this->translate("RDS_AVAIL_EXPECTED") . $item["duedate"];
+                                     $localstatus .= $this->translate("RDS_AVAIL_EXPECTED") . " " . $item["duedate"];
                                    }
                                  break;
                              }
@@ -221,10 +258,35 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
                 }
              }
            }
-	   // ToDo sorting $lok_mergeResult
+           } // end else checkSummary
+	   // ToDo sorting $lok_mergeResult   
            $result[$lok_set["bib_sigel"]][] = $lok_mergeResult;
         }
         return $result;
+    }
+
+    /**
+     * Check if item is part of something special 
+     *
+     * @param string $lok_set local data set 
+     *
+     * @return boolean
+     */
+    protected function checkSummary($lok_set) {
+        // for Hohenheim
+        /*
+        if ($lok_set["zusatz_standort"]=="10") {
+            return true;
+        } else {
+            return false;
+        }
+        */
+        // for Freiburg
+        if (preg_match('/^LB/',$lok_set["signatur"])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -250,12 +312,24 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
     /**
      * Generates a string for adis_link based on daia result 
      *
+     * @param string $bib_sigel  id of library 
+     *
      * @return string 
      */
     public function getAdisLink($bib_sigel)
     {
-      if (in_array($bib_sigel,$this->adis_clients)) {
-        return "javascript:msgWindow=window.open('http://foo.baa','KIOSK','width=1024,height=580,location=no,menubar=yes,toolbar=not,status=yes,scrollbars=yes,directories=no,resizable=yes,alwaysRaised=yes,hotkeys=no,top=0,left=200,screenY=0,screenX=200');msgWindow.focus();";
+      $adisLink = null;
+      foreach ($this->daia as $loc_daia) {
+         foreach ($loc_daia as $items) {
+            foreach ($items as $item) {
+               if (isset ($item['link'])) {
+                  $adisLink = $item['link'];
+               }
+            }
+         }
+      }
+      if (in_array($bib_sigel,$this->adis_clients) && $adisLink) {
+        return "javascript:msgWindow=window.open('" . $adisLink ."','KIOSK','width=1024,height=580,location=no,menubar=yes,toolbar=not,status=yes,scrollbars=yes,directories=no,resizable=yes,alwaysRaised=yes,hotkeys=no,top=0,left=200,screenY=0,screenX=200');msgWindow.focus();";
      } else {
         return null;
      }

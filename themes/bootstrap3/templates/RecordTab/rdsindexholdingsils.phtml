@@ -1,8 +1,10 @@
+<? /* 
 <br />****** Index - Lokalsatz **********<br />
-<? var_dump($this->driver->getLok()) ?>
+<?  var_dump($this->driver->getLok())  ?> 
 <br />****** DAIA - Verfügbarkeit **********<br />
-<? var_dump($this->driver->getRealTimeHoldings()) ?>
+<?  var_dump($this->driver->getRealTimeHoldings())  ?>
 <br />****** gemergte Struktur **********<br />
+ */ ?>
 
 <? 
     // Set up convencience variables:
@@ -10,8 +12,10 @@
     $daia = $this->driver->getRealTimeHoldings();
     $holdings = $this->RDSIndexHolding()->mergeData($lok, $daia);
 ?>
+<? /*
 <? var_dump($holdings) ?> 
-<br />****************<br />
+<br />*****************<br />
+*/ ?>
 
 <?
     // Show volume link
