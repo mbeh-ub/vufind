@@ -136,9 +136,11 @@
     <? else: ?>
       <form class="form-inline" method="post" name="bulkActionForm" action="<?=$this->url('cart-home')?>">
         <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results))?>
-        <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', array('idPrefix' => ''))?>
-        <?=$this->render('search/list-' . $this->params->getView() . '.phtml')?>
-        <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', array('idPrefix' => 'bottom_'))?>
+		<div class="search-results-listing">
+      <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', array('idPrefix' => ''))?>
+      <?=$this->render('search/list-' . $this->params->getView() . '.phtml')?>
+      <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', array('idPrefix' => 'bottom_'))?>
+		</div>
         <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results))?>
       </form>
 
