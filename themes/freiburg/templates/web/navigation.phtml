@@ -1,0 +1,13 @@
+<?
+if (!isset($this->layout()->renderSearchbox) || $this->layout()->renderSearchbox != false) {
+  $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+}
+?>
+
+<div style="border: 0px solid red;">
+  <div class="rds_searchbox">
+    <nav class="nav searchbox">
+      <?=$this->layout()->searchbox ?>
+    </nav>
+  </div>
+</div>
