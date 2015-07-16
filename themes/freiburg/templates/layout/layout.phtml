@@ -1,0 +1,186 @@
+<?=$this->doctype('HTML5')?>
+<html lang="<?=$this->layout()->userLang?>">
+<head>
+	<?$this->headThemeResources()?>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+	<?=$this->headMeta()?>
+	<?=$this->headTitle()?>
+	<?
+	// Set up OpenSearch link:
+	$this->headLink(
+		array(
+			'href' => $this->url('search-opensearch') . '?method=describe',
+			'type' => 'application/opensearchdescription+xml',
+			'title' => $this->transEsc('Library Catalog Search'),
+			'rel' => 'search'
+		)
+	);
+	?>
+	<?=$this->headLink()?>
+	<?=$this->headStyle()?>
+	<?
+	// Set global path for Javascript code:
+	$this->headScript()->prependScript("path = '" . rtrim($this->url('home'), '/') . "';");
+
+	// Deal with cart stuff:
+	if (!isset($this->renderingError)) {
+		$cart = $this->cart();
+		$this->jsTranslations()->addStrings(
+			array(
+				'bulk_email_success' => 'bulk_email_success',
+				'bulk_save_success' => 'bulk_save_success',
+				'close' => 'close',
+				'loading' => 'Loading',
+				'sms_success' => 'sms_success'
+			)
+		);
+		if ($cart->isActive()) {
+			$this->headScript()->appendFile("vendor/cookies.js");
+			$this->headScript()->appendFile("cart.js");
+			$domain = $cart->getCookieDomain();
+			$this->headScript()->appendScript(
+				'var cartCookieDomain = ' . (!empty($domain) ? "'$domain'" : 'false') . ';'
+			);
+			$this->jsTranslations()->addStrings(
+				array(
+					'bulk_noitems_advice' => 'bulk_noitems_advice',
+					'confirmDelete' => 'confirm_delete',
+					'confirmEmpty' => 'bookbag_confirm_empty',
+					'viewBookBag' => 'View Book Bag',
+					'addBookBag' => 'Add to Book Bag',
+					'removeBookBag' => 'Remove from Book Bag',
+					'itemsAddBag' => 'items_added_to_bookbag',
+					'itemsInBag' => 'items_already_in_bookbag',
+					'bookbagMax' => $cart->getMaxSize(),
+					'bookbagFull' => 'bookbag_full_msg',
+					'bookbagStatusFull' => 'bookbag_full',
+					'no_tags' => 'No Tags'
+				)
+			);
+		}
+		$this->headScript()->appendScript($this->jsTranslations()->getScript());
+	}
+
+	// Session keep-alive
+	if ($this->KeepAlive()) {
+		$this->headScript()->appendScript('var keepAliveInterval = '
+			. $this->KeepAlive());
+		$this->headScript()->appendFile("keep_alive.js");
+	}
+	?>
+	<?=$this->headScript()?>
+</head>
+
+<body class="page-layout-search color-10">
+
+	<div id="metaNavigationPanel">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="trigger-close"><a class="ui-trigger"><span class="icon icon-ubfr-close"></span></a></div>
+					<div class="meta-content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<header role="banner" id="pageHead" class="hidden-print">
+
+		<div class="main-head">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div id="pageLogo">
+							<a href="http://ub.con-version.com/">
+								<img src="/images/ub-freiburg-logo-weiss.svg" alt="Universitätsbibliothek Freiburg" />
+							</a>
+						</div>
+						<nav id="mainNavigation" role="navigation">
+							<ul class="level-0"><li data-menu-id="1197"><a href="http://ub.con-version.com/recherche/">Recherche</a><ul class="level-1"><li class="active"><a href="http://ub.con-version.com/recherche/suche-im-bestand/">Suche im Bestand</a></li><li><a href="http://ub.con-version.com/recherche/fernleihe-und-dokumentlieferdienste/">Fernleihe und Dokumentlieferdienste</a></li><li><a href="http://ub.con-version.com/recherche/digitale-bibliothek/">Digitale Bibliothek</a></li><li><a href="http://ub.con-version.com/recherche/spezialbestaende/">Spezialbestände</a></li><li><a href="http://ub.con-version.com/recherche/neuerwerbungen/">Neuerwerbungen</a></li><li><a href="http://ub.con-version.com/recherche/anschaffungsvorschlag/">Anschaffungsvorschlag</a></li></ul></li><li data-menu-id="1198"><a href="http://ub.con-version.com/medien-nutzen-leihen/">Medien nutzen & leihen</a><ul class="level-1"><li><a href="http://ub.con-version.com/medien-nutzen-leihen/standnummern/">Standnummern</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/anmeldung-zur-ausleihe/">Anmeldung zur Ausleihe</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/ausleihen/">Ausleihen</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/ausleihbereich/">Ausleihbereich</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/bestellungen-aus-dem-magazin/">Bestellungen aus dem Magazin</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/praesenzbestaende/">Präsenzbestände</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/digitalisierungsservice/">Digitalisierungsservice</a></li><li><a href="http://ub.con-version.com/medien-nutzen-leihen/geraeteausleihe-medienservice/">Geräteausleihe / Medienservice</a></li></ul></li><li data-menu-id="63"><a href="http://ub.con-version.com/unterstuetzung/">Unterstützung</a><ul class="level-1"><li><a href="http://ub.con-version.com/unterstuetzung/einfuehrungs-und-kursangebote/">Einführungs- und Kursangebote</a></li><li><a href="http://ub.con-version.com/unterstuetzung/literaturverwaltung/">Literaturverwaltung</a></li><li><a href="http://ub.con-version.com/unterstuetzung/ub-tutor-fachliche-benutzungshilfen/">UB-Tutor - fachliche Benutzungshilfen</a></li><li><a href="http://ub.con-version.com/unterstuetzung/lernplattform-ilias/">Lernplattform ILIAS</a></li><li><a href="http://ub.con-version.com/unterstuetzung/elektronisch-publizieren/">Elektronisch publizieren</a></li><li><a href="http://ub.con-version.com/unterstuetzung/e-sciencefoschungsunterstuetzung/">E-Science/Foschungsunterstützung</a></li><li><a href="http://ub.con-version.com/unterstuetzung/freiburger-fachportale/">Freiburger Fachportale</a></li></ul></li><li data-menu-id="1199"><a href="http://ub.con-version.com/lernort/">Lernort</a><ul class="level-1"><li><a href="http://ub.con-version.com/lernort/regeln-und-freiheiten/">Regeln und Freiheiten</a></li><li><a href="http://ub.con-version.com/lernort/schraenke-und-schliessfaecher/">Schränke und Schließfächer</a></li><li><a href="http://ub.con-version.com/lernort/arbeitsplaetze-und-ausstattung/">Arbeitsplätze und Ausstattung</a></li><li><a href="http://ub.con-version.com/lernort/technik-neu/">Technik (neu)</a></li><li><a href="http://ub.con-version.com/lernort/fundsachen-neu/">Fundsachen (neu)</a></li></ul></li><li data-menu-id="54"><a href="http://ub.con-version.com/ihre-ub/">Ihre UB</a><ul class="level-1"><li><a href="http://ub.con-version.com/ihre-ub/aktuelle-nachrichten/">Aktuelle Nachrichten</a></li><li><a href="http://ub.con-version.com/ihre-ub/bibliotheksprofil/">Bibliotheksprofil</a></li><li><a href="http://ub.con-version.com/ihre-ub/architekturneubau/">Architektur/Neubau</a></li><li><a href="http://ub.con-version.com/ihre-ub/veranstaltungen/">Veranstaltungen</a></li><li><a href="http://ub.con-version.com/ihre-ub/kooperationen-und-projekte-neu/">Kooperationen und Projekte (neu)</a></li><li><a href="http://ub.con-version.com/ihre-ub/veroeffentlichungen/">Veröffentlichungen</a></li><li><a href="http://ub.con-version.com/ihre-ub/presse-und-oeffentlichkeitsarbeit/">Presse- und Öffentlichkeitsarbeit</a></li><li><a href="http://ub.con-version.com/ihre-ub/ub-als-arbeitgeber-neu/">UB als Arbeitgeber (neu)</a></li></ul></li></ul>
+						</nav>
+
+						<nav id="metaNavigation" role="navigation">
+							<ul>
+
+								<li>
+									<a href="http://ub.con-version.com/meta-navigation/chat/" data-menu-uid="4271" data-ajax-request="http://ub.con-version.com/meta-navigation/chat/rawcontent/">
+										Chat
+									</a>
+								</li>
+
+								<li>
+									<a href="http://ub.con-version.com/meta-navigation/ausleihkonto/" data-menu-uid="4272" data-ajax-request="http://ub.con-version.com/meta-navigation/ausleihkonto/rawcontent/">
+										Ausleihkonto
+									</a>
+								</li>
+
+								<li>
+									<a href="http://ub.con-version.com/meta-navigation/fachportale/" data-menu-uid="4270" data-ajax-request="http://ub.con-version.com/meta-navigation/fachportale/rawcontent/">
+										Fachportale
+									</a>
+								</li>
+
+							</ul>
+						</nav>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</header>
+
+	<? //TODO: Can we use id for div container? ?>
+	<div id="contentWrapper" role="main" class="main template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?>">
+		<div class="container">
+			<?=$this->layout()->content ?>
+		</div>
+	</div>
+
+	<footer id="pageFooter" role="contentinfo" class="hidden-print">
+		<div class="container">
+			<?=$this->render('footer.phtml')?>
+		</div>
+	</footer>
+
+
+	<div id="fixedSidePanel">
+		<div class="logo-wrapper">
+			<img src="/images/uni-freiburg-logo.svg" alt="Universität Freiburg" />
+		</div>
+	</div>
+
+	<span id="toPageTop">
+		<a href="#pageHead">
+			<span class="label">Nach oben</span>
+			<span class="icon icon-ubfr-arrow-top"></span>
+		</a>
+	</span>
+
+	<?=$this->googleanalytics()?>
+	<?=$this->piwik()?>
+
+</body>
+</html>
+
+
+
+
+<?
+	// FIXME:
+?>
+
+<?
+$alreadyDefinedBreadcrumbs = $this->layout()->breadcrumbs;
+if ($this->transEsc('RDS_LIBRARY_HOMEPAGE_LINK') !== "hidden") {
+	$this->layout()->breadcrumbs  = '<li class=""><a href="'.$this->transEsc('RDS_LIBRARY_HOMEPAGE_LINK').'">' . $this->transEsc('RDS_LIBRARY_HOMEPAGE') . '</a></li>';
+}
+if ($this->transEsc('RDS_LIBRARY_SEARCH_AND_FIND_LINK') !== "hidden") {
+	$this->layout()->breadcrumbs .= '<li class=""><a href="'.$this->transEsc('RDS_LIBRARY_SEARCH_AND_FIND_LINK').'">' . $this->transEsc('RDS_LIBRARY_SEARCH_AND_FIND') . '</a></li>';
+}
+$this->layout()->breadcrumbs .= '<li class=""><a href="' . $this->url('home') . '">' . $this->transEsc('RDS_CATALOG_TITLE') . '</a></li>';
+$this->layout()->breadcrumbs .= $alreadyDefinedBreadcrumbs;
+?>

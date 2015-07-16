@@ -1,0 +1,12 @@
+<? $searchTabs = $this->searchtabs($this->searchClassId, $this->lookfor, $this->searchIndex, $this->searchType); ?>
+<? if (count($searchTabs) > 0): ?>
+	<ul class="ui-tabs">
+		<? foreach ($searchTabs as $tab): ?>
+			<li<?=$tab['selected'] ? ' class="active"' : ''?>>
+				<!-- a <?=$tab['selected'] ? '' : 'href="' . $this->serverUri . '/' . $tab['class'] . '/Search?' . $this->queryString  . '"' ?>><?=$this->transEsc($tab['label']);?></a-->
+				<a <?=$tab['selected'] ? '' : 'href="' . $this->escapeHtmlAttr($tab['url']) . '"' ?>><?=$this->transEsc($tab['label']); ?></a>
+			</li>
+		<? endforeach; ?>
+	</ul>
+<? endif; ?>
+
