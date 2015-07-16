@@ -160,27 +160,7 @@
 		</a>
 	</span>
 
-	<?=$this->googleanalytics()?>
 	<?=$this->piwik()?>
 
 </body>
 </html>
-
-
-
-
-<?
-	// FIXME:
-?>
-
-<?
-$alreadyDefinedBreadcrumbs = $this->layout()->breadcrumbs;
-if ($this->transEsc('RDS_LIBRARY_HOMEPAGE_LINK') !== "hidden") {
-	$this->layout()->breadcrumbs  = '<li class=""><a href="'.$this->transEsc('RDS_LIBRARY_HOMEPAGE_LINK').'">' . $this->transEsc('RDS_LIBRARY_HOMEPAGE') . '</a></li>';
-}
-if ($this->transEsc('RDS_LIBRARY_SEARCH_AND_FIND_LINK') !== "hidden") {
-	$this->layout()->breadcrumbs .= '<li class=""><a href="'.$this->transEsc('RDS_LIBRARY_SEARCH_AND_FIND_LINK').'">' . $this->transEsc('RDS_LIBRARY_SEARCH_AND_FIND') . '</a></li>';
-}
-$this->layout()->breadcrumbs .= '<li class=""><a href="' . $this->url('home') . '">' . $this->transEsc('RDS_CATALOG_TITLE') . '</a></li>';
-$this->layout()->breadcrumbs .= $alreadyDefinedBreadcrumbs;
-?>
