@@ -51,6 +51,26 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
     protected $adis_clients = ["25", "Frei129"];
 
     /**
+     * Result order
+     *
+     * @array
+     */
+    protected $resultOrder = [
+       "RDS_LEA",
+       "RDS_STATUS",
+       "RDS_LOCATION",
+       "RDS_URL",
+       "RDS_HINT",
+       "RDS_COMMENT",
+       "RDS_HOLDING",
+       "RDS_HOLDING_LEAK",
+       "RDS_INTERN",
+       "RDS_PROVENIENCE",
+       "RDS_LOCAL_NOTATION",
+       "RDS_SIGNATURE",
+    ];
+
+    /**
      * Result structure for mergeData 
      *
      * @array
@@ -315,9 +335,19 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
     }
 
     /**
+     * returns the array of the result order 
+     *
+     * @return array 
+     */
+    public function getResultOrder()
+    {
+        return $this->resultOrder;
+    }
+
+    /**
      * returns the array of active adis_clients 
      *
-     * @return string 
+     * @return array 
      */
     public function getAdisClients()
     {
@@ -349,6 +379,5 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
         return null;
      }
     }
-
 
 }
