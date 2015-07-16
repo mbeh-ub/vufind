@@ -48,7 +48,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
      *
      * @array
      */
-    protected $adis_clients = ["21", "25", "Frei129", "31", "100"];
+    protected $adis_clients = ["25", "Frei129"];
 
     /**
      * Result structure for mergeData 
@@ -187,7 +187,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
              $present = 0;
              $unknown = 0;
              $lok_mergeResult["RDS_STATUS"] = "";
-             foreach ($daia as $loc_daia) {
+             foreach ($daia[$lok_set["bib_sigel"]] as $loc_daia) {
                 // ToDo eliminate PHP Warning and replace location
                 foreach ($loc_daia as $items) {
                   foreach ($items as $item) {
@@ -219,7 +219,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
            } else {
            // set RDS_LOCATION and RDS_STATUS based on daia
            if (in_array($lok_set["bib_sigel"],$this->adis_clients)) {
-             foreach ($daia as $loc_daia) {
+             foreach ($daia[$lok_set["bib_sigel"]] as $loc_daia) {
                 // ToDo eliminate PHP Warning
                 foreach ($loc_daia as $items) {
                   foreach ($items as $item) {
@@ -315,6 +315,16 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
     }
 
     /**
+     * returns the array of active adis_clients 
+     *
+     * @return string 
+     */
+    public function getAdisClients()
+    {
+        return $this->adis_clients;
+    }
+
+    /**
      * Generates a string for adis_link based on daia result 
      *
      * @param string $bib_sigel  id of library 
@@ -324,11 +334,11 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
     public function getAdisLink($bib_sigel)
     {
       $adisLink = null;
-      foreach ($this->daia as $loc_daia) {
+      foreach ($this->daia[$bib_sigel] as $loc_daia) {
          foreach ($loc_daia as $items) {
             foreach ($items as $item) {
-               if (isset ($item['link'])) {
-                  $adisLink = $item['link'];
+               if (isset ($item['ilslink'])) {
+                  $adisLink = $item['ilslink'];
                }
             }
          }

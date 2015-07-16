@@ -1,21 +1,24 @@
-<? /* 
 <br />****** Index - Lokalsatz **********<br />
 <?  var_dump($this->driver->getLok())  ?> 
-<br />****** DAIA - Verfügbarkeit **********<br />
-<?  var_dump($this->driver->getRealTimeHoldings())  ?>
-<br />****** gemergte Struktur **********<br />
- */ ?>
 
 <? 
     // Set up convencience variables:
     $lok = $this->driver->getLok();
-    $daia = $this->driver->getRealTimeHoldings();
+    $adis_clients = $this->RDSIndexHolding()->getAdisClients();
+    $institutions = $this->driver->tryMethod('getInstitutions');
+    foreach ($adis_clients as $client) {
+      if (in_array($client, $institutions)) {
+         $daia[$client] = $this->driver->getRealTimeHoldings("RDSDAIA" . $client . ".");
+      } 
+    }
+    // $daia = $this->driver->getRealTimeHoldings("RDSDAIA25.");
     $holdings = $this->RDSIndexHolding()->mergeData($lok, $daia);
 ?>
-<? /*
+<br />****** DAIA - Verfügbarkeit **********<br />
+<?  var_dump($daia)  ?>
+<br />****** gemergte Struktur **********<br />
 <? var_dump($holdings) ?> 
 <br />*****************<br />
-*/ ?>
 
 <?
     // Show volume link

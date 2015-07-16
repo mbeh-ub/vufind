@@ -942,10 +942,10 @@ class RDSIndex extends SolrMarc
      *
      * @return array
      */
-    public function getRealTimeHoldings()
+    public function getRealTimeHoldings($patron = "")
     {
         return $this->hasILS() ? $this->holdLogic->getHoldings(
-            $this->getUniqueID(), $this->getConsortialIDs()
+            $patron . $this->getUniqueID(), $this->getConsortialIDs()
         ) : [];
     }
 
