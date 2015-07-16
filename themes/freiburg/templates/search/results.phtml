@@ -52,6 +52,15 @@
   $searchId = $this->results->getSearchId();
 ?>
 
+<? $recordTotal = $this->results->getResultTotal() ?>
+
+<? if ($recordTotal > 0): ?>
+  <div class="result-count">
+    <span>Ihre Suche nach <span class="search-word"><?=$this->escapeHtml($lookfor)?></span> ergab <?=$this->localizedNumber($recordTotal)?> Treffer.</span>
+  </div>
+<? endif; ?>
+
+
 <div class="row">
 
   <div class="<?=$this->layoutClass('mainbody')?>">
@@ -70,14 +79,18 @@
           <? if (!isset($this->skipTotalCount)): ?>
             <?=$this->transEsc('of')?> <strong><?=$this->localizedNumber($recordTotal)?></strong>
           <? endif; ?>
+          <!--
           <? if (isset($this->overrideSearchHeading)): ?>
             <?=$this->overrideSearchHeading?>
           <? elseif ($this->params->getSearchType() == 'basic'): ?>
             <?=$this->transEsc('for search')?>: <strong>'<?=$this->escapeHtml($lookfor)?>'</strong>,
           <? endif; ?>
+          -->
+          <!--
           <? if ($qtime = $this->results->getQuerySpeed()): ?>
             <?=$this->transEsc('query time')?>: <?=$this->localizedNumber($qtime, 2).$this->transEsc('seconds_abbrev')?>
           <? endif; ?>
+          -->
         <? else: ?>
           <p class="lead"><?=$this->transEsc('nohit_heading')?></p>
         <? endif; ?>
