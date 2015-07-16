@@ -64,7 +64,7 @@
 <div class="row">
 
   <div class="<?=$this->layoutClass('mainbody')?>">
-    <? if (($recordTotal = $this->results->getResultTotal()) > 0): // only display these at very top if we have results ?>
+    <? if ($recordTotal > 0): // only display these at very top if we have results ?>
       <? foreach ($this->results->getRecommendations('top') as $current): ?>
         <?=$this->recommend($current)?>
       <? endforeach; ?>
@@ -135,6 +135,7 @@
       <? endforeach; ?>
     <? else: ?>
       <form class="form-inline" method="post" name="bulkActionForm" action="<?=$this->url('cart-home')?>">
+        <?=$this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results))?>
         <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', array('idPrefix' => ''))?>
         <?=$this->render('search/list-' . $this->params->getView() . '.phtml')?>
         <?=$this->context($this)->renderInContext('search/bulk-action-buttons.phtml', array('idPrefix' => 'bottom_'))?>
