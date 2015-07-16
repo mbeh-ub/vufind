@@ -34,7 +34,6 @@
 	</div>
 <? else: ?>
 	<div id="miniSearch">
-		<? // FIXME: Removed classes navbar-form navbar-left ?>
 		<form role="search" method="get" action="<?=$this->url($basicSearch)?>" name="searchForm" id="searchForm" autocomplete="off">
 			<? if($renderSearchTabs) $tabs=$this->render('search/searchTabs'); ?>
 			<? if (!empty($tabs)): ?><?=$tabs ?><? endif; ?>
