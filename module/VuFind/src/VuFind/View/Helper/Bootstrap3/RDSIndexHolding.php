@@ -176,8 +176,8 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
                    // split id in provid and dnbid
                    if (preg_match('/ ; /', $prov_list[0])) {
                       $prov_id = explode(" ; ", $prov_list[0]);
-                      $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_id[0] . " prnname " . $prov_list[1] . " bndid: " . $prov_id[1];
-                      $lok_mergeResult["RDS_PROVENIENCE"] .=  "<a class='dnb' href=''  target='_blank' title='" . $this->translate('RDS_PERS_DNB') . "'></a>";
+                      $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_id[0] . " prnname " . $prov_list[1] . " ";
+                      $lok_mergeResult["RDS_PROVENIENCE"] .=  "<a class='dnb' href='http://d-nb.info/gnd/" . $prov_id[1] . "'  target='_blank' title='" . $this->translate('RDS_PERS_DNB') . "'></a>";
                    } else {
                       $lok_mergeResult["RDS_PROVENIENCE"] = "prnid: " . $prov_list[0] . " prnname " . $prov_list[1];
                    }
@@ -243,40 +243,9 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
                 // ToDo eliminate PHP Warning
                 foreach ($loc_daia as $items) {
                   foreach ($items as $item) {
-                    if ($item["callnumber"] == $lok_set["signatur"]) {
+                    if ($this->checkSignature($item["callnumber"],$lok_set["signatur"],$lok_set["bib_sigel"])) {
                       $lok_mergeResult["RDS_LOCATION"] .= " " . $this->translate($item["location"]); 
-                      $localstatus = "";
-                      switch ($item["status"]) {
-                         case "borrowable": $localstatus = "RDS_AVAIL"; break;
-                         case "order": $localstatus = "RDS_ORDER"; break;
-                         case "unknown": 
-                             if ($item["notes"] == "provided") {
-                                 $localstatus = "RDS_WAITING";
-                             }
-                             if ($item["notes"] == "missing") {
-                                 $localstatus = "RDS_MISSING";
-                             }
-                         break;
-                         case "lent": 
-                             switch ($item["notes"]) {
-                                 case "transaction": $localstatus = $this->translate("RDS_TRANSACTION"); break;
-                                 case "ordered": $localstatus = $this->translate("RDS_STATUS_ORDERED"); break;
-                                 case "not yet ordered": $localstatus = $this->translate("RDS_STATUS_MARKED"); break;
-                                 default: $localstatus = $this->translate("RDS_UNAVAILABLE") . " ";
-                                   if ($item["duedate"]) {
-                                     $localstatus .= $this->translate("RDS_AVAIL_EXPECTED") . " " . $item["duedate"];
-                                   }
-                                 break;
-                             }
-                         break;
-                         case "present":
-                             if ($lok_set["status"] == "p") {
-                                 $localstatus = "RDS_REF_STOCK_SPECIAL";
-                             } else {
-                                 $localstatus = "RDS_REF_STOCK_TEXT";
-                             }
-                         break;
-                      }
+                      $localstatus = $this->createReadableStatus($item);
                       $lok_mergeResult["RDS_STATUS"] = $localstatus;
                     }
                   }
@@ -290,6 +259,66 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
         return $result;
     }
 
+    /**
+     * Check if signatures fit together 
+     *
+     * @param string $daia_sig signature from daia
+     * @param string $loc_sig signature from loc set 
+     * @param string $bib_sigel sigel of the library
+     *
+     * @return boolean
+     */
+    protected function checkSignature($daia_sig,$loc_sig, $bib_sigel) {
+        if ($daia_sig == $loc_sig) {
+           return true;
+        } else {
+           return false;
+        }
+    }
+
+    /**
+     * Creates a readable status 
+     *
+     * @param array $item daia item 
+     *
+     * @return string
+     */
+    protected function createReadableStatus($item) {
+        $localstatus = "";
+        switch ($item["status"]) {
+                case "borrowable": $localstatus = "RDS_AVAIL"; break;
+                case "order": $localstatus = "RDS_ORDER"; break;
+                case "unknown": 
+                     if ($item["notes"] == "provided") {
+                         $localstatus = "RDS_WAITING";
+                     }
+                     if ($item["notes"] == "missing") {
+                         $localstatus = "RDS_MISSING";
+                     }
+                     break;
+                case "lent": 
+                     switch ($item["notes"]) {
+                            case "transaction": $localstatus = $this->translate("RDS_TRANSACTION"); break;
+                            case "ordered": $localstatus = $this->translate("RDS_STATUS_ORDERED"); break; 
+                            case "not yet ordered": $localstatus = $this->translate("RDS_STATUS_MARKED"); break;
+                            default: $localstatus = $this->translate("RDS_UNAVAILABLE") . " ";
+                                   if ($item["duedate"]) {
+                                     $localstatus .= $this->translate("RDS_AVAIL_EXPECTED") . " " . $item["duedate"];
+                                   }
+                            break;
+                            }
+                     break;
+                case "present":
+                     if ($lok_set["status"] == "p") {
+                         $localstatus = "RDS_REF_STOCK_SPECIAL";
+                     } else {
+                         $localstatus = "RDS_REF_STOCK_TEXT";
+                     }
+                     break;
+        }
+        return $localstatus;
+    }
+ 
     /**
      * Check if item is part of something special 
      *
