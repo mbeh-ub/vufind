@@ -134,6 +134,7 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
              $lok_mergeResult["RDS_STATUS"] = "RDS_REF_STOCK";
            }
            // set RDS_LOCATION (may be modified by daia)
+           $lok_mergeResult["RDS_LOCATION"] = $this->setLocation($lok_set);
            if (isset($lok_set["zusatz_standort"])) {
              $lok_mergeResult["RDS_LOCATION"] = $lok_set["zusatz_standort"];
            }
@@ -274,6 +275,29 @@ class RDSIndexHolding extends \Zend\View\Helper\AbstractHelper implements Transl
         } else {
            return false;
         }
+    }
+
+    /**
+     * Creates the location depending on the data loc set
+     *
+     * @param array $lok_set 
+     *
+     * @return string
+     */
+    protected function setLocation($lok_set) {
+       // for Hohenheim
+       /*
+       if (isset($lok_set["zusatz_standort"])) {
+           return $lok_set["zusatz_standort"];
+       }
+       */
+       // for Freiburg
+       if (isset($lok_set["standort"])) {
+           if (isset($lok_set["R84_zusatz_standort"])) {
+               return $lok_set["R84_zusatz_standort"] . " " . $lok_set["standort"];
+           } 
+           return $lok_set["standort"];
+       }
     }
 
     /**
