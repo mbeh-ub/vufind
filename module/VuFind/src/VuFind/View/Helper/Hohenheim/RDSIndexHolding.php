@@ -58,6 +58,19 @@ class RDSIndexHolding extends \VuFind\View\Helper\Bootstrap3\RDSIndexHolding
     }
 
     /**
+     * Creates the location depending on the data loc set
+     *
+     * @param array $lok_set 
+     *
+     * @return string
+     */
+    protected function setLocation($lok_set) {
+       if (isset($lok_set["zusatz_standort"])) {
+           return $lok_set["zusatz_standort"];
+       }
+    }
+
+    /**
      * Generates a string for bib_link based on local data set
      *
      * @return string 
