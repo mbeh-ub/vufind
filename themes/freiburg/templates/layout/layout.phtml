@@ -75,7 +75,7 @@
 	<?=$this->headScript()?>
 </head>
 
-<body class="page-layout-search color-10">
+<body class="page-layout-search page-layout-default color-10">
 
 	<div id="metaNavigationPanel">
 		<div class="container">
@@ -96,8 +96,8 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div id="pageLogo">
-							<a href="http://ub.con-version.com/">
-								<img src="/images/ub-freiburg-logo-weiss.svg" alt="Universitätsbibliothek Freiburg" />
+							<a href="/">
+								<img src="/images/probebetrieb/ub-freiburg-logo-probebetrieb.svg" alt="Universitätsbibliothek Freiburg" />
 							</a>
 						</div>
 						<nav id="mainNavigation" role="navigation">
@@ -107,6 +107,17 @@
 						<nav id="metaNavigation" role="navigation">
 							<?=$this->render('websiteAssets/metaNavigation.phtml')?>
 						</nav>
+
+						<div class="probebetrieb-navigation">
+							<div class="content">
+								<span class="heading">Probebetrieb</span>
+								<ul>
+									<li><a href="/probebetrieb/was-bedeutet-probebetrieb/">Der Probebetrieb</a></li>
+									<li><a href="/probebetrieb/was-ist-neu/">Neu</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="probebetrieb-layer-02"></div>
 
 					</div>
 				</div>
