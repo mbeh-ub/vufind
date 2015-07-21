@@ -42,6 +42,33 @@ use     VuFind\I18n\Translator\TranslatorAwareInterface;
 class RDSIndexHolding extends \VuFind\View\Helper\Bootstrap3\RDSIndexHolding 
 {
     /**
+     * List of adis client 
+     *
+     * @array
+     */
+    protected $adis_clients = ["100"];
+
+    /**
+     * Result order
+     *
+     * @array
+     */
+    protected $resultOrder = [
+       "RDS_LEA",
+       "RDS_SIGNATURE",
+       "RDS_STATUS",
+       "RDS_LOCATION",
+       "RDS_URL",
+       "RDS_HINT",
+       "RDS_HOLDING",
+       "RDS_HOLDING_LEAK",
+       "RDS_COMMENT",
+       "RDS_INTERN",
+       "RDS_PROVENIENCE",
+       "RDS_LOCAL_NOTATION",
+    ];
+
+    /**
      * Check if item is part of something special 
      *
      * @param string $lok_set local data set 
