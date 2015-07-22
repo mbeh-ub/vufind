@@ -12,7 +12,9 @@ return array(
 		'/js/app.js',
 		'/js/plugin.mainnavigation.js',
 		'/js/plugin.metanavigation.js',
-		'/js/plugin.autoheighter.js'
+		'/js/plugin.autoheighter.js',
+    'search.switch.js'
+                    
     ),
-    'favicon' => 'freiburg-favicon.ico',
+    'favicon' => '/images/icons/ub-freiburg.ico',
 );
