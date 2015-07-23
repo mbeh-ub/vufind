@@ -54,8 +54,10 @@ class WebController extends AbstractSearch
      */
     public function homeAction()
     {
-        // Do nothing -- just display template
-        return $this->createViewModel();
+        // Do nothing -- just display templates
+        $view=$this->createViewModel();
+        $view->lookfor=$this->params()->fromQuery('lookfor');
+        return $view;
     }
 }
 

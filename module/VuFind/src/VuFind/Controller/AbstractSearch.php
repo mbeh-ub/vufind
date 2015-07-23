@@ -225,7 +225,8 @@ class AbstractSearch extends AbstractBase
     public function resultsAction()
     {
         $view = $this->createViewModel();
-
+        $view->lookfor=$this->params()->fromQuery('lookfor');
+        
         // Handle saved search requests:
         $savedId = $this->params()->fromQuery('saved', false);
         if ($savedId !== false) {
