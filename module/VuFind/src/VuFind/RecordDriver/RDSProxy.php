@@ -1206,6 +1206,8 @@ class RDSProxy extends SolrDefault
      */
     public function getURLs()
     {
+        // ToDo
+        return null;
         $myurl = array();
         if (isset($this->fields['links']) && is_array($this->fields['links'])) {
             foreach ($this->fields['links'] as $key => $value) {
