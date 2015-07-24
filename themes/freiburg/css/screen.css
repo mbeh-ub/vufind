@@ -1,0 +1,2066 @@
+@charset "UTF-8";
+/* line 5, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../../../../../../home/mw/.rvm/gems/ruby-1.9.3-p551/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+@font-face {
+  font-family: icons;
+  src: url("https://www.ub.uni-freiburg.de/fonts/icons.eot");
+  src: url("https://www.ub.uni-freiburg.de/fonts/icons.eot?#iefix") format("embedded-opentype"), url("https://www.ub.uni-freiburg.de/fonts/icons.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/icons.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/icons##plaussigicons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Calibri W02_n2";
+  src: url("https://www.ub.uni-freiburg.de/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Calibri W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/0243429e-494c-4145-9cde-079c0a716390.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/c9e4b93e-12ea-4d36-959b-ca784281b056.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/d09d3848-2f3a-46f2-b136-145d45a35b0c.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/2d5d393f-6688-4c82-817f-657e30ca589e.svg#2d5d393f-6688-4c82-817f-657e30ca589e") format("svg");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Calibri W02_i2";
+  src: url("https://www.ub.uni-freiburg.de/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Calibri W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/681d47c0-cea0-463d-93dd-867a3c04d178.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/25df1399-2fd5-46b9-9bf0-f015bcd63568.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/674df743-2dbd-43c6-8c72-2bb4e18ad6cc.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/66e56552-1793-41c0-8df3-193ebb4399b6.svg#66e56552-1793-41c0-8df3-193ebb4399b6") format("svg");
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Calibri W02_n4";
+  src: url("https://www.ub.uni-freiburg.de/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Calibri W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/eddca627-1285-4078-8527-442a93fb062e.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/67262388-98cb-4d91-a364-b35af76b9b1e.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/7711a542-a10e-491e-bd9d-7131e1fc3283.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/d57cf83d-5496-45c7-bb10-c5f058a386ec.svg#d57cf83d-5496-45c7-bb10-c5f058a386ec") format("svg");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Calibri W02_i4";
+  src: url("https://www.ub.uni-freiburg.de/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Calibri W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/40040824-2b78-41ad-aa4d-b22a3e9fc59e.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/a692d46c-1cca-4302-b90e-44c70c8ae03e.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/f446a8ea-97cf-455c-a946-b7d1daf6c3b9.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/b75755f5-93b1-4878-af5c-9e414fdf51f6.svg#b75755f5-93b1-4878-af5c-9e414fdf51f6") format("svg");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Calibri W02_n7";
+  src: url("https://www.ub.uni-freiburg.de/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Calibri W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/f7916c07-ab29-44f5-9e10-3846e10a48ec.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/87dc3446-f284-479a-8034-f02bdae49b84.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/0f9b2ecf-01f7-47f9-bba8-13b5356d3eff.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/8665edde-5cf1-436e-8a48-205a31920f7e.svg#8665edde-5cf1-436e-8a48-205a31920f7e") format("svg");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Calibri W02_i7";
+  src: url("https://www.ub.uni-freiburg.de/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Calibri W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/93a2946b-4b41-40bf-a31d-f852a415e4a5.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/b25273c8-dd69-4b55-acad-498e7d20de5f.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/e39d8c7c-cc17-4d54-b5eb-9b212f323ffd.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/d22c003a-f251-4b0d-b42b-0c7014880317.svg#d22c003a-f251-4b0d-b42b-0c7014880317") format("svg");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Klint W02_n2";
+  src: url("https://www.ub.uni-freiburg.de/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Klint W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/e3470e31-a0f8-45f9-9a32-ad41b1421048.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/8fd52d14-1c97-47b2-9a4e-85d7ba2f61af.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/beef72d0-c251-4811-896a-d226100fe2fd.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/c5278e60-c8c5-4d22-90fb-1d548ff7b75b.svg#c5278e60-c8c5-4d22-90fb-1d548ff7b75b") format("svg");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Klint W02_n5";
+  src: url("https://www.ub.uni-freiburg.de/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Klint W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/c1d52382-ed30-4ed6-9c96-0e91ff3e8dbc.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/3598b206-2844-4845-84a8-cd43c2df31b8.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/834ae648-d8f7-4f5c-bc0f-eedfd799d736.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/e7b41e2c-7bf2-4ac3-8c20-11ca0056c49b.svg#e7b41e2c-7bf2-4ac3-8c20-11ca0056c49b") format("svg");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Klint W02_n7";
+  src: url("https://www.ub.uni-freiburg.de/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix") format("eot");
+}
+@font-face {
+  font-family: "Klint W02";
+  src: url("https://www.ub.uni-freiburg.de/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix");
+  src: url("https://www.ub.uni-freiburg.de/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/493233d8-fd85-4843-9df6-211f46205ea1.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/69add838-fd84-43c4-9d99-a4875d40b5d4.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/1a5de125-6d78-4cee-a64d-88f430f43444.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/04a01ca6-2cbe-4e2f-998b-f4918b150d0a.svg#04a01ca6-2cbe-4e2f-998b-f4918b150d0a") format("svg");
+  font-weight: 700;
+  font-style: normal;
+}
+/*
+This CSS resource incorporates links to font software which is the valuable copyrighted
+property of Monotype Imaging and/or its suppliers. You may not attempt to copy, install,
+redistribute, convert, modify or reverse engineer this font software. Please contact Monotype
+Imaging with any questions regarding Web Fonts:  http://www.fonts.com
+*/
+/* line 15, ../../Private/Sass/Ub/_icons.scss */
+[class^="icon-"], [class*=" icon-"] {
+  font-family: icons;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-fa-search:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-fa-caret-down:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-fa-caret-up:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ub-important:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-arrow-left:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-arrow-top:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-arrow-right:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-arrow-top-right:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-arrow-bottom-right:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-close:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-plus:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-search:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-pointer-end:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-pointer-next:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-pointer-prev:before {
+  content: "";
+}
+
+/* line 65, ../../Private/Sass/Ub/_icons.scss */
+.icon-ubfr-pointer-start:before {
+  content: "";
+}
+
+/* line 1, ../../Private/Sass/Ub/_typography.scss */
+html {
+  font-size: 100%;
+  font-size: 18px;
+  line-height: 1.3em;
+}
+
+/* line 7, ../../Private/Sass/Ub/_typography.scss */
+body {
+  font-family: "Calibri W02", sans-serif;
+  color: #655e5e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+}
+
+/* line 23, ../../Private/Sass/Ub/_typography.scss */
+h1 {
+  font-size: 2.222em;
+  line-height: 1.3em;
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+}
+
+/* line 35, ../../Private/Sass/Ub/_typography.scss */
+h2 {
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 1.333em;
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+}
+
+/* line 45, ../../Private/Sass/Ub/_typography.scss */
+h3 {
+  font-weight: 700;
+  font-size: 1em;
+  line-height: 1.3em;
+}
+
+/* line 49, ../../Private/Sass/Ub/_typography.scss */
+p {
+  padding: 10px 0;
+}
+
+/* line 53, ../../Private/Sass/Ub/_typography.scss */
+a {
+  color: #655e5e;
+}
+/* line 55, ../../Private/Sass/Ub/_typography.scss */
+a:hover {
+  color: #655e5e;
+  text-decoration: underline;
+}
+
+/* line 62, ../../Private/Sass/Ub/_typography.scss */
+ol.default-list > li, ul.default-list > li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  list-style-position: inside;
+  text-indent: -20px;
+  padding-left: 40px;
+}
+
+/* line 72, ../../Private/Sass/Ub/_typography.scss */
+ol.default-list > li {
+  list-style-type: decimal;
+}
+
+/* line 77, ../../Private/Sass/Ub/_typography.scss */
+ul.default-list > li {
+  list-style-type: square;
+}
+
+/* line 85, ../../Private/Sass/Ub/_typography.scss */
+.page-teaser h1 {
+  margin: 0;
+}
+/* line 88, ../../Private/Sass/Ub/_typography.scss */
+.page-teaser p, .page-teaser li, .page-teaser span {
+  font-size: 1.333em;
+  line-height: 1.3em;
+  padding: 0;
+  padding-bottom: 20px;
+}
+
+/* line 99, ../../Private/Sass/Ub/_typography.scss */
+.fluid-box .box-title {
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+  font-size: 3.556em;
+  color: #FFF;
+  line-height: 1.4em;
+  text-transform: lowercase;
+}
+
+/* line 1, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-1 {
+  background: #5b89e8;
+}
+
+/* line 4, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-2 {
+  background: #28afe1;
+}
+
+/* line 7, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-3 {
+  background: #7df0ff;
+}
+
+/* line 10, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-4 {
+  background: #87f096;
+}
+
+/* line 13, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-5 {
+  background: #d8f460;
+}
+
+/* line 16, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-6 {
+  background: #fff25c;
+}
+
+/* line 19, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-7 {
+  background: #ffd76e;
+}
+
+/* line 22, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-8 {
+  background: #ff555a;
+}
+
+/* line 25, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-9 {
+  background: #655e5e;
+}
+
+/* line 28, ../../Private/Sass/Ub/_coloring.scss */
+.bg-color-10 {
+  background: #eae9e7;
+}
+
+/* line 1, ../../Private/Sass/Ub/PageLayout/_general.scss */
+html, body {
+  height: 100%;
+}
+
+/* line 4, ../../Private/Sass/Ub/PageLayout/_general.scss */
+body {
+  position: relative;
+}
+/* line 7, ../../Private/Sass/Ub/PageLayout/_general.scss */
+body:before {
+  content: '';
+  width: 300%;
+  height: 300%;
+  background: #eae9e7;
+  position: fixed;
+  z-index: -1;
+  right: 20%;
+  top: -100%;
+  -moz-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  -webkit-transform: rotate(15deg);
+}
+
+/* line 22, ../../Private/Sass/Ub/PageLayout/_general.scss */
+body.page-layout-search {
+  background: #eae9e7;
+}
+/* line 24, ../../Private/Sass/Ub/PageLayout/_general.scss */
+body.page-layout-search:before {
+  display: none;
+}
+
+/* line 3, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#pageHead {
+  position: relative;
+  height: 224px;
+}
+/* line 6, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#pageHead .main-head {
+  background: #ffd76e;
+  height: 100%;
+}
+
+/* line 12, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#metaNavigation {
+  position: absolute;
+  top: 8px;
+  left: 27px;
+}
+
+/* line 19, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#mainNavigation {
+  position: absolute;
+  top: 40px;
+}
+
+/* line 25, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#pageLogo {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  height: 146px;
+}
+/* line 31, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#pageLogo img {
+  width: auto;
+  height: 100%;
+}
+
+/* line 38, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+#miniSearch {
+  position: absolute;
+  left: 20px;
+  top: 90px;
+}
+
+/* line 48, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+.page-layout-start #pageHead {
+  height: 80%;
+}
+/* line 50, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+.page-layout-start #pageHead .main-head {
+  position: relative;
+  height: 800px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/* line 61, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+.page-layout-start #miniSearch {
+  position: absolute;
+  left: 50%;
+  margin-left: -400px;
+  top: 45%;
+}
+
+/* line 73, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+.page-layout-search #pageHead {
+  height: 260px;
+  border-bottom: solid 4px #28afe1;
+}
+
+/* line 83, ../../Private/Sass/Ub/PageLayout/_page-head.scss */
+.color-10 #pageHead .main-head {
+  background: #eae9e7;
+}
+
+/* line 1, ../../Private/Sass/Ub/PageLayout/_main-content.scss */
+#contentWrapper {
+  margin-top: 20px;
+}
+
+/* line 8, ../../Private/Sass/Ub/PageLayout/_main-content.scss */
+.page-layout-start #contentWrapper {
+  margin-top: 0;
+}
+
+/* line 13, ../../Private/Sass/Ub/PageLayout/_main-content.scss */
+.page-teaser {
+  padding: 20px;
+}
+
+/* line 1, ../../Private/Sass/Ub/PageLayout/_page-footer.scss */
+#pageFooter {
+  margin-top: 40px;
+  background: #655e5e;
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 60px;
+  color: #FFF;
+  font-size: 0.889em;
+}
+/* line 10, ../../Private/Sass/Ub/PageLayout/_page-footer.scss */
+#pageFooter a, #pageFooter a:hover {
+  color: #FFF;
+}
+/* line 15, ../../Private/Sass/Ub/PageLayout/_page-footer.scss */
+#pageFooter #footerNavigation li {
+  line-height: 1.8em;
+}
+/* line 20, ../../Private/Sass/Ub/PageLayout/_page-footer.scss */
+#pageFooter .nav-title {
+  font-weight: 700;
+  display: block;
+  padding-bottom: 7px;
+}
+
+/* line 1, ../../Private/Sass/Ub/PageLayout/_fixedSidePanel.scss */
+#fixedSidePanel {
+  background: white;
+  background: white;
+  background: rgba(255, 255, 255, 0.4);
+  position: fixed;
+  right: 0;
+  width: 52px;
+  height: 100%;
+  top: 0;
+  overflow: visible;
+  z-index: 10000;
+}
+/* line 13, ../../Private/Sass/Ub/PageLayout/_fixedSidePanel.scss */
+#fixedSidePanel .logo-wrapper {
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  width: 70px;
+}
+/* line 21, ../../Private/Sass/Ub/PageLayout/_fixedSidePanel.scss */
+#fixedSidePanel img {
+  width: 100%;
+  height: auto;
+}
+
+/* line 1, ../../Private/Sass/Ub/Scaffolding/_images.scss */
+figcaption {
+  background: #7df0ff;
+  padding: 10px 20px;
+  font-weight: 700;
+}
+
+/* line 3, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.has-mark .marker {
+  position: relative;
+  display: block;
+  float: right;
+  width: 30px;
+  height: 60px;
+  right: -10px;
+  top: -20px;
+  clear: right;
+}
+/* line 12, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.has-mark .marker:before {
+  font-size: 80px;
+  color: #eae9e7;
+  position: absolute;
+  right: 7px;
+}
+/* line 18, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.has-mark .marker:after {
+  right: 0;
+  top: 7px;
+  position: absolute;
+  font-size: 80px;
+  color: #ff555a;
+}
+
+/* line 31, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.has-mark .marker-important:before {
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+/* line 34, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.has-mark .marker-important:after {
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+
+/* line 44, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-1 .marker:before {
+  color: #5b89e8;
+}
+
+/* line 52, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-2 .marker:before {
+  color: #28afe1;
+}
+
+/* line 60, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-3 .marker:before {
+  color: #7df0ff;
+}
+
+/* line 68, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-4 .marker:before {
+  color: #87f096;
+}
+
+/* line 76, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-5 .marker:before {
+  color: #d8f460;
+}
+
+/* line 84, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-6 .marker:before {
+  color: #fff25c;
+}
+
+/* line 92, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-7 .marker:before {
+  color: #ffd76e;
+}
+
+/* line 100, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-8 .marker:before {
+  color: #ff555a;
+}
+
+/* line 108, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-9 .marker:before {
+  color: #655e5e;
+}
+
+/* line 116, ../../Private/Sass/Ub/Scaffolding/_marks.scss */
+.bg-color-10 .marker:before {
+  color: #eae9e7;
+}
+
+/* line 2, ../../Private/Sass/Ub/Scaffolding/_spam-substitutions.scss */
+.cryptify-a-t:before {
+  content: '@';
+}
+
+/* line 7, ../../Private/Sass/Ub/Scaffolding/_spam-substitutions.scss */
+.cryptify-d-o-t:before {
+  content: '.';
+}
+
+/* line 1, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table, .contenttable {
+  width: 100%;
+}
+/* line 5, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table th, .contenttable th {
+  font-weight: 700;
+}
+/* line 9, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table th, .default-table td, .contenttable th, .contenttable td {
+  vertical-align: top;
+  border-left: solid 3px #d6d3cf;
+  padding: 14px;
+}
+/* line 13, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table th:first-child, .default-table td:first-child, .contenttable th:first-child, .contenttable td:first-child {
+  border: none;
+}
+/* line 20, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table thead tr, .contenttable thead tr {
+  border-top: solid 3px #d6d3cf;
+}
+/* line 22, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table thead tr:first-child, .contenttable thead tr:first-child {
+  border-top: none;
+}
+/* line 28, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table tbody tr, .contenttable tbody tr {
+  border-top: solid 3px #d6d3cf;
+}
+/* line 36, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.default-table.first-col-title th:first-child, .default-table.first-col-title td:first-child, .default-table.contenttable-1 th:first-child, .default-table.contenttable-1 td:first-child, .contenttable.first-col-title th:first-child, .contenttable.first-col-title td:first-child, .contenttable.contenttable-1 th:first-child, .contenttable.contenttable-1 td:first-child {
+  font-weight: bold;
+}
+
+/* line 47, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table th {
+  padding-right: 30px;
+}
+/* line 51, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table .sorting, .data-table .sorting_asc, .data-table .sorting_desc {
+  cursor: pointer;
+  position: relative;
+}
+/* line 55, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table .sorting:before, .data-table .sorting:after, .data-table .sorting_asc:before, .data-table .sorting_asc:after, .data-table .sorting_desc:before, .data-table .sorting_desc:after {
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+}
+/* line 61, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table .sorting:before, .data-table .sorting_asc:before, .data-table .sorting_desc:before {
+  top: 11px;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+/* line 65, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table .sorting:after, .data-table .sorting_asc:after, .data-table .sorting_desc:after {
+  top: 19px;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+/* line 72, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table .sorting_asc:before {
+  color: #28afe1;
+}
+/* line 78, ../../Private/Sass/Ub/Scaffolding/_tables.scss */
+.data-table .sorting_desc:after {
+  color: #28afe1;
+}
+
+/* line 3, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation a {
+  color: #FFF;
+  text-decoration: none;
+  font-size: 17px;
+}
+/* line 7, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation a:hover {
+  text-decoration: underline;
+}
+/* line 12, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation ul.level-0 {
+  display: inline-block;
+  position: relative;
+  z-index: 999;
+}
+/* line 16, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation ul.level-0 > li {
+  display: inline-block;
+}
+/* line 18, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation ul.level-0 > li > a {
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+  padding: 8px 16px;
+  height: 40px;
+}
+/* line 25, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation ul.level-0 > li > a:hover {
+  background: #53c0e7;
+}
+/* line 30, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation ul.level-0 > li.active > a {
+  color: #655e5e;
+}
+/* line 38, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 {
+  background: #53c0e7;
+  position: absolute;
+  z-index: 990;
+  left: 0;
+  margin-top: 8px;
+  padding: 20px 10px;
+  *zoom: 1;
+}
+/* line 49, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 li {
+  font-weight: 400;
+  text-transform: none;
+  float: left;
+  width: 46%;
+  margin: 0 2%;
+}
+/* line 55, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 li > a {
+  display: block;
+  padding: 14px 0;
+  border-top: solid 1px #c9ebf7;
+  position: relative;
+  color: #FFF;
+}
+/* line 61, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 li > a:after {
+  font-size: 18px;
+  position: absolute;
+  top: 16px;
+  padding-left: 14px;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+/* line 69, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 li > a:hover {
+  text-decoration: underline;
+}
+/* line 74, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 li.active > a {
+  color: #655e5e;
+}
+/* line 3, ../../Private/Sass/Ub/_mixins.scss */
+#mainNavigation .level-1:before, #mainNavigation .level-1:after {
+  content: "";
+  display: table;
+}
+/* line 7, ../../Private/Sass/Ub/_mixins.scss */
+#mainNavigation .level-1:after {
+  clear: both;
+}
+
+/* line 90, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 {
+  visibility: hidden;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+/* line 95, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .open-state .level-1 {
+  visibility: visible;
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+/* line 115, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation {
+  display: inline-block;
+  padding-right: 20px;
+}
+/* line 120, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation:before {
+  position: absolute;
+  content: '';
+  background: #28afe1;
+  width: 1000%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  -webkit-transform: skewX(-15deg);
+  -moz-transform: skewX(-15deg);
+  -ms-transform: skewX(-15deg);
+  -o-transform: skewX(-15deg);
+  transform: skewX(-15deg);
+}
+/* line 133, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 {
+  width: 800px;
+  height: 250px;
+  overflow: hidden;
+  padding-right: 100px;
+  margin-right: 100px;
+  background: none;
+}
+/* line 142, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 ul {
+  width: 700px;
+}
+/* line 144, ../../Private/Sass/Ub/Ui/_main-navigation.scss */
+#mainNavigation .level-1 ul:after {
+  content: '';
+  position: absolute;
+  width: 110%;
+  height: 500px;
+  -webkit-transform: skewX(15deg);
+  -moz-transform: skewX(15deg);
+  -ms-transform: skewX(15deg);
+  -o-transform: skewX(15deg);
+  transform: skewX(15deg);
+  background: #53c0e7;
+  top: 0;
+  right: 0;
+  z-index: -1;
+}
+
+/* line 3, ../../Private/Sass/Ub/Ui/_meta-navigation.scss */
+#metaNavigation > ul > li {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 16px;
+  margin-right: 23px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+/* line 13, ../../Private/Sass/Ub/Ui/_meta-navigation.scss */
+#metaNavigation a {
+  color: #655e5e;
+}
+/* line 19, ../../Private/Sass/Ub/Ui/_meta-navigation.scss */
+#metaNavigation > ul > li > a:hover, #metaNavigation > ul > li.active > a {
+  color: #5b89e8;
+  text-decoration: none;
+}
+
+/* line 28, ../../Private/Sass/Ub/Ui/_meta-navigation.scss */
+#metaNavigation > ul a.active {
+  position: relative;
+}
+/* line 30, ../../Private/Sass/Ub/Ui/_meta-navigation.scss */
+#metaNavigation > ul a.active:before {
+  position: absolute;
+  z-index: 1000;
+  content: '';
+  top: -17px;
+  left: 50%;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ffd76e;
+  margin-left: -8px;
+}
+
+/* line 1, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel {
+  color: #FFF;
+}
+/* line 3, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel .container {
+  padding-top: 20px;
+}
+
+/* line 21, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel {
+  position: relative;
+  z-index: 999;
+  top: 0;
+  background: #28afe1;
+  width: 100%;
+  height: 400px;
+  margin-top: -400px;
+  visibility: hidden;
+  -webkit-transition: all 0.4s 0s ease-in-out;
+  -moz-transition: all 0.4s 0s ease-in-out;
+  -ms-transition: all 0.4s 0s ease-in-out;
+  -o-transition: all 0.4s 0s ease-in-out;
+  transition: all 0.4s 0s ease-in-out;
+}
+/* line 31, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel .ui-trigger {
+  color: #FFF;
+}
+/* line 35, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel .meta-content {
+  -webkit-transition: all 0.4s 0s ease-in-out;
+  -moz-transition: all 0.4s 0s ease-in-out;
+  -ms-transition: all 0.4s 0s ease-in-out;
+  -o-transition: all 0.4s 0s ease-in-out;
+  transition: all 0.4s 0s ease-in-out;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+/* line 42, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel.open-meta {
+  visibility: visible;
+  margin-top: 0;
+}
+/* line 45, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel.open-meta .meta-content {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+
+/* line 53, ../../Private/Sass/Ub/Ui/_meta-navigation-panel.scss */
+#metaNavigationPanel .trigger-close {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  font-size: 30px;
+}
+
+/* line 1, ../../Private/Sass/Ub/Ui/_links.scss */
+.ui-link-boxed {
+  background: #FFF;
+  display: block;
+  padding: 10px 20px;
+  position: relative;
+  font-weight: 700;
+}
+/* line 9, ../../Private/Sass/Ub/Ui/_links.scss */
+.ui-link-boxed:after {
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: false;
+  padding-left: 10px;
+  font-size: 150%;
+  position: absolute;
+  top: 7px;
+}
+
+/* line 3, ../../Private/Sass/Ub/Ui/_simple-link-list.scss */
+.simple-link-list a {
+  display: block;
+  position: relative;
+  padding: 3px 0;
+}
+/* line 7, ../../Private/Sass/Ub/Ui/_simple-link-list.scss */
+.simple-link-list a:after {
+  position: relative;
+  top: -2px;
+  left: 6px;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  font-size: 60%;
+}
+
+/* line 1, ../../Private/Sass/Ub/Ui/_to-top-button.scss */
+#toPageTop {
+  display: inline-block;
+  position: fixed;
+  right: -300px;
+  bottom: 200px;
+  background: #655e5e;
+  text-transform: lowercase;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-transition: all 0.5s 0.4s ease-in-out;
+  -moz-transition: all 0.5s 0.4s ease-in-out;
+  -ms-transition: all 0.5s 0.4s ease-in-out;
+  -o-transition: all 0.5s 0.4s ease-in-out;
+  transition: all 0.5s 0.4s ease-in-out;
+}
+/* line 8, ../../Private/Sass/Ub/Ui/_to-top-button.scss */
+#toPageTop a {
+  margin: 10px 20px;
+  display: block;
+  color: #FFF;
+}
+/* line 18, ../../Private/Sass/Ub/Ui/_to-top-button.scss */
+#toPageTop.show {
+  -webkit-transition: all 0.5s 0.4s ease-in-out;
+  -moz-transition: all 0.5s 0.4s ease-in-out;
+  -ms-transition: all 0.5s 0.4s ease-in-out;
+  -o-transition: all 0.5s 0.4s ease-in-out;
+  transition: all 0.5s 0.4s ease-in-out;
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  right: 200px;
+}
+
+/* line 1, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs {
+  border-bottom: solid 3px #28afe1;
+  font-family: "Klint W02", sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+/* line 9, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs li {
+  display: inline-block;
+}
+/* line 12, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs a {
+  display: block;
+  padding: 14px 24px;
+  background: #FFF;
+  margin: 0 7px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #d6d3cf;
+  border-bottom: none;
+  color: #d6d3cf;
+  -webkit-transition: all 0.2s 0s ease-in-out;
+  -moz-transition: all 0.2s 0s ease-in-out;
+  -ms-transition: all 0.2s 0s ease-in-out;
+  -o-transition: all 0.2s 0s ease-in-out;
+  transition: all 0.2s 0s ease-in-out;
+}
+/* line 25, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs li:first-child a {
+  margin-left: 0;
+}
+/* line 30, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs li:last-child a {
+  margin-right: 0;
+}
+/* line 37, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs li.active a {
+  border-color: #28afe1;
+  color: #FFF;
+  background: #28afe1;
+}
+/* line 45, ../../Private/Sass/Ub/Ui/_ui-tabs.scss */
+.ui-tabs a:hover {
+  margin: 0 12px;
+  padding: 14px 30px;
+  border-color: #28afe1;
+  color: #FFF;
+  background: #28afe1;
+}
+
+/* line 1, ../../Private/Sass/Ub/Ui/_textbased-navbar.scss */
+.textbased-navbar {
+  padding: 20px 0 10px 0;
+  font-weight: 700;
+}
+/* line 4, ../../Private/Sass/Ub/Ui/_textbased-navbar.scss */
+.textbased-navbar li {
+  display: inline-block;
+}
+/* line 8, ../../Private/Sass/Ub/Ui/_textbased-navbar.scss */
+.textbased-navbar a {
+  display: block;
+  position: relative;
+  padding: 3px 10px;
+}
+/* line 12, ../../Private/Sass/Ub/Ui/_textbased-navbar.scss */
+.textbased-navbar a:before {
+  padding-right: 4px;
+  position: relative;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  font-size: 12px;
+}
+/* line 21, ../../Private/Sass/Ub/Ui/_textbased-navbar.scss */
+.textbased-navbar li:first-child a {
+  padding-left: 0;
+}
+/* line 26, ../../Private/Sass/Ub/Ui/_textbased-navbar.scss */
+.textbased-navbar li:last-child a {
+  padding-right: 0;
+}
+
+/* line 3, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination ul {
+  display: inline-block;
+}
+/* line 7, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination li {
+  display: inline-block;
+}
+/* line 11, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination ul.pages {
+  padding: 0 10px;
+}
+/* line 13, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination ul.pages a {
+  font-weight: 700;
+  border-right: solid 2px #655e5e;
+  padding: 0 10px;
+}
+/* line 20, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination ul.pages li:first-child a {
+  border-left: solid 2px #655e5e;
+}
+/* line 26, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination ul.pages li.active a, .ui-pagination ul.pages a:hover {
+  color: #28afe1;
+}
+/* line 32, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination .controls li {
+  position: relative;
+}
+/* line 35, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination .controls span {
+  font-size: 30px;
+  position: relative;
+  top: 8px;
+  padding-right: 10px;
+  color: #28afe1;
+}
+/* line 45, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination .controls li:last-child a {
+  padding-right: 0;
+}
+/* line 51, ../../Private/Sass/Ub/Ui/_ui-pagination.scss */
+.ui-pagination .controls.disabled span {
+  color: #655e5e;
+  -webkit-opacity: 0.4;
+  -moz-opacity: 0.4;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+
+/* line 1, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation {
+  padding-bottom: 20px;
+}
+/* line 5, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation li {
+  display: inline-block;
+}
+/* line 9, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation span {
+  display: block;
+  margin: 0 10px;
+  position: relative;
+  color: #b5b0a7;
+}
+/* line 14, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation span:before {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  padding-right: 10px;
+}
+/* line 22, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation a:hover, .breadcrumb-navigation a:hover span {
+  color: #655e5e;
+}
+/* line 27, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation li:first-child a {
+  margin-left: 0;
+}
+/* line 32, ../../Private/Sass/Ub/Ui/_breadcrumb-navigation.scss */
+.breadcrumb-navigation .current span {
+  text-decoration: underline;
+}
+
+/* line 1, ../../Private/Sass/Ub/Components/_accordion.scss */
+.accordion-item {
+  background: #FFF;
+  margin-bottom: 8px;
+  padding-bottom: 30px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+/* line 10, ../../Private/Sass/Ub/Components/_accordion.scss */
+.accordion-item .accordion-head {
+  display: block;
+  background: #FFF;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+/* line 18, ../../Private/Sass/Ub/Components/_accordion.scss */
+.accordion-item .accordion-head:after {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  font-size: 24px;
+  color: #b5b0a7;
+  -webkit-transition: all 0.2s 0s ease-in;
+  -moz-transition: all 0.2s 0s ease-in;
+  -ms-transition: all 0.2s 0s ease-in;
+  -o-transition: all 0.2s 0s ease-in;
+  transition: all 0.2s 0s ease-in;
+}
+/* line 29, ../../Private/Sass/Ub/Components/_accordion.scss */
+.accordion-item .accordion-head.ui-state-active:after {
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+/* line 36, ../../Private/Sass/Ub/Components/_accordion.scss */
+.accordion-item .main-head {
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 1.333em;
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+  display: block;
+}
+/* line 41, ../../Private/Sass/Ub/Components/_accordion.scss */
+.accordion-item .sub-head {
+  display: block;
+  font-weight: 700;
+  font-size: 1em;
+  line-height: 1.3em;
+}
+
+/* line 1, ../../Private/Sass/Ub/Components/_content-box.scss */
+.content-box {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+/* line 5, ../../Private/Sass/Ub/Components/_content-box.scss */
+.content-box.color-2 {
+  background: #28afe1;
+  color: #FFF;
+}
+
+/* line 1, ../../Private/Sass/Ub/Components/_fluid-box.scss */
+.fluid-box {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+/* line 6, ../../Private/Sass/Ub/Components/_fluid-box.scss */
+.fluid-box .fluid-box-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/* line 15, ../../Private/Sass/Ub/Components/_fluid-box.scss */
+.fluid-box .box-title {
+  display: block;
+  padding-bottom: 20px;
+}
+
+/* line 1, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+  display: block;
+  margin-bottom: 8px;
+}
+/* line 6, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link > span {
+  display: block;
+}
+/* line 10, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link .section-title {
+  text-transform: uppercase;
+  font-size: 0.722em;
+}
+/* line 15, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link .link-heading {
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 1.333em;
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+  padding-bottom: 2px;
+}
+/* line 18, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link .link-heading a {
+  display: block;
+}
+/* line 20, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link .link-heading a span {
+  padding-right: 7px;
+}
+/* line 25, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link .link-heading a:after {
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+  display: inline;
+  font-size: 0.722em;
+}
+/* line 32, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link .link-heading a.external-link:after {
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+/* line 40, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.simple-link:hover {
+  -webkit-transition: all 0.1s 0s ease-in-out;
+  -moz-transition: all 0.1s 0s ease-in-out;
+  -ms-transition: all 0.1s 0s ease-in-out;
+  -o-transition: all 0.1s 0s ease-in-out;
+  transition: all 0.1s 0s ease-in-out;
+  -webkit-box-shadow: inset 0px 0px 0px 8px #28afe1;
+  -moz-box-shadow: inset 0px 0px 0px 8px #28afe1;
+  box-shadow: inset 0px 0px 0px 8px #28afe1;
+}
+
+/* line 50, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.small-content-col .simple-link .link-heading {
+  font-weight: 700;
+  font-size: 1em;
+  line-height: 1.3em;
+}
+
+/* line 58, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.outlined-link {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: none;
+  -webkit-box-shadow: inset 0px 0px 0px 5px #28afe1;
+  -moz-box-shadow: inset 0px 0px 0px 5px #28afe1;
+  box-shadow: inset 0px 0px 0px 5px #28afe1;
+  -webkit-transition: all 0.1s 0s ease-in-out;
+  -moz-transition: all 0.1s 0s ease-in-out;
+  -ms-transition: all 0.1s 0s ease-in-out;
+  -o-transition: all 0.1s 0s ease-in-out;
+  transition: all 0.1s 0s ease-in-out;
+}
+/* line 65, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.outlined-link:hover {
+  -webkit-box-shadow: inset 0px 0px 0px 8px #28afe1;
+  -moz-box-shadow: inset 0px 0px 0px 8px #28afe1;
+  box-shadow: inset 0px 0px 0px 8px #28afe1;
+}
+
+/* line 72, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.color-2 .outlined-link, #metaNavigationPanel .outlined-link {
+  color: #FFF;
+  -webkit-box-shadow: inset 0px 0px 0px 5px #FFF;
+  -moz-box-shadow: inset 0px 0px 0px 5px #FFF;
+  box-shadow: inset 0px 0px 0px 5px #FFF;
+}
+/* line 75, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.color-2 .outlined-link a, #metaNavigationPanel .outlined-link a {
+  color: #FFF;
+}
+/* line 79, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.color-2 .outlined-link:hover, #metaNavigationPanel .outlined-link:hover {
+  -webkit-box-shadow: inset 0px 0px 0px 8px #FFF;
+  -moz-box-shadow: inset 0px 0px 0px 8px #FFF;
+  box-shadow: inset 0px 0px 0px 8px #FFF;
+}
+
+/* line 87, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.small-boxed {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+  display: block;
+  padding: 12px 20px;
+  margin-bottom: 7px;
+  color: #655e5e;
+}
+/* line 93, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.small-boxed a {
+  color: #655e5e;
+}
+/* line 96, ../../Private/Sass/Ub/Components/_boxed-link.scss */
+.small-boxed .link-heading {
+  font-weight: 700;
+}
+
+/* line 1, ../../Private/Sass/Ub/Components/_mini-search.scss */
+#miniSearch {
+  background-image: url("../images/searchfield-bg-large.svg");
+  background-position: right top;
+  background-size: cover;
+  height: 54px;
+  width: 540px;
+  position: relative;
+}
+/* line 10, ../../Private/Sass/Ub/Components/_mini-search.scss */
+#miniSearch:before {
+  background: white;
+  position: absolute;
+  width: 1000%;
+  height: 41px;
+  top: 0;
+  left: -1000%;
+  content: '';
+  z-index: 0;
+}
+/* line 22, ../../Private/Sass/Ub/Components/_mini-search.scss */
+#miniSearch .searchfield {
+  display: inline-block;
+  outline: none;
+  border: none;
+  background: none;
+  width: 220px;
+  padding: 9px 0;
+}
+/* line 32, ../../Private/Sass/Ub/Components/_mini-search.scss */
+#miniSearch .search-select {
+  padding-left: 40px;
+  display: inline-block;
+}
+/* line 35, ../../Private/Sass/Ub/Components/_mini-search.scss */
+#miniSearch .search-select > li {
+  font-size: 0.889em;
+  padding-right: 40px;
+  display: inline-block;
+}
+/* line 42, ../../Private/Sass/Ub/Components/_mini-search.scss */
+#miniSearch .hidden-button {
+  width: 60px;
+  background: none;
+  border: none;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  position: absolute;
+  right: 10px;
+  height: 60px;
+  cursor: pointer;
+}
+
+/* line 56, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch {
+  background-image: url("../images/searchfield-bg-large.svg");
+  background-position: right top;
+  background-size: cover;
+  width: 800px;
+  height: 160px;
+  padding-right: 200px;
+  position: relative;
+}
+/* line 66, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch:before {
+  display: none;
+}
+/* line 70, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch .searchfield {
+  outline: none;
+  display: inline-block;
+  border: none;
+  background: none;
+  padding: 30px;
+  margin-top: 16px;
+  width: 420px;
+  font-weight: 700;
+  font-size: 1.333em;
+  border-right: solid 2px #d6d3cf;
+}
+/* line 83, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch .search-select {
+  display: inline-block;
+  padding-left: 40px;
+  position: relative;
+  top: 13px;
+}
+/* line 89, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch .search-select > li {
+  font-size: 0.889em;
+  padding-right: 40px;
+  display: block;
+}
+/* line 95, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch .search-select .radio {
+  cursor: pointer;
+}
+/* line 98, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch .search-select .radio span {
+  display: inline-block;
+  padding-left: 10px;
+}
+/* line 104, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-start #miniSearch .hidden-button {
+  width: 190px;
+  right: 20px;
+  height: 160px;
+}
+
+/* line 116, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-search #miniSearch {
+  position: relative;
+  width: 100%;
+  left: 0;
+  height: 120px;
+  top: 0;
+  margin-bottom: 20px;
+}
+/* line 123, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-search #miniSearch:before {
+  display: none;
+}
+/* line 127, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-search #miniSearch .searchfield {
+  border-right: solid 2px #d6d3cf;
+  width: 60%;
+  padding: 20px;
+  margin-top: 12px;
+  font-weight: 700;
+  font-size: 1.333em;
+}
+/* line 137, ../../Private/Sass/Ub/Components/_mini-search.scss */
+.page-layout-search #miniSearch .hidden-button {
+  width: 140px;
+  right: 20px;
+  height: 130px;
+}
+
+/* line 2, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-date {
+  font-weight: 700;
+  font-size: 0.722em;
+  display: block;
+}
+
+/* line 8, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-image-gallery {
+  margin-top: 8px;
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+/* line 11, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-image-gallery .row {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/* line 17, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-article {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+/* line 20, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-article .news-teaser {
+  font-weight: 700;
+  display: block;
+  padding-top: 4px;
+}
+/* line 26, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-article .news-title {
+  padding-bottom: 0;
+}
+
+/* line 37, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-archived-listing {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+/* line 41, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-archived-listing .archive-title {
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 1.333em;
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+  display: block;
+}
+/* line 46, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-archived-listing .news-item {
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: solid 1px #d6d3cf;
+}
+/* line 50, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-archived-listing .news-item:first-child {
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: solid 1px #d6d3cf;
+}
+/* line 57, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-archived-listing .news-teaser {
+  font-size: 0.889em;
+  display: block;
+}
+/* line 62, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-archived-listing .news-title {
+  font-weight: 700;
+  font-size: 1em;
+  line-height: 1.3em;
+}
+
+/* line 69, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-teaser-item {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+}
+/* line 71, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-teaser-item .news-title {
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 1.333em;
+  font-family: "Klint W02", sans-serif;
+  font-weight: 700;
+  display: block;
+}
+/* line 75, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-teaser-item .news-teaser {
+  font-size: 0.889em;
+}
+/* line 78, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-teaser-item.gallery-teaser {
+  background: no-repeat 50% 50%;
+  background-size: 100%;
+  background-size: cover;
+  color: #FFF;
+}
+/* line 83, ../../Private/Sass/Ub/Extensions/_news.scss */
+.news-teaser-item.gallery-teaser a, .news-teaser-item.gallery-teaser a:hover {
+  color: #FFF;
+}
+
+/* line 93, ../../Private/Sass/Ub/Extensions/_news.scss */
+.latest-news-teaser {
+  padding-bottom: 30px;
+}
+
+/* line 2, ../../Private/Sass/Ub/Extensions/_organisationsstruktur.scss */
+.vcards-listing > ul > li {
+  background: #FFF;
+  padding: 20px;
+  margin-bottom: 8px;
+  background-color: #28afe1;
+}
+
+/* line 11, ../../Private/Sass/Ub/Extensions/_organisationsstruktur.scss */
+.vcard .name, .vcard .description, .vcard .phone, .vcard .fax, .vcard .email {
+  display: block;
+}
+/* line 15, ../../Private/Sass/Ub/Extensions/_organisationsstruktur.scss */
+.vcard .name {
+  font-weight: 700;
+}
+
+/* line 1, ../../Private/Sass/Ub/VuFind/Search/_results.scss */
+.search-results-listing {
+  padding: 30px 0;
+}
+/* line 5, ../../Private/Sass/Ub/VuFind/Search/_results.scss */
+.search-results-listing .result {
+  padding: 12px 0;
+}
+/* line 9, ../../Private/Sass/Ub/VuFind/Search/_results.scss */
+.search-results-listing .title {
+  display: inline-block;
+  font-weight: 700;
+  padding-bottom: 12px;
+}
+/* line 15, ../../Private/Sass/Ub/VuFind/Search/_results.scss */
+.search-results-listing mark {
+  background: #655e5e;
+  color: #FFF;
+  padding: 2px 5px;
+}
+
+/* line 4, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset {
+  color: #FFF;
+  background: #28afe1;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+/* line 12, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset h4 {
+  font-weight: 700;
+  font-size: 1em;
+}
+/* line 21, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .title {
+  font-weight: 700;
+  color: #FFF;
+}
+/* line 26, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .list-group.filters {
+  padding: 10px 0;
+}
+/* line 30, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .list-group.filters .list-group-item {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
+  padding: 3px 0;
+}
+/* line 38, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .list-group.facet {
+  color: #655e5e;
+  border: none;
+}
+/* line 42, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .list-group.facet a {
+  color: #655e5e;
+}
+/* line 46, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .list-group.facet .list-group-item {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
+  padding: 3px 0;
+}
+/* line 53, ../../Private/Sass/Ub/VuFind/Search/_all.scss */
+.sidebar-offset .list-group.facet .collapse {
+  background: white;
+  padding: 10px;
+}
+
+/* line 3, ../../Private/Sass/Ub/VuFind/_all.scss */
+.result-count {
+  padding-bottom: 30px;
+}
+/* line 5, ../../Private/Sass/Ub/VuFind/_all.scss */
+.result-count span {
+  font-weight: 700;
+  color: #28afe1;
+  font-style: italic;
+  font-size: 1.4em;
+}
+
+/* line 57, ../../Private/Sass/Ub/_probebetrieb.scss */
+html {
+  overflow-x: hidden;
+}
+
+/* line 61, ../../Private/Sass/Ub/_probebetrieb.scss */
+#pageLogo {
+  z-index: 2;
+}
+
+/* line 65, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation {
+  top: 120px;
+  right: 0;
+  position: absolute;
+  overflow: visible;
+  width: 360px;
+  z-index: 4;
+}
+/* line 72, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation .content {
+  background: #ff555a;
+  width: 350px;
+  padding: 20px;
+  -moz-transform: rotate(6deg);
+  -ms-transform: rotate(6deg);
+  -o-transform: rotate(6deg);
+  -webkit-transform: rotate(6deg);
+}
+/* line 79, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation .heading {
+  text-transform: lowercase;
+}
+/* line 84, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation ul {
+  padding-top: 18px;
+}
+/* line 88, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation li {
+  display: inline-block;
+  text-transform: uppercase;
+}
+/* line 93, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation a {
+  color: #FFF;
+  padding-right: 20px;
+  position: relative;
+  margin: 2px 0;
+  display: block;
+}
+/* line 99, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation a:after {
+  font-size: 80%;
+  position: relative;
+  top: 1px;
+  padding-left: 5px;
+  display: inline-block;
+  font-family: icons;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "";
+}
+/* line 108, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-navigation .heading {
+  font-size: 2.222em;
+  color: #FFF;
+  font-family: "Klint W02", sans-serif;
+  display: block;
+  font-weight: 700;
+}
+
+/* line 118, ../../Private/Sass/Ub/_probebetrieb.scss */
+.probebetrieb-layer-02 {
+  background: url("../images/probebetrieb/probebetrieb-layer-02.svg") no-repeat right top;
+  background-size: cover;
+  position: absolute;
+  content: '';
+  right: -332px;
+  top: -905px;
+  width: 350px;
+  height: 1400px;
+  z-index: 0;
+}
+
+/* line 130, ../../Private/Sass/Ub/_probebetrieb.scss */
+.propebetrieb-layer-01 {
+  position: absolute;
+  bottom: -10%;
+  left: -20%;
+}
+/* line 134, ../../Private/Sass/Ub/_probebetrieb.scss */
+.propebetrieb-layer-01 img {
+  height: 420px;
+  width: auto;
+}
+
+/* line 142, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start .main-head, .page-layout-start .container, .page-layout-start .row, .page-layout-start .col-md-12 {
+  height: 100%;
+}
+/* line 146, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start .main-head {
+  height: 100%;
+}
+/* line 148, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start .main-head .col-md-12 {
+  position: relative;
+}
+/* line 153, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start #miniSearch {
+  position: absolute;
+  left: 50%;
+  margin-left: -400px;
+  top: 45%;
+}
+/* line 161, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start #pageLogo {
+  top: 44px;
+}
+/* line 163, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start #pageLogo a {
+  width: 330px;
+  display: block;
+}
+/* line 167, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-start #pageLogo img {
+  width: 100%;
+  height: auto;
+}
+
+/* line 177, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-default #pageLogo {
+  top: 44px;
+}
+/* line 179, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-default #pageLogo a {
+  width: 330px;
+  display: block;
+}
+/* line 183, ../../Private/Sass/Ub/_probebetrieb.scss */
+.page-layout-default #pageLogo img {
+  width: 100%;
+  height: auto;
+}
+
+/* line 26, ../../Private/Sass/Ub/screen.scss */
+.container {
+  width: 1080px !important;
+  max-width: none !important;
+}
+
+/* line 34, ../../Private/Sass/Ub/screen.scss */
+.fluid-box .fluid-box-content {
+  max-width: 1500px;
+  min-width: 1080px;
+}

@@ -38,20 +38,6 @@
 			<? if($renderSearchTabs) $tabs=$this->render('search/searchTabs'); ?>
 			<? if (!empty($tabs)): ?><?=$tabs ?><? endif; ?>
 			<input class="searchfield search-query<? if($this->searchbox()->autocompleteEnabled($this->searchClassId)):?> autocomplete searcher:<?=$this->escapeHtmlAttr($this->searchClassId) ?><? endif ?>" id="searchForm_lookfor" type="text" name="lookfor" value="<?=$this->escapeHtmlAttr($this->lookfor)?>" placeholder="Suche in..." />
-			<ul class="search-select">
-				<li>
-					<label class="radio">
-						<input type="radio" name="searchSelection" value="katalog" >
-						<span>Katalog</span>
-					</label>
-				</li>
-				<li>
-					<label class="radio">
-						<input type="radio" name="searchSelection" value="website" checked>
-						<span>Website</span>
-					</label>
-				</li>
-			</ul>
 			<? if ($handlerCount > 1): ?>
 				<select class="form-control" id="searchForm_type" name="type" data-native-menu="false">
 					<? foreach ($handlers as $handler): ?>

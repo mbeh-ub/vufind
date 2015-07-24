@@ -18,6 +18,11 @@
 
   <div class="rds_subnav">
         <ul>
+            <?if (isset($this->searchType) && $this->searchType == 'advanced'):?>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Home"><?=$this->transEsc('RDS_BASIC_SEARCH')?></li>
+            <?else:?>
+            <li><a href="<?=$this->url('home') ?><?=$this->searchClassId ?>/Advanced"><?=$this->transEsc('RDS_ADVANCED_SEARCH')?></li>
+            <? endif;?>
             <li><a href="<?=$this->url('home') ?>Search/History"><?=$this->transEsc('RDS_RDSHistory')?></a></li>
             <li><a href="<?=$this->url('home') ?>MyResearch"><?=$this->transEsc('RDS_RDSFavorites')?></a></li>
         </ul>        
