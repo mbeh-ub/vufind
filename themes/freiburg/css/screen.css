@@ -66,107 +66,107 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 @font-face {
   font-family: icons;
-  src: url("https://www.ub.uni-freiburg.de/fonts/icons.eot");
-  src: url("https://www.ub.uni-freiburg.de/fonts/icons.eot?#iefix") format("embedded-opentype"), url("https://www.ub.uni-freiburg.de/fonts/icons.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/icons.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/icons##plaussigicons") format("svg");
+  src: url("/fonts/icons.eot");
+  src: url("/fonts/icons.eot?#iefix") format("embedded-opentype"), url("/fonts/icons.woff") format("woff"), url("/fonts/icons.ttf") format("truetype"), url("/fonts/icons##plaussigicons") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "Calibri W02_n2";
-  src: url("https://www.ub.uni-freiburg.de/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix") format("eot");
+  src: url("/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Calibri W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/0243429e-494c-4145-9cde-079c0a716390.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/c9e4b93e-12ea-4d36-959b-ca784281b056.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/d09d3848-2f3a-46f2-b136-145d45a35b0c.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/2d5d393f-6688-4c82-817f-657e30ca589e.svg#2d5d393f-6688-4c82-817f-657e30ca589e") format("svg");
+  src: url("/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix");
+  src: url("/fonts/43fffff2-e1f8-48d7-a7b3-1424675306ac.eot?#iefix") format("eot"), url("/fonts/0243429e-494c-4145-9cde-079c0a716390.woff2") format("woff2"), url("/fonts/c9e4b93e-12ea-4d36-959b-ca784281b056.woff") format("woff"), url("/fonts/d09d3848-2f3a-46f2-b136-145d45a35b0c.ttf") format("truetype"), url("/fonts/2d5d393f-6688-4c82-817f-657e30ca589e.svg#2d5d393f-6688-4c82-817f-657e30ca589e") format("svg");
   font-weight: 200;
   font-style: normal;
 }
 @font-face {
   font-family: "Calibri W02_i2";
-  src: url("https://www.ub.uni-freiburg.de/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix") format("eot");
+  src: url("/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Calibri W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/681d47c0-cea0-463d-93dd-867a3c04d178.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/25df1399-2fd5-46b9-9bf0-f015bcd63568.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/674df743-2dbd-43c6-8c72-2bb4e18ad6cc.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/66e56552-1793-41c0-8df3-193ebb4399b6.svg#66e56552-1793-41c0-8df3-193ebb4399b6") format("svg");
+  src: url("/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix");
+  src: url("/fonts/8a3018c6-cbbe-4220-a2e0-ace1d7bc22fd.eot?#iefix") format("eot"), url("/fonts/681d47c0-cea0-463d-93dd-867a3c04d178.woff2") format("woff2"), url("/fonts/25df1399-2fd5-46b9-9bf0-f015bcd63568.woff") format("woff"), url("/fonts/674df743-2dbd-43c6-8c72-2bb4e18ad6cc.ttf") format("truetype"), url("/fonts/66e56552-1793-41c0-8df3-193ebb4399b6.svg#66e56552-1793-41c0-8df3-193ebb4399b6") format("svg");
   font-weight: 200;
   font-style: italic;
 }
 @font-face {
   font-family: "Calibri W02_n4";
-  src: url("https://www.ub.uni-freiburg.de/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix") format("eot");
+  src: url("/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Calibri W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/eddca627-1285-4078-8527-442a93fb062e.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/67262388-98cb-4d91-a364-b35af76b9b1e.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/7711a542-a10e-491e-bd9d-7131e1fc3283.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/d57cf83d-5496-45c7-bb10-c5f058a386ec.svg#d57cf83d-5496-45c7-bb10-c5f058a386ec") format("svg");
+  src: url("/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix");
+  src: url("/fonts/6f0334a6-705a-43b8-95ce-0b2a4027a3f4.eot?#iefix") format("eot"), url("/fonts/eddca627-1285-4078-8527-442a93fb062e.woff2") format("woff2"), url("/fonts/67262388-98cb-4d91-a364-b35af76b9b1e.woff") format("woff"), url("/fonts/7711a542-a10e-491e-bd9d-7131e1fc3283.ttf") format("truetype"), url("/fonts/d57cf83d-5496-45c7-bb10-c5f058a386ec.svg#d57cf83d-5496-45c7-bb10-c5f058a386ec") format("svg");
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Calibri W02_i4";
-  src: url("https://www.ub.uni-freiburg.de/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix") format("eot");
+  src: url("/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Calibri W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/40040824-2b78-41ad-aa4d-b22a3e9fc59e.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/a692d46c-1cca-4302-b90e-44c70c8ae03e.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/f446a8ea-97cf-455c-a946-b7d1daf6c3b9.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/b75755f5-93b1-4878-af5c-9e414fdf51f6.svg#b75755f5-93b1-4878-af5c-9e414fdf51f6") format("svg");
+  src: url("/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix");
+  src: url("/fonts/fe35e56f-9c62-474a-aabf-1eb7eebb07f1.eot?#iefix") format("eot"), url("/fonts/40040824-2b78-41ad-aa4d-b22a3e9fc59e.woff2") format("woff2"), url("/fonts/a692d46c-1cca-4302-b90e-44c70c8ae03e.woff") format("woff"), url("/fonts/f446a8ea-97cf-455c-a946-b7d1daf6c3b9.ttf") format("truetype"), url("/fonts/b75755f5-93b1-4878-af5c-9e414fdf51f6.svg#b75755f5-93b1-4878-af5c-9e414fdf51f6") format("svg");
   font-weight: 400;
   font-style: italic;
 }
 @font-face {
   font-family: "Calibri W02_n7";
-  src: url("https://www.ub.uni-freiburg.de/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix") format("eot");
+  src: url("/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Calibri W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/f7916c07-ab29-44f5-9e10-3846e10a48ec.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/87dc3446-f284-479a-8034-f02bdae49b84.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/0f9b2ecf-01f7-47f9-bba8-13b5356d3eff.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/8665edde-5cf1-436e-8a48-205a31920f7e.svg#8665edde-5cf1-436e-8a48-205a31920f7e") format("svg");
+  src: url("/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix");
+  src: url("/fonts/6e52d45c-3ec8-488c-b8a2-a148e715aeb0.eot?#iefix") format("eot"), url("/fonts/f7916c07-ab29-44f5-9e10-3846e10a48ec.woff2") format("woff2"), url("/fonts/87dc3446-f284-479a-8034-f02bdae49b84.woff") format("woff"), url("/fonts/0f9b2ecf-01f7-47f9-bba8-13b5356d3eff.ttf") format("truetype"), url("/fonts/8665edde-5cf1-436e-8a48-205a31920f7e.svg#8665edde-5cf1-436e-8a48-205a31920f7e") format("svg");
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: "Calibri W02_i7";
-  src: url("https://www.ub.uni-freiburg.de/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix") format("eot");
+  src: url("/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Calibri W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/93a2946b-4b41-40bf-a31d-f852a415e4a5.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/b25273c8-dd69-4b55-acad-498e7d20de5f.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/e39d8c7c-cc17-4d54-b5eb-9b212f323ffd.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/d22c003a-f251-4b0d-b42b-0c7014880317.svg#d22c003a-f251-4b0d-b42b-0c7014880317") format("svg");
+  src: url("/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix");
+  src: url("/fonts/3d078be0-39b4-4392-b42c-7e333a4c9db0.eot?#iefix") format("eot"), url("/fonts/93a2946b-4b41-40bf-a31d-f852a415e4a5.woff2") format("woff2"), url("/fonts/b25273c8-dd69-4b55-acad-498e7d20de5f.woff") format("woff"), url("/fonts/e39d8c7c-cc17-4d54-b5eb-9b212f323ffd.ttf") format("truetype"), url("/fonts/d22c003a-f251-4b0d-b42b-0c7014880317.svg#d22c003a-f251-4b0d-b42b-0c7014880317") format("svg");
   font-weight: 700;
   font-style: italic;
 }
 @font-face {
   font-family: "Klint W02_n2";
-  src: url("https://www.ub.uni-freiburg.de/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix") format("eot");
+  src: url("/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Klint W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/e3470e31-a0f8-45f9-9a32-ad41b1421048.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/8fd52d14-1c97-47b2-9a4e-85d7ba2f61af.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/beef72d0-c251-4811-896a-d226100fe2fd.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/c5278e60-c8c5-4d22-90fb-1d548ff7b75b.svg#c5278e60-c8c5-4d22-90fb-1d548ff7b75b") format("svg");
+  src: url("/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix");
+  src: url("/fonts/edd61573-eb62-485a-acd9-c0b143a76ac9.eot?#iefix") format("eot"), url("/fonts/e3470e31-a0f8-45f9-9a32-ad41b1421048.woff2") format("woff2"), url("/fonts/8fd52d14-1c97-47b2-9a4e-85d7ba2f61af.woff") format("woff"), url("/fonts/beef72d0-c251-4811-896a-d226100fe2fd.ttf") format("truetype"), url("/fonts/c5278e60-c8c5-4d22-90fb-1d548ff7b75b.svg#c5278e60-c8c5-4d22-90fb-1d548ff7b75b") format("svg");
   font-weight: 200;
   font-style: normal;
 }
 @font-face {
   font-family: "Klint W02_n5";
-  src: url("https://www.ub.uni-freiburg.de/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix") format("eot");
+  src: url("/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Klint W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/c1d52382-ed30-4ed6-9c96-0e91ff3e8dbc.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/3598b206-2844-4845-84a8-cd43c2df31b8.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/834ae648-d8f7-4f5c-bc0f-eedfd799d736.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/e7b41e2c-7bf2-4ac3-8c20-11ca0056c49b.svg#e7b41e2c-7bf2-4ac3-8c20-11ca0056c49b") format("svg");
+  src: url("/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix");
+  src: url("/fonts/bccddeba-d0aa-45bf-87dd-7f12b276dacf.eot?#iefix") format("eot"), url("/fonts/c1d52382-ed30-4ed6-9c96-0e91ff3e8dbc.woff2") format("woff2"), url("/fonts/3598b206-2844-4845-84a8-cd43c2df31b8.woff") format("woff"), url("/fonts/834ae648-d8f7-4f5c-bc0f-eedfd799d736.ttf") format("truetype"), url("/fonts/e7b41e2c-7bf2-4ac3-8c20-11ca0056c49b.svg#e7b41e2c-7bf2-4ac3-8c20-11ca0056c49b") format("svg");
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: "Klint W02_n7";
-  src: url("https://www.ub.uni-freiburg.de/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix") format("eot");
+  src: url("/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix") format("eot");
 }
 @font-face {
   font-family: "Klint W02";
-  src: url("https://www.ub.uni-freiburg.de/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix");
-  src: url("https://www.ub.uni-freiburg.de/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix") format("eot"), url("https://www.ub.uni-freiburg.de/fonts/493233d8-fd85-4843-9df6-211f46205ea1.woff2") format("woff2"), url("https://www.ub.uni-freiburg.de/fonts/69add838-fd84-43c4-9d99-a4875d40b5d4.woff") format("woff"), url("https://www.ub.uni-freiburg.de/fonts/1a5de125-6d78-4cee-a64d-88f430f43444.ttf") format("truetype"), url("https://www.ub.uni-freiburg.de/fonts/04a01ca6-2cbe-4e2f-998b-f4918b150d0a.svg#04a01ca6-2cbe-4e2f-998b-f4918b150d0a") format("svg");
+  src: url("/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix");
+  src: url("/fonts/83de8036-dfa3-42b2-a5f9-f9829ec0bf2d.eot?#iefix") format("eot"), url("/fonts/493233d8-fd85-4843-9df6-211f46205ea1.woff2") format("woff2"), url("/fonts/69add838-fd84-43c4-9d99-a4875d40b5d4.woff") format("woff"), url("/fonts/1a5de125-6d78-4cee-a64d-88f430f43444.ttf") format("truetype"), url("/fonts/04a01ca6-2cbe-4e2f-998b-f4918b150d0a.svg#04a01ca6-2cbe-4e2f-998b-f4918b150d0a") format("svg");
   font-weight: 700;
   font-style: normal;
 }
