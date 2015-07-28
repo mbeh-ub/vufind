@@ -18,11 +18,11 @@
   $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('RDSProxy') . '</li>';
 ?>
 
-<div>
 
 	<? $this->layout()->navigation = $this->render('layout/navigation.phtml');?>
   <?=$this->layout()->navigation ?>
 
+    <div class="gridcontainer row">
      <div class="col-sm-9 col-xs-9 csc-default">
         <span class="simple-link autoheight-element">
            <span class="link-heading">
@@ -34,4 +34,16 @@
         </span>
      </div>
 
-</div>
+     <div class="col-sm-3 col-xs-3 csc-default">
+        <span class="simple-link autoheight-element">
+           <span class="link-heading">
+           <?=$this->transEsc("RDS_HOME_HELP_" . $this->searchClassId);?>
+           </span>
+           <span class="link-caption">
+           <?=$this->translate("RDS_HOME_HELP_" . $this->searchClassId . "_TEXT"); ?>
+           </span>
+        </span>
+
+     </div>
+  </div>
+
