@@ -1,0 +1,40 @@
+<?
+  // Set page title.
+  $this->headTitle($this->translate('Books & more'));
+
+  // Disable top search box -- this page has a special layout.
+  $this->layout()->searchbox = false;
+  
+  // Set default value if necessary:
+  if (!isset($this->searchClassId)) {
+    $this->searchClassId = 'RDSIndex';
+  }
+
+  // Load search actions and settings (if any):
+  $options = $this->searchOptions($this->searchClassId);
+  $basicSearch = $options->getSearchAction();
+  $advSearch = $options->getAdvancedSearchAction();
+  
+  $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('RDSIndex') . '</li>';
+?>
+
+<div>
+	
+	<? $this->layout()->navigation = $this->render('layout/navigation.phtml');?>
+  <?=$this->layout()->navigation ?>
+
+
+  <div class="col-xs-10">
+     <div id="c13127" class="csc-default">
+        <span class="simple-link autoheight-element">
+           <span class="link-heading">
+           <?=$this->transEsc("RDS_HOME_INFO_" . $this->searchClassId);?>
+           </span>
+           <span class="link-caption">
+           <?=$this->transEsc("RDS_HOME_INFO_" . $this->searchClassId . "_TEXT"); ?>
+           </span>
+        </span>
+     </div>
+   </div>
+
+</div>
