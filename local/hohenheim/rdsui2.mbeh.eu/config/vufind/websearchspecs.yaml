@@ -1,0 +1,23 @@
+---
+# This file contains search specifications used by the website module; for details
+# on the workings of this file, see the comments in searchspecs.yaml.
+#-----------------------------------------------------------------------------------
+
+AllFields:
+  DismaxFields:
+    - title^750
+    - keywords^200
+    - content
+  QueryFields:
+    title:
+      - [onephrase, 1000]
+      - [and, 750]
+      - [or, 10]
+    keywords:
+      - [onephrase, 250]
+      - [and, 200]
+      - [or, ~]
+    content:
+      - [onephrase, 25]
+      - [and, 5]
+      - [or, ~]

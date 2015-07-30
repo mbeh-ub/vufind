@@ -1,0 +1,27 @@
+<?
+  if (!isset($this->layout()->renderSearchbox) || $this->layout()->renderSearchbox != false) {
+    $this->layout()->searchbox = $this->render('search/searchbox.phtml');
+  }
+?>
+
+<div style="border: 0px solid red;">
+
+  <div class="rds_searchbox">
+    <nav class="nav searchbox">
+      <?=$this->layout()->searchbox ?>
+    </nav>
+  </div>
+
+  <div class="rds_searchTabs">
+      <?= $this->render('search/searchTabs'); ?>
+  </div>
+
+  <div class="rds_subnav">
+        <ul>
+            <li><a href="<?=$this->url('home') ?>Search/History"><?=$this->transEsc('RDS_RDSHistory')?></a></li>
+            <li><a href="<?=$this->url('home') ?>MyResearch"><?=$this->transEsc('RDS_RDSFavorites')?></a></li>
+        </ul>        
+    </div>
+  
+  
+</div>

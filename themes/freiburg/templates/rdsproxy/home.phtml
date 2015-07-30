@@ -1,0 +1,49 @@
+<?
+  // Set page title.
+  $this->headTitle($this->translate('Articles & more'));
+
+  // Disable top search box -- this page has a special layout.
+  $this->layout()->searchbox = false;
+
+  // Set default value if necessary:
+  if (!isset($this->searchClassId)) {
+    $this->searchClassId = 'RDSProxy';
+  }
+  
+  // Load search actions and settings (if any):
+  $options = $this->searchOptions($this->searchClassId);
+  $basicSearch = $options->getSearchAction();
+  $advSearch = $options->getAdvancedSearchAction();
+
+  $this->layout()->breadcrumbs = '<li class="active">' . $this->transEsc('RDSProxy') . '</li>';
+?>
+
+
+	<? $this->layout()->navigation = $this->render('layout/navigation.phtml');?>
+  <?=$this->layout()->navigation ?>
+
+    <div class="gridcontainer row">
+     <div class="col-sm-9 col-xs-9 csc-default">
+        <span class="simple-link autoheight-element">
+           <span class="link-heading">
+           <?=$this->transEsc("RDS_HOME_INFO_" . $this->searchClassId);?>
+           </span>
+           <span class="link-caption">
+           <?=$this->transEsc("RDS_HOME_INFO_" . $this->searchClassId . "_TEXT"); ?>
+           </span>
+        </span>
+     </div>
+
+     <div class="col-sm-3 col-xs-3 csc-default">
+        <span class="simple-link autoheight-element">
+           <span class="link-heading">
+           <?=$this->transEsc("RDS_HOME_HELP_" . $this->searchClassId);?>
+           </span>
+           <span class="link-caption">
+           <?=$this->translate("RDS_HOME_HELP_" . $this->searchClassId . "_TEXT"); ?>
+           </span>
+        </span>
+
+     </div>
+  </div>
+

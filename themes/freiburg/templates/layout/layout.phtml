@@ -1,0 +1,159 @@
+<?=$this->doctype('HTML5')?>
+<html lang="<?=$this->layout()->userLang?>">
+<head>
+	<?$this->headThemeResources()?>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!--
+	<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+	-->
+	<?=$this->headMeta()?>
+	<?=$this->headTitle()?>
+	<?
+	// Set up OpenSearch link:
+	$this->headLink(
+		array(
+			'href' => $this->url('search-opensearch') . '?method=describe',
+			'type' => 'application/opensearchdescription+xml',
+			'title' => $this->transEsc('Library Catalog Search'),
+			'rel' => 'search'
+		)
+	);
+	?>
+	<?=$this->headLink()?>
+	<?=$this->headStyle()?>
+	<?
+	// Set global path for Javascript code:
+	$this->headScript()->prependScript("path = '" . rtrim($this->url('home'), '/') . "';");
+
+	// Deal with cart stuff:
+	if (!isset($this->renderingError)) {
+		$cart = $this->cart();
+		$this->jsTranslations()->addStrings(
+			array(
+				'bulk_email_success' => 'bulk_email_success',
+				'bulk_save_success' => 'bulk_save_success',
+				'close' => 'close',
+				'loading' => 'Loading',
+				'sms_success' => 'sms_success'
+			)
+		);
+		if ($cart->isActive()) {
+			$this->headScript()->appendFile("vendor/cookies.js");
+			$this->headScript()->appendFile("cart.js");
+			$domain = $cart->getCookieDomain();
+			$this->headScript()->appendScript(
+				'var cartCookieDomain = ' . (!empty($domain) ? "'$domain'" : 'false') . ';'
+			);
+			$this->jsTranslations()->addStrings(
+				array(
+					'bulk_noitems_advice' => 'bulk_noitems_advice',
+					'confirmDelete' => 'confirm_delete',
+					'confirmEmpty' => 'bookbag_confirm_empty',
+					'viewBookBag' => 'View Book Bag',
+					'addBookBag' => 'Add to Book Bag',
+					'removeBookBag' => 'Remove from Book Bag',
+					'itemsAddBag' => 'items_added_to_bookbag',
+					'itemsInBag' => 'items_already_in_bookbag',
+					'bookbagMax' => $cart->getMaxSize(),
+					'bookbagFull' => 'bookbag_full_msg',
+					'bookbagStatusFull' => 'bookbag_full',
+					'no_tags' => 'No Tags'
+				)
+			);
+		}
+		$this->headScript()->appendScript($this->jsTranslations()->getScript());
+	}
+
+	// Session keep-alive
+	if ($this->KeepAlive()) {
+		$this->headScript()->appendScript('var keepAliveInterval = '
+			. $this->KeepAlive());
+		$this->headScript()->appendFile("keep_alive.js");
+	}
+	?>
+	<?=$this->headScript()?>
+</head>
+
+<body class="page-layout-search page-layout-default color-10">
+
+	<div id="metaNavigationPanel">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="trigger-close"><a class="ui-trigger"><span class="icon icon-ubfr-close"></span></a></div>
+					<div class="meta-content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<header role="banner" id="pageHead" class="hidden-print">
+
+		<div class="main-head" style="background-image: url('https://www.ub.uni-freiburg.de/fileadmin/ub_content_files/keyvisuals/bg_probebetrieb_01-01-01.png');"
+>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div id="pageLogo">
+							<a href="/">
+								<img src="<?=$this->imageLink('/probebetrieb/ub-freiburg-logo-probebetrieb.svg')?>" alt="Universitätsbibliothek Freiburg" />
+							</a>
+						</div>
+						<nav id="mainNavigation" role="navigation">
+							<?=$this->render('websiteAssets/mainNavigation.phtml')?>
+						</nav>
+
+						<nav id="metaNavigation" role="navigation">
+							<?=$this->render('websiteAssets/metaNavigation.phtml')?>
+						</nav>
+
+						<div class="probebetrieb-navigation">
+							<div class="content">
+								<span class="heading">Probebetrieb</span>
+								<ul>
+									<li><a href="/probebetrieb/was-bedeutet-probebetrieb/">Der Probebetrieb</a></li>
+									<li><a href="/probebetrieb/was-ist-neu/">Neu</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="probebetrieb-layer-02"></div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</header>
+
+	<div id="contentWrapper" role="main" class="main template-dir-<?=$this->templateDir?> template-name-<?=$this->templateName?>">
+		<div class="container">
+			<?=$this->layout()->content ?>
+		</div>
+	</div>
+
+	<footer id="pageFooter" role="contentinfo" class="hidden-print">
+		<div class="container">
+			<?=$this->render('footer.phtml')?>
+		</div>
+	</footer>
+
+
+	<div id="fixedSidePanel">
+		<div class="logo-wrapper">
+			<img src="<?=$this->imageLink('/uni-freiburg-logo.svg')?>" alt="Universität Freiburg" />
+		</div>
+	</div>
+
+	<span id="toPageTop">
+		<a href="#pageHead">
+			<span class="label">Nach oben</span>
+			<span class="icon icon-ubfr-arrow-top"></span>
+		</a>
+	</span>
+
+	<?=$this->piwik()?>
+
+</body>
+</html>

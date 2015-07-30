@@ -109,3 +109,7 @@ body {
   margin-left: 0px;
   margin-right: 0px;
 }
+
+.label-info {
+    background-color: #e9eaed;
+}
