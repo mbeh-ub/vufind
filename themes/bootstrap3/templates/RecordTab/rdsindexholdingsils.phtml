@@ -1,17 +1,28 @@
-<br />****** Index - Lokalsatz **********<br />
-<? var_dump($this->driver->getLok()) ?>
-<br />****** DAIA - Verfügbarkeit **********<br />
-<? var_dump($this->driver->getRealTimeHoldings()) ?>
-<br />****** gemergte Struktur **********<br />
+<? /*<br />****** Index - Lokalsatz **********<br />
+<?  var_dump($this->driver->getLok())  ?> 
+*/ ?>
 
 <? 
     // Set up convencience variables:
     $lok = $this->driver->getLok();
-    $daia = $this->driver->getRealTimeHoldings();
+    $adis_clients = $this->RDSIndexHolding()->getAdisClients();
+    $order = $this->RDSIndexHolding()->getResultOrder();
+    $institutions = $this->driver->tryMethod('getInstitutions');
+    foreach ($adis_clients as $client) {
+      if (in_array($client, $institutions)) {
+         $daia[$client] = $this->driver->getRealTimeHoldings("RDSDAIA" . $client . ".");
+      } 
+    }
+    // $daia = $this->driver->getRealTimeHoldings("RDSDAIA25.");
     $holdings = $this->RDSIndexHolding()->mergeData($lok, $daia);
 ?>
+<? /*
+<br />****** DAIA - Verfügbarkeit **********<br />
+<?  var_dump($daia)  ?>
+<br />****** gemergte Struktur **********<br />
 <? var_dump($holdings) ?> 
-<br />****************<br />
+<br />*****************<br />
+*/ ?>
 
 <?
     // Show volume link
@@ -54,15 +65,16 @@
     <? endif; ?>
   <? endif; ?>
   <? foreach ($bibholding as $exemplar): ?>
-    <? foreach ($exemplar as $ex_name => $ex_value): ?>
-      <? if ($ex_value): ?> 
-        <tr class="<?=$ex_name?>">
-        <th><?=$this->transEsc($ex_name)?></th>
+    <? foreach ($order as $order_value): ?>
+      <? if ($exemplar[$order_value]): ?> 
+        <tr class="<?=$order_value?>">
+        <th><?=$this->transEsc($order_value)?></th>
         <td colspan="3"> 
-           <?=$ex_value?>
+           <?=$exemplar[$order_value]?>
         </td>
       <? endif; ?>
-    <? endforeach /* end foreach exemplar content */ ?>
+    <? endforeach /* end foreach exemplar content sorted by order */ ?>
+<tr><td colspan="4">&nbsp;</td></tr>
   <? endforeach /* end foreach exemplar block */ ?> 
   </table>
 <? endforeach; /* end foreach bib_sigel */ ?>
