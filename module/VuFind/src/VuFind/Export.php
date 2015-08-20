@@ -339,19 +339,23 @@ class Export
             ? $this->exportConfig->$format->label : $format;
     }
     
-    public function getFilename($format) {
-        return isset($this->exportConfig->$format->filename)
-        ? $this->exportConfig->$format->filename : 'VuFindExport';
+    public function getFilename($format, $translate=true) {
+        $filename = "VuFindExport";
+        foreach ($this->getHeaders($format) as $header) {
+           if (preg_match('/^Content-Disposition:.*filename=(.*);/i',$header,$matches)) {
+               $filename = $matches[1];
+           };
+        }
+        return $filename;
     }
     
     public function getMimeType($format) {
-        return isset($this->exportConfig->$format->mimeType)
-        ? $this->exportConfig->$format->mimeType : 'text/plain';
+        $mimeType = "text/plain";
+        foreach ($this->getHeaders($format) as $header) {
+            if (preg_match('/^Content-type:\s*([^;]*)(;|$)/i',$header,$matches)) {
+                $mimeType = $matches[1];
+            };
+        }
+        return $mimeType;
     }
-    
-    public function getFilenameExtension($format) {
-        return isset($this->exportConfig->$format->filenameExtension)
-        ? $this->exportConfig->$format->filenameExtension : 'txt';
-    }
-
 }
