@@ -728,8 +728,8 @@ class AbstractBase extends AbstractActionController
     
     protected function getExportDetails($records, $format) {
         $export = $this->getServiceLocator()->get('VuFind\Export');
-        $filename = $this->translate(explode('.', $export->getFilename($format))[0])
-                    . explode('.', $export->getFilename($format))[1];
+        $filename = $this->translate(explode('.', $export->getFilename($format))[0]) 
+                    . '.' . explode('.', $export->getFilename($format))[1];
         $exportDetails = [
                         'content'  => $this->exportRecords($records, $format),
                         'mimeType' => $export->getMimeType($format),

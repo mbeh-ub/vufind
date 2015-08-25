@@ -339,10 +339,10 @@ class Export
             ? $this->exportConfig->$format->label : $format;
     }
     
-    public function getFilename($format, $translate=true) {
+    public function getFilename($format) {
         $filename = "VuFindExport";
         foreach ($this->getHeaders($format) as $header) {
-           if (preg_match('/^Content-Disposition:.*filename=(.*);/i',$header,$matches)) {
+           if (preg_match('/^Content-Disposition:.*filename=\"(.*)\";/i',$header,$matches)) {
                $filename = $matches[1];
            };
         }
