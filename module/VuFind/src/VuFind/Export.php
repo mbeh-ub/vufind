@@ -338,6 +338,26 @@ class Export
         return isset($this->exportConfig->$format->label)
             ? $this->exportConfig->$format->label : $format;
     }
+    
+    public function getFilename($format, $translate=true) {
+        $filename = "VuFindExport";
+        foreach ($this->getHeaders($format) as $header) {
+           if (preg_match('/^Content-Disposition:.*filename=(.*);/i',$header,$matches)) {
+               $filename = $matches[1];
+           };
+        }
+        return $filename;
+    }
+
+    public function getMimeType($format) {
+            $mimeType = "text/plain";
+        foreach ($this->getHeaders($format) as $header) {
+            if (preg_match('/^Content-type:\s*([^;]*)(;|$)/i',$header,$matches)) {
+                $mimeType = $matches[1];
+            };
+        }
+        return $mimeType;
+    }
 
     /**
      * Get the bulk export type for the specified export format.
@@ -357,5 +377,4 @@ class Export
         return isset($this->mainConfig->BulkExport->defaultType)
             ? $this->mainConfig->BulkExport->defaultType : 'link';
     }
-
 }
