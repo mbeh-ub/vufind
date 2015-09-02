@@ -731,31 +731,6 @@ class AbstractBase extends AbstractActionController
         return $tmp;
     }
     
-    protected function getExportDetails($records, $format) {
-    
-        $export = $this->getServiceLocator()->get('VuFind\Export');
-        $exportDetails = [
-                        'content'  => $this->exportRecords($records, $format),
-                        'mimeType' => $export->getMimeType($format),
-                        'filename' => $this->translate($export->getFilename($format))
-                        . '.' . $export->getFilenameExtension($format)
-        ];
-        return $exportDetails;
-    }
-    
-    protected function exportRecords($records, $format) {
-        // Actually export the records
-        $export = $this->getServiceLocator()->get('VuFind\Export');
-        $recordHelper = $this->getViewRenderer()->plugin('record');
-        $parts = [];
-        foreach ($records as $record) {
-            $parts[] = $recordHelper($record)->getExport($format);
-        }
-    
-        $exportedRecords = $export->processGroup($format, $parts);
-        return $exportedRecords;
-    }
-    
     protected function getIds() {
         $ids = [];
         $allFromList = $this->params()->fromPost('allFromList');
