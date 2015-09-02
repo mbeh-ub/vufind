@@ -718,23 +718,10 @@ class AbstractBase extends AbstractActionController
         $this->followup()->clear('url');
     }
         
-    
-    protected function getEmailFormats() {
-        $export = $this->getServiceLocator()->get('VuFind\Export');
-        $exportOptions = $export->getFormatsForRecords($view->records);
-        $formatOptions = explode(':', $this->getConfig('config')->BulkExport->email);
-        $tmp = array_intersect($exportOptions, $formatOptions);
-        if (in_array('URL', $formatOptions)) {
-            $tmp[] = 'URL';
-        }
-    
-        return $tmp;
-    }
-    
     protected function getIds() {
         $ids = [];
         $allFromList = $this->params()->fromPost('allFromList');
-        
+    
         if(isset($allFromList)) {
             $results = $this->getServiceLocator()
             ->get('VuFind\SearchResultsPluginManager')->get('Favorites');
@@ -743,7 +730,7 @@ class AbstractBase extends AbstractActionController
             $parameters = new Parameters(
                     $this->getRequest()->getQuery()->toArray()
                     + $this->getRequest()->getPost()->toArray()
-                    );
+            );
     
             if ($allFromList != -1) {
                 $parameters->set('id', $allFromList);
@@ -764,5 +751,17 @@ class AbstractBase extends AbstractActionController
         }
     
         return $ids;
+    }
+    
+    protected function getEmailFormats() {
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $exportOptions = $export->getFormatsForRecords($view->records);
+        $formatOptions = explode(':', $this->getConfig('config')->BulkExport->email);
+        $tmp = array_intersect($exportOptions, $formatOptions);
+        if (in_array('URL', $formatOptions)) {
+            $tmp[] = 'URL';
+        }
+    
+        return $tmp;
     }
 }
