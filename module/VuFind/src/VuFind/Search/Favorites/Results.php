@@ -29,7 +29,7 @@ namespace VuFind\Search\Favorites;
 use VuFind\Exception\ListPermission as ListPermissionException,
     VuFind\Search\Base\Results as BaseResults,
     ZfcRbac\Service\AuthorizationServiceAwareInterface,
-    ZfcRbac\Service\AuthorizationServiceAwareTrait;
+    ZfcRbac\Service\AuthorizationServiceAwareTrait,
     VuFind\Record\Cache;
 
 /**
