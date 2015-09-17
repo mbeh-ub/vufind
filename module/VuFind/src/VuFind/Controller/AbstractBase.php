@@ -742,5 +742,4 @@ class AbstractBase extends AbstractActionController
     {
         $this->followup()->clear('url');
     }
-    
 }
