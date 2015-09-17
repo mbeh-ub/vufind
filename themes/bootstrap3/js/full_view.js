@@ -58,7 +58,7 @@ $(document).ready(function() {
       longNode.removeClass("hidden");
       if (longNode.is(':empty')) {
         loadingNode.removeClass("hidden");
-        var url = path + '/AJAX/JSON?' + $.param({method:'getRecordDetails',id:div_id,type:viewType,source:div_source});
+        var url = path + '/AJAX/JSON?' + $.param({method:'getRecordDetails',id:div_id,type:viewType,source:div_source,cachePolicy:'Favorite'});
         $.ajax({
           dataType: 'json',
           url: url,
