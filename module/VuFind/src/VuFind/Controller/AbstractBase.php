@@ -733,4 +733,13 @@ class AbstractBase extends AbstractActionController
     {
         $this->followup()->clear('url');
     }
+    
+    protected function getCachePolicy() {
+        $cachePolicy = $this->params()->fromQuery('cachePolicy');
+        if (empty($cachePolicy)) {
+            $cachePolicy = $this->params()->fromPost('cachePolicy', null);
+        }
+        
+        return $cachePolicy;
+    }
 }
