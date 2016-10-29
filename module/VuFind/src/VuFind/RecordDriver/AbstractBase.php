@@ -274,7 +274,7 @@ abstract class AbstractBase implements \VuFind\Db\Table\DbTableAwareInterface,
             $recordCache->setContext(Cache::CONTEXT_FAVORITE);
             $recordCache->createOrUpdate(
                 $resource->record_id, $resource->source,
-                $this->getRawData()
+                $this->getRawData(), $resource->id
             );
         }
 

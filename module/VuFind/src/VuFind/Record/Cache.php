@@ -30,7 +30,8 @@
 namespace VuFind\Record;
 use VuFind\Db\Table\Record as Record,
     VuFind\RecordDriver\PluginManager as RecordFactory,
-    Zend\Config\Config as Config;
+    Zend\Config\Config as Config,
+    VuFind\Auth\Manager as AuthManager;
 
 /**
  * Record Cache
@@ -88,11 +89,16 @@ class Cache implements \Zend\Log\LoggerAwareInterface
     public function __construct(
         RecordFactory $recordFactoryManager,
         Config $config,
-        Record $recordTable
+        Record $recordTable,
+        AuthManager $authManager
     ) {
         $this->cacheConfig = $config;
         $this->recordTable = $recordTable;
         $this->recordFactoryManager = $recordFactoryManager;
+        
+        $this->userId = ($authManager->isLoggedIn() && $config->General->userSpecific) ?
+            $authManager->isLoggedIn()->id :
+            null;
 
         $this->setContext(Cache::CONTEXT_DEFAULT);
     }
@@ -106,11 +112,20 @@ class Cache implements \Zend\Log\LoggerAwareInterface
      *
      * @return void
      */
-    public function createOrUpdate($recordId, $source, $rawData)
-    {
+    public function createOrUpdate($recordId, $source, $rawData,
+        $resourceId
+    ) {
         if (isset($this->cachableSources[$source])) {
+            
             $this->debug("Updating {$source}|{$recordId}");
-            $this->recordTable->updateRecord($recordId, $source, $rawData);
+            $this->debug("CreateOrUpdate cache item : " .
+                'recordId: ' . $recordId .
+                ', userid: ' . $this->userId .
+                ', source: ' . $source
+            );
+            $this->recordTable->updateRecord($recordId, $source, $rawData,
+            	$this->userId, $resourceId
+            );
         }
     }
 
@@ -125,7 +140,7 @@ class Cache implements \Zend\Log\LoggerAwareInterface
     public function lookup($id, $source)
     {
         $this->debug("Checking {$source}|{$id}");
-        $record = $this->recordTable->findRecord($id, $source);
+        $record = $this->recordTable->findRecord($id, $source, $this->userId);
         $this->debug(
             "Cached record {$source}|{$id} "
             . ($record !== false ? 'found' : 'not found')
@@ -150,7 +165,7 @@ class Cache implements \Zend\Log\LoggerAwareInterface
 
         $this->debug("Checking $source batch: " . implode(', ', $ids));
         $vufindRecords = [];
-        $cachedRecords = $this->recordTable->findRecords($ids, $source);
+        $cachedRecords = $this->recordTable->findRecords($ids, $source, $this->userId);
         foreach ($cachedRecords as $cachedRecord) {
             $vufindRecords[] = $this->getVuFindRecord($cachedRecord);
         }
@@ -257,12 +272,14 @@ class Cache implements \Zend\Log\LoggerAwareInterface
     {
         $source = $cachedRecord['source'];
         $doc = unserialize($cachedRecord['data']);
+        $doc = $this->addDebugMarker($doc);
 
         // Solr records are loaded in special-case fashion:
         if ($source === 'VuFind' || $source === 'Solr') {
             $driver = $this->recordFactoryManager->getSolrRecord($doc);
         } else {
-            $driver = $this->recordFactoryManager->get($source);
+            $key = 'Solr' . ucwords($source);
+            $driver = $this->recordFactoryManager->get($key);
             $driver->setRawData($doc);
         }
 
@@ -270,4 +287,41 @@ class Cache implements \Zend\Log\LoggerAwareInterface
 
         return $driver;
     }
+    
+    /**
+     * Cleanup orphaned cache entries for the given UserId
+     *
+     * @param int $userId UserId
+     *
+     * @return null
+     */
+    public function cleanup()
+    {
+        $this->recordTable->cleanup($this->userId);
+    }
+    
+    /**
+     * add debug information based on ip address and
+     * values in RecordCache.ini
+     *
+     * @param array $doc raw record data
+     *
+     * @return array
+     */
+    protected function addDebugMarker($doc) {
+        if (isset($this->cacheConfig->Debug)) {
+            $debug = $this->cacheConfig->Debug;
+            if (isset($debug->debugIp)){
+                $debugIp = $debug->debugIp->toArray();
+                if (in_array($_SERVER['REMOTE_ADDR'], $debugIp)) {
+                    foreach ($debug->debugMarker as $marker) {
+                        list($field, $prependStr) = explode(':', $marker);
+                        $doc[$field] = $prependStr . $doc[$field];
+                    }
+                }
+            }
+        }
+        return $doc;
+    }
+    
 }

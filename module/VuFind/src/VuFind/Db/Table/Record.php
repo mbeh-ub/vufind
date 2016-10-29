@@ -32,6 +32,7 @@ namespace VuFind\Db\Table;
 
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Where;
+use Zend\Db\Sql\Sql;
 
 /**
  * Table Definition for record
@@ -62,9 +63,14 @@ class Record extends Gateway
      * @throws \Exception
      * @return false|Record row object
      */
-    public function findRecord($id, $source)
+    public function findRecord($id, $source, $userId)
     {
-        $records = $this->select(['record_id' => $id, 'source' => $source]);
+        $predicates = ['record_id' => $id, 'source' => $source];
+        if (isset($userId)) {
+            $predicates['user_id'] = $userId; 
+        }
+        $records = $this->select($predicates);
+        
         return $records->count() > 0 ? $records->current() : false;
     }
 
@@ -77,7 +83,7 @@ class Record extends Gateway
      * @throws \Exception
      * @return array Array of record row objects found
      */
-    public function findRecords($ids, $source)
+    public function findRecords($ids, $source, $userId)
     {
         if (empty($ids)) {
             return [];
@@ -86,9 +92,11 @@ class Record extends Gateway
         $where = new Where();
         foreach ($ids as $id) {
             $nested = $where->or->nest();
-            $nested->addPredicates(
-                ['record_id' => $id, 'source' => $source]
-            );
+            $predicates = ['record_id' => $id, 'source' => $source];
+            if (isset($userId)) {
+                $predicates['user_id'] = $userId;
+            }
+            $nested->addPredicates($predicates);
         }
 
         return $this->select($where)->toArray();
@@ -103,9 +111,14 @@ class Record extends Gateway
      *
      * @return Updated or newly added record
      */
-    public function updateRecord($id, $source, $rawData)
+    public function updateRecord($id, $source, $rawData, $userId, $resourceId)
     {
-        $records = $this->select(['record_id' => $id, 'source' => $source]);
+        $predicates = ['record_id' => $id, 'source' => $source];
+        if (isset($userId)) {
+            $predicates['user_id'] = $userId;
+        }
+        $records = $this->select($predicates);
+        
         if ($records->count() == 0) {
             $record = $this->createRow();
         } else {
@@ -117,6 +130,8 @@ class Record extends Gateway
         $record->data = serialize($rawData);
         $record->version = \VuFind\Config\Version::getBuildVersion();
         $record->updated = date('Y-m-d H:i:s');
+        $record->user_id = $userId;
+        $record->resource_id = $resourceId;
 
         // Create or update record.
         $record->save();
@@ -129,31 +144,46 @@ class Record extends Gateway
      *
      * @return int Number of records deleted
      */
-    public function cleanup()
+    public function cleanup($userId)
     {
-        $callback = function ($select) {
-            $select->columns(['id']);
-            $select->join(
-                'resource',
-                new Expression(
-                    'record.record_id = resource.record_id'
-                    . ' AND record.source = resource.source'
-                ),
-                []
-            )->join(
-                'user_resource',
-                'resource.id = user_resource.resource_id',
-                [],
-                $select::JOIN_LEFT
-            );
-            $select->where->isNull('user_resource.id');
-        };
-
-        $results = $this->select($callback);
+        if (isset($userId)) {
+            $sql = new Sql($this->getAdapter());
+            
+            $subselect = $sql->select('user_resource');
+            $subselect->columns(['resource_id']);
+            $subselect->where->equalTo('user_id', $userId);
+            
+            $select = $sql->select();
+            $select->from('record');
+            $select->where->equalTo('user_id', $userId);
+            $select->where->notIn('resource_id', $subselect);
+            
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $results = $statement->execute();
+        } else {
+            $callback = function ($select) {
+                $select->columns(['id']);
+                $select->join(
+                        'resource',
+                        new Expression(
+                                'record.record_id = resource.record_id'
+                                . ' AND record.source = resource.source'
+                                ),
+                        []
+                        )->join(
+                                'user_resource',
+                                'resource.id = user_resource.resource_id',
+                                [],
+                                $select::JOIN_LEFT
+                                );
+                        $select->where->isNull('user_resource.id');
+            };
+            $results = $this->select($callback);
+        }
         foreach ($results as $result) {
             $this->delete(['id' => $result['id']]);
         }
-
+        
         return count($results);
     }
 }
