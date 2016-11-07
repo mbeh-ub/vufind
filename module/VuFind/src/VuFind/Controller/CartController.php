@@ -208,6 +208,8 @@ class CartController extends AbstractBase
             $action = 'Home';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             $action = 'Export';
+        } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
+            $action = 'doExport';
         } else {
             throw new \Exception('Unrecognized bulk action.');
         }
@@ -319,13 +321,17 @@ class CartController extends AbstractBase
     public function exportAction()
     {
         // Get the desired ID list:
-        $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
+        $ids = $this->getIds();
+        
         if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+            $view = $this->createViewModel();
+            $listID = $this->params()->fromPost('listID', 'favorites');
+            $allFromList = $this->params()->fromPost('allFromList', $listID);
+            $view->setVariable('allFromList', $allFromList);
+            $view->setTemplate('cart/export-all.phtml');
+            return $view;
         }
-
+        
         // Get export tools:
         $export = $this->getExport();
 
@@ -373,15 +379,35 @@ class CartController extends AbstractBase
         $ids = $this->params()->fromQuery('i', []);
         $format = $this->params()->fromQuery('f');
 
-        // Make sure we have IDs to export:
+        $format = $this->getFormat();
+        $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+          $view = $this->createViewModel();
+          $listID = $this->params()->fromPost('listID', 'favorites');
+          $allFromList = $this->params()->fromPost('allFromList', $listID);
+          $view->setVariable('allFromList', $allFromList);
+          $view->setTemplate('cart/doExport-all.phtml');
+          return $view;
         }
+        
+        // Make sure we have IDs to export:
+        //if (!is_array($ids) || empty($ids)) {
+        //    return $this->redirectToSource('error', 'bulk_noitems_advice');
+        //}
 
         // Send appropriate HTTP headers for requested format:
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders($this->getExport()->getHeaders($format));
 
+        // Get records in export format
+        $records = $this->getRecordLoader()->loadBatch($ids);
+        $exportedRecords = $this->exportRecords($records, $format);
+        
+        // Process and display the exported records
+        $response->setContent($exportedRecords);
+        return $response;
+        
+        
         // Actually export the records
         $records = $this->getRecordLoader()->loadBatch($ids);
         $recordHelper = $this->getViewRenderer()->plugin('record');

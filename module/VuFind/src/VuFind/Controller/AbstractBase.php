@@ -34,7 +34,8 @@ use VuFind\Exception\Forbidden as ForbiddenException,
     Zend\Mvc\MvcEvent,
     Zend\View\Model\ViewModel,
     ZfcRbac\Service\AuthorizationServiceAwareInterface,
-    ZfcRbac\Service\AuthorizationServiceAwareTrait;
+    ZfcRbac\Service\AuthorizationServiceAwareTrait,
+    Zend\Stdlib\Parameters;
 
 /**
  * VuFind controller base class (defines some methods that can be shared by other
@@ -647,5 +648,83 @@ class AbstractBase extends AbstractActionController
     {
         $cfg = $this->getServiceLocator()->get('Config');
         return $cfg['vufind']['recorddriver_tabs'];
+    }
+        
+    protected function exportRecords($records, $format) {
+      // Actually export the records
+      $export = $this->getServiceLocator()->get('VuFind\Export');
+      $recordHelper = $this->getViewRenderer()->plugin('record');
+      $parts = [];
+      foreach ($records as $record) {
+        $parts[] = $recordHelper($record)->getExport($format);
+      }
+    
+      if ($format == 'HTML') {
+        $exportedRecords = $this->getViewRenderer()->render(
+            './RecordDriver/AbstractBase/frame-html.phtml',
+            ['records' => $parts]
+            );
+      } else {
+        $exportedRecords = $export->processGroup($format, $parts);
+      }
+    
+      return $exportedRecords;
+    }
+    
+    protected function getIds() {
+      $ids = [];
+      // listID could be 'null', 'bookbag', 'favorites' or a integer (listID)
+      $allFromList = $this->params()->fromPost('allFromList');
+    
+      // get ids of all items in bookbag
+      if ($allFromList === 'bookbag') {
+        $cart = $this->getServiceLocator()->get('VuFind\Cart');
+        $ids = $cart->getItems();
+        return $ids;
+      }
+    
+      // get ids of all items over a given favorite list or overall favorite lists
+      if ($allFromList === 'favorites' || is_numeric($allFromList)) {
+        $results = $this->getServiceLocator()
+        ->get('VuFind\SearchResultsPluginManager')->get('Favorites');
+        $params = $results->getParams();
+    
+        $parameters = new Parameters(
+            $this->getRequest()->getQuery()->toArray()
+            + $this->getRequest()->getPost()->toArray()
+            );
+    
+        if (is_numeric($allFromList)) {
+          $parameters->set('id', $allFromList);
+        }
+    
+        $params->initFromRequest($parameters);
+        $params->setLimit(999);
+    
+        $results->performAndProcessSearch();
+    
+        $ids = [];
+        foreach ($results->getResults() as $result) {
+          $ids[] = $result->getResourceSource() . "|" . $result->getUniqueID();
+        }
+    
+        return $ids;
+      }
+    
+      $ids = $this->params()->fromPost('ids', []);
+      if (empty($ids)) {
+        $ids = $this->params()->fromQuery('i', []);
+      }
+    
+      return $ids;
+    }
+    
+    protected function getFormat() {
+      $format = $this->params()->fromPost('format');
+      if (empty($format)) {
+        $format = $this->params()->fromQuery('f', 'HTML');
+      }
+    
+      return $format;
     }
 }
