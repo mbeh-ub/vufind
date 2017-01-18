@@ -223,19 +223,19 @@ class CartController extends AbstractBase
      */
     public function emailAction()
     {
-        // Retrieve ID list:
-        $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
-
-        // Retrieve follow-up information if necessary:
-        if (!is_array($ids) || empty($ids)) {
-            $ids = $this->followup()->retrieveAndClear('cartIds');
-        }
-        if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
-        }
-
+    	
+    	// Get the desired ID list:
+    	$ids = $this->getIds();
+    	
+    	if (!is_array($ids) || empty($ids)) {
+    		$view = $this->createViewModel();
+    		$listID = $this->params()->fromPost('listID', 'favorites');
+    		$allFromList = $this->params()->fromPost('allFromList', $listID);
+    		$view->setVariable('allFromList', $allFromList);
+    		$view->setTemplate('cart/email-all.phtml');
+    		return $view;
+    	}
+        
         // Force login if necessary:
         $config = $this->getConfig();
         if ((!isset($config->Mail->require_login) || $config->Mail->require_login)

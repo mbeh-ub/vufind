@@ -1,0 +1,28 @@
+<?
+    // Set page title.
+    $this->headTitle($this->translate('Email Favorites'));
+
+    // Set up breadcrumbs:
+    $this->layout()->breadcrumbs = '<li>' . $this->searchMemory()->getLastSearchLink($this->transEsc('Search'), '', '</li> ')
+    . '<li><a href="' .$this->url('cart-home'). '">' .$this->transEsc('Cart'). '</a></li> '
+    . '<li class="active">' . $this->transEsc('Email Favorites') . '</li>';
+?>
+<h2><?=$this->transEsc('Email Favorites')?></h2>
+
+<?=$this->flashmessages()?>
+
+<form class="form-horizontal" method="post" action="<?=$this->url('cart-myresearchbulk')?>" name="emailListForm" title="<?=$this->transEsc('Email Items')?>"> 
+  <?=$this->translate('no_items_selected'); ?>
+  <ul>
+    <li>     
+      <?=$this->translate('no_items_selected_option_select')?>
+    </li>
+    <li>
+      <?=$this->translate('no_items_selected_option_process_list')?>
+    </li>
+  </ul>
+  <br />
+  <input type="hidden" name="allFromList" value="<?=$this->allFromList?>" />
+	<a class="btn btn-default" type="submit" data-lightbox href="<?=$this->url('cart-home')?>"><?=$this->transEsc('Select Items')?></a>
+	<input class="btn btn-default" type="submit" name="email" value="<?=$this->transEsc('Process List')?>"/>
+</form>
