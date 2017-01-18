@@ -23,6 +23,6 @@
   </ul>
   <br />
   <input type="hidden" name="allFromList" value="<?=$this->allFromList?>" />
-	<a class="btn btn-default" type="submit" data-lightbox href="/vufind3/Cart/Home"><?=$this->transEsc('Select Items')?></a>
+	<a class="btn btn-default" type="submit" data-lightbox href="<?=$this->url('cart-home')?>"><?=$this->transEsc('Select Items')?></a>
 	<input class="btn btn-default" type="submit" name="export" value="<?=$this->transEsc('Process List')?>"/>
 </form>
