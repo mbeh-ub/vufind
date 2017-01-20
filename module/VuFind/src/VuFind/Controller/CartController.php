@@ -223,18 +223,11 @@ class CartController extends AbstractBase
      */
     public function emailAction()
     {
-    	
-    	// Get the desired ID list:
-    	$ids = $this->getIds();
-    	
-    	if (!is_array($ids) || empty($ids)) {
-    		$view = $this->createViewModel();
-    		$listID = $this->params()->fromPost('listID', 'favorites');
-    		$allFromList = $this->params()->fromPost('allFromList', $listID);
-    		$view->setVariable('allFromList', $allFromList);
-    		$view->setTemplate('cart/email-all.phtml');
-    		return $view;
-    	}
+        // Get the desired ID list:
+        $ids = $this->getIds();
+        if (!is_array($ids) || empty($ids)) {
+            return $this->noItemSelected('email');
+        }
         
         // Force login if necessary:
         $config = $this->getConfig();
@@ -289,12 +282,12 @@ class CartController extends AbstractBase
      */
     public function printcartAction()
     {
-        $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
+        // Get the desired ID list:
+        $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+            return $this->noItemSelected('print');
         }
+
         $callback = function ($i) {
             return 'id[]=' . urlencode($i);
         };
@@ -322,14 +315,8 @@ class CartController extends AbstractBase
     {
         // Get the desired ID list:
         $ids = $this->getIds();
-        
         if (!is_array($ids) || empty($ids)) {
-            $view = $this->createViewModel();
-            $listID = $this->params()->fromPost('listID', 'favorites');
-            $allFromList = $this->params()->fromPost('allFromList', $listID);
-            $view->setVariable('allFromList', $allFromList);
-            $view->setTemplate('cart/export-all.phtml');
-            return $view;
+            return $this->noItemSelected('export');
         }
         
         // Get export tools:
@@ -374,27 +361,12 @@ class CartController extends AbstractBase
      */
     public function doexportAction()
     {
-        // We use abbreviated parameters here to keep the URL short (there may
-        // be a long list of IDs, and we don't want to run out of room):
-        $ids = $this->params()->fromQuery('i', []);
-        $format = $this->params()->fromQuery('f');
-
         $format = $this->getFormat();
         $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-          $view = $this->createViewModel();
-          $listID = $this->params()->fromPost('listID', 'favorites');
-          $allFromList = $this->params()->fromPost('allFromList', $listID);
-          $view->setVariable('allFromList', $allFromList);
-          $view->setTemplate('cart/doExport-all.phtml');
-          return $view;
+            return $this->noItemSelected('doExport');
         }
         
-        // Make sure we have IDs to export:
-        //if (!is_array($ids) || empty($ids)) {
-        //    return $this->redirectToSource('error', 'bulk_noitems_advice');
-        //}
-
         // Send appropriate HTTP headers for requested format:
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders($this->getExport()->getHeaders($format));
@@ -505,5 +477,14 @@ class CartController extends AbstractBase
             $target = $this->url()->fromRoute('myresearch-home');
         }
         return $this->redirect()->toUrl($target);
+    }
+    
+    protected function noItemSelected($action) {
+        $view = $this->createViewModel();
+        $listID = $this->params()->fromPost('listID', 'favorites');
+        $allFromList = $this->params()->fromPost('allFromList', $listID);
+        $view->setVariable('allFromList', $allFromList);
+        $view->setTemplate('cart/' . $action . '-all.phtml');
+        return $view;
     }
 }
