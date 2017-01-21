@@ -1,0 +1,28 @@
+<?
+    // Set page title.
+    $this->headTitle($this->translate('Print Favorites'));
+
+    // Set up breadcrumbs:
+    $this->layout()->breadcrumbs = '<li>' . $this->searchMemory()->getLastSearchLink($this->transEsc('Search'), '', '</li> ')
+    . '<li><a href="' .$this->url('cart-home'). '">' .$this->transEsc('Cart'). '</a></li> '
+    . '<li class="active">' . $this->transEsc('Print Favorites') . '</li>';
+?>
+<h2><?=$this->transEsc('Print Favorites')?></h2>
+
+<?=$this->flashmessages()?>
+
+<form class="form-inline" method="post" action="<?=$this->url('cart-processor')?>" name="cartForm" title="<?=$this->transEsc('Print Items')?>" data-lightbox-onsubmit="function() {return true;}"> 
+  <?=$this->translate('no_items_selected'); ?>
+  <ul>
+    <li>     
+      <?=$this->translate('no_items_selected_option_select')?>
+    </li>
+    <li>
+      <?=$this->translate('no_items_selected_option_process_list')?>
+    </li>
+  </ul>
+  <br />
+  <input type="hidden" name="allFromList" value="<?=$this->allFromList?>" />
+	<a class="btn btn-default" type="submit" data-lightbox href="<?=$this->url('cart-home')?>"><?=$this->transEsc('Select Items')?></a>
+	<input class="btn btn-default" type="submit" name="print" value="<?=$this->transEsc('Process List')?>"/>
+</form>
