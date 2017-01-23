@@ -719,6 +719,17 @@ class AbstractBase extends AbstractActionController
       return $ids;
     }
     
+    protected function noItemSelected($action) {
+        $view = $this->createViewModel();
+        $listID = $this->params()->fromPost('listID', 'favorites');
+        $allFromList = $this->params()->fromPost('allFromList', $listID);
+        $view->setVariable('action', $action);
+        $view->setVariable('allFromList', $allFromList);
+        //$view->setTemplate('cart/' . $action . '-all.phtml');
+        $view->setTemplate('cart/process-all.phtml');
+        return $view;
+    }
+    
     protected function getFormat() {
       $format = $this->params()->fromPost('format');
       if (empty($format)) {

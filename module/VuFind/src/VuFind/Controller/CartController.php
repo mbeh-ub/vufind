@@ -478,13 +478,4 @@ class CartController extends AbstractBase
         }
         return $this->redirect()->toUrl($target);
     }
-    
-    protected function noItemSelected($action) {
-        $view = $this->createViewModel();
-        $listID = $this->params()->fromPost('listID', 'favorites');
-        $allFromList = $this->params()->fromPost('allFromList', $listID);
-        $view->setVariable('allFromList', $allFromList);
-        $view->setTemplate('cart/' . $action . '-all.phtml');
-        return $view;
-    }
 }
