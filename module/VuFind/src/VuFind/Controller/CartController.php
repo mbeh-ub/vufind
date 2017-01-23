@@ -85,6 +85,8 @@ class CartController extends AbstractBase
             return 'Save';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             return 'Export';
+        } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
+            return 'doExport';
         }
         // Check if the user is in the midst of a login process; if not,
         // use the provided default.
@@ -208,6 +210,8 @@ class CartController extends AbstractBase
             $action = 'Home';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             $action = 'Export';
+        } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
+            $action = 'doExport';
         } else {
             throw new \Exception('Unrecognized bulk action.');
         }
@@ -371,7 +375,14 @@ class CartController extends AbstractBase
         // We use abbreviated parameters here to keep the URL short (there may
         // be a long list of IDs, and we don't want to run out of room):
         $ids = $this->params()->fromQuery('i', []);
-        $format = $this->params()->fromQuery('f');
+        
+        if (!is_array($ids) || empty($ids)) {
+            $ids = is_null($this->params()->fromPost('selectAll'))
+            ? $this->params()->fromPost('ids')
+            : $this->params()->fromPost('idsAll');
+        }
+        
+        $format = $this->getFormat();
 
         // Make sure we have IDs to export:
         if (!is_array($ids) || empty($ids)) {
@@ -381,7 +392,16 @@ class CartController extends AbstractBase
         // Send appropriate HTTP headers for requested format:
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders($this->getExport()->getHeaders($format));
-
+        
+        // Get records in export format
+        $records = $this->getRecordLoader()->loadBatch($ids);
+        $exportedRecords = $this->exportRecords($records, $format);
+        
+        // Process and display the exported records
+        $response->setContent($exportedRecords);
+        return $response;
+        
+        
         // Actually export the records
         $records = $this->getRecordLoader()->loadBatch($ids);
         $recordHelper = $this->getViewRenderer()->plugin('record');
