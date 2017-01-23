@@ -1,5 +1,7 @@
 # GNU Emacs temporary files
 
+.sass-cache
+cache
 ChangeLog
 \#*
 .\#*
@@ -10,7 +12,6 @@ composer.lock
 composer.phar
 import/solrmarc.log
 node_modules
-.project
 .buildpath
-/.settings
-/local/vufind3/bohr.ub.uni-freiburg.de
+.project
+.settings/
