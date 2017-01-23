@@ -1,0 +1,42 @@
+<?
+    // Set page title.
+    $this->headTitle($this->translate($this->action . ' Favorites'));
+
+    // Set up breadcrumbs:
+    $this->layout()->breadcrumbs = '<li>' . $this->searchMemory()->getLastSearchLink($this->transEsc('Search'), '', '</li> ')
+    . '<li><a href="' .$this->url('cart-home'). '">' .$this->transEsc('Cart'). '</a></li> '
+    . '<li class="active">' . $this->transEsc($this->action . 'Favorites') . '</li>';
+    
+    if ($this->auth()->isLoggedIn()) {
+        $selectAction = 'data-dismiss="modal"';
+    } else {
+        $selectAction = 'data-lightbox href="' . $this->url('cart-processor') . '"';
+    }
+    
+    if ($this->action === 'print' || $this->action === 'doExport') {
+        $handlePrint = 'data-lightbox-onsubmit="return true;"';
+    }
+    
+?>
+
+<h2><?=$this->transEsc($this->action . ' Favorites')?></h2>
+
+<?=$this->flashmessages()?>
+
+<form class="form-horizontal" method="post" action="<?=$this->url('cart-myresearchbulk')?>" 
+      name="<?=$this->action?>ListForm" title="<?=$this->transEsc($this->action . ' Items')?>"  
+      <?=$handlePrint?> > 
+  <?=$this->translate('no_items_selected'); ?>
+  <ul>
+    <li>     
+      <?=$this->translate('no_items_selected_option_select')?>
+    </li>
+    <li>
+      <?=$this->translate('no_items_selected_option_process_list')?>
+    </li>
+  </ul>
+  <br />
+  <input type="hidden" name="allFromList" value="<?=$this->allFromList?>" />
+    <a class="btn btn-default" <?=$selectAction?> type="submit"><?=$this->transEsc('Select Items')?></a>
+	<input class="btn btn-default" type="submit" name="<?=$this->action?>" value="<?=$this->transEsc('Process List')?>"/>
+</form>
