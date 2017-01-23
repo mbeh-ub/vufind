@@ -648,4 +648,34 @@ class AbstractBase extends AbstractActionController
         $cfg = $this->getServiceLocator()->get('Config');
         return $cfg['vufind']['recorddriver_tabs'];
     }
+    
+    protected function exportRecords($records, $format) {
+        // Actually export the records
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $recordHelper = $this->getViewRenderer()->plugin('record');
+        $parts = [];
+        foreach ($records as $record) {
+            $parts[] = $recordHelper($record)->getExport($format);
+        }
+
+        if ($format == 'HTML') {
+            $exportedRecords = $this->getViewRenderer()->render(
+                    './RecordDriver/AbstractBase/frame-html.phtml',
+                    ['records' => $parts]
+                    );
+        } else {
+            $exportedRecords = $export->processGroup($format, $parts);
+        }
+        
+        return $exportedRecords;
+    }
+    
+    protected function getFormat() {
+        $format = $this->params()->fromPost('format');
+        if (empty($format)) {
+            $format = $this->params()->fromQuery('f', 'HTML');
+        }
+    
+        return $format;
+    }
 }
