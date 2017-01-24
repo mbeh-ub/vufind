@@ -85,6 +85,8 @@ class CartController extends AbstractBase
             return 'Save';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             return 'Export';
+        } else if (strlen($this->params()->fromPost('postLogin', '')) > 0) {
+            return 'postLogin';
         }
         // Check if the user is in the midst of a login process; if not,
         // use the provided default.
@@ -479,5 +481,37 @@ class CartController extends AbstractBase
             $target = $this->url()->fromRoute('myresearch-home');
         }
         return $this->redirect()->toUrl($target);
+    }
+    
+    public function postLoginAction() {
+        $view = $this->createViewModel();
+    
+        if ($this->params()->fromPost('postLogin') === 'persist') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $user = $this->getAuthManager()->isLoggedIn();
+            $params['ids'] = $cart->getItems();
+            $params['list'] = split('_', $this->params()->fromPost('list'))[0];
+            $params['title'] = split('_', $this->params()->fromPost('list'))[1];
+            $this->favorites()->saveBulk($params, $user);
+            $cart->emptyCart();
+            $view->setVariable('action', 'persist');
+            $view->setTemplate('cart/post-login.phtml');
+            return $view;
+        }
+    
+        if ($this->params()->fromPost('postLogin') === 'discard') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $cart->emptyCart();
+            $view->setVariable('action', 'discard');
+            $view->setTemplate('cart/post-login.phtml');
+            return $view;
+        }
+    
+        $user = $this->getUser();
+        $lists = $user->getLists();
+        $view->setVariable('lists', $lists);
+        $view->setVariable('action', 'request');
+        $view->setTemplate('cart/post-login.phtml');
+        return $view;
     }
 }
