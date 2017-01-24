@@ -369,7 +369,14 @@ class AbstractBase extends AbstractActionController
      */
     public function getRecordLoader()
     {
-        return $this->getServiceLocator()->get('VuFind\RecordLoader');
+        $recordLoader = $this->getServiceLocator()->get('VuFind\RecordLoader');
+        
+        $cacheContext = $this->getRequest()->getQuery()->get('cacheContext');
+        if (isset($cachePolicy)) {
+            $recordLoader->setCacheContext($cacheContext);
+        }
+        
+        return $recordLoader;
     }
 
     /**
