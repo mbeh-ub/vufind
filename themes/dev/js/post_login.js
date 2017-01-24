@@ -7,6 +7,6 @@ $(document).ready(function(){
     $('#modal .close').addClass('hidden');
     
     VuFind.lightbox.refreshOnClose = true;
-    VuFind.lightbox.ajax({url:'/bootstrap3/Cart/PostLogin'});
+    VuFind.lightbox.ajax({url: VuFind.path+'/Cart/PostLogin'});
   }
 });  
