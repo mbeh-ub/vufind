@@ -703,14 +703,4 @@ class AbstractBase extends AbstractActionController
         $view->setTemplate('cart/process-all.phtml');
         return $view;
     }
-    
-    protected function getFormat()
-    {
-      $format = $this->params()->fromPost('format');
-      if (empty($format)) {
-        $format = $this->params()->fromQuery('f', 'HTML');
-      }
-    
-      return $format;
-    }
 }
