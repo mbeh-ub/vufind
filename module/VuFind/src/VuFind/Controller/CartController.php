@@ -208,8 +208,6 @@ class CartController extends AbstractBase
             $action = 'Home';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             $action = 'Export';
-        } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
-            $action = 'doExport';
         } else {
             throw new \Exception('Unrecognized bulk action.');
         }
@@ -360,7 +358,7 @@ class CartController extends AbstractBase
      */
     public function doexportAction()
     {
-        $format = $this->getFormat();
+        $format = $this->params()->fromQuery('f');
         $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
             return $this->noItemSelected('doExport');
