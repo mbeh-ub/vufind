@@ -649,88 +649,63 @@ class AbstractBase extends AbstractActionController
         $cfg = $this->getServiceLocator()->get('Config');
         return $cfg['vufind']['recorddriver_tabs'];
     }
-        
-    protected function exportRecords($records, $format) {
-      // Actually export the records
-      $export = $this->getServiceLocator()->get('VuFind\Export');
-      $recordHelper = $this->getViewRenderer()->plugin('record');
-      $parts = [];
-      foreach ($records as $record) {
-        $parts[] = $recordHelper($record)->getExport($format);
-      }
-    
-      if ($format == 'HTML') {
-        $exportedRecords = $this->getViewRenderer()->render(
-            './RecordDriver/AbstractBase/frame-html.phtml',
-            ['records' => $parts]
-            );
-      } else {
-        $exportedRecords = $export->processGroup($format, $parts);
-      }
-    
-      return $exportedRecords;
-    }
-    
-    protected function getIds() {
-      $ids = [];
-      // listID could be 'null', 'bookbag', 'favorites' or a integer (listID)
-      $allFromList = $this->params()->fromPost('allFromList');
-    
-      // get ids of all items in bookbag
-      if ($allFromList === 'bookbag') {
-        $cart = $this->getServiceLocator()->get('VuFind\Cart');
-        $ids = $cart->getItems();
-        return $ids;
-      }
-    
-      // get ids of all items over a given favorite list or overall favorite lists
-      if ($allFromList === 'favorites' || is_numeric($allFromList)) {
-        $results = $this->getServiceLocator()
-        ->get('VuFind\SearchResultsPluginManager')->get('Favorites');
-        $params = $results->getParams();
-    
-        $parameters = new Parameters(
-            $this->getRequest()->getQuery()->toArray()
-            + $this->getRequest()->getPost()->toArray()
-            );
-    
-        if (is_numeric($allFromList)) {
-          $parameters->set('id', $allFromList);
-        }
-    
-        $params->initFromRequest($parameters);
-        $params->setLimit(999);
-    
-        $results->performAndProcessSearch();
-    
+
+    protected function getIds() 
+    {
         $ids = [];
-        foreach ($results->getResults() as $result) {
-          $ids[] = $result->getResourceSource() . "|" . $result->getUniqueID();
+        // listID could be 'null', 'bookbag', 'favorites' or a integer (listID)
+        $allFromList = $this->params()->fromPost('allFromList');
+        
+        // get ids of all items in bookbag
+        if ($allFromList === 'bookbag') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $ids = $cart->getItems();
+            return $ids;
         }
-    
+        
+        // get ids of all items over a given favorite list or overall favorite lists
+        if ($allFromList === 'favorites' || is_numeric($allFromList)) {
+            $results = $this->getServiceLocator()
+            ->get('VuFind\SearchResultsPluginManager')->get('Favorites');
+            $params = $results->getParams();
+            
+            $parameters = new Parameters(
+              $this->getRequest()->getQuery()->toArray()
+              + $this->getRequest()->getPost()->toArray()
+              );
+            if (is_numeric($allFromList)) {
+                $parameters->set('id', $allFromList);
+            }
+            
+            $params->initFromRequest($parameters);
+            $params->setLimit(999);
+            $results->performAndProcessSearch();
+            $ids = [];
+            foreach ($results->getResults() as $result) {
+                $ids[] = $result->getResourceSource() . "|" . $result->getUniqueID();
+            }
+            return $ids;
+        }
+        $ids = $this->params()->fromPost('ids', []);
+        if (empty($ids)) {
+          $ids = $this->params()->fromQuery('i', []);
+        }
         return $ids;
-      }
-    
-      $ids = $this->params()->fromPost('ids', []);
-      if (empty($ids)) {
-        $ids = $this->params()->fromQuery('i', []);
-      }
-    
-      return $ids;
     }
     
-    protected function noItemSelected($action) {
+    protected function noItemSelected($action)
+    {
         $view = $this->createViewModel();
         $listID = $this->params()->fromPost('listID', 'favorites');
         $allFromList = $this->params()->fromPost('allFromList', $listID);
         $view->setVariable('action', $action);
         $view->setVariable('allFromList', $allFromList);
-        //$view->setTemplate('cart/' . $action . '-all.phtml');
         $view->setTemplate('cart/process-all.phtml');
         return $view;
     }
     
-    protected function getFormat() {
+    protected function getFormat()
+    {
       $format = $this->params()->fromPost('format');
       if (empty($format)) {
         $format = $this->params()->fromQuery('f', 'HTML');

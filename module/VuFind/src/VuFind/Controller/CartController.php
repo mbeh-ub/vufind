@@ -228,7 +228,7 @@ class CartController extends AbstractBase
         if (!is_array($ids) || empty($ids)) {
             return $this->noItemSelected('email');
         }
-        
+
         // Force login if necessary:
         $config = $this->getConfig();
         if ((!isset($config->Mail->require_login) || $config->Mail->require_login)
@@ -287,7 +287,6 @@ class CartController extends AbstractBase
         if (!is_array($ids) || empty($ids)) {
             return $this->noItemSelected('print');
         }
-
         $callback = function ($i) {
             return 'id[]=' . urlencode($i);
         };
@@ -318,7 +317,7 @@ class CartController extends AbstractBase
         if (!is_array($ids) || empty($ids)) {
             return $this->noItemSelected('export');
         }
-        
+
         // Get export tools:
         $export = $this->getExport();
 
@@ -366,20 +365,11 @@ class CartController extends AbstractBase
         if (!is_array($ids) || empty($ids)) {
             return $this->noItemSelected('doExport');
         }
-        
+
         // Send appropriate HTTP headers for requested format:
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders($this->getExport()->getHeaders($format));
 
-        // Get records in export format
-        $records = $this->getRecordLoader()->loadBatch($ids);
-        $exportedRecords = $this->exportRecords($records, $format);
-        
-        // Process and display the exported records
-        $response->setContent($exportedRecords);
-        return $response;
-        
-        
         // Actually export the records
         $records = $this->getRecordLoader()->loadBatch($ids);
         $recordHelper = $this->getViewRenderer()->plugin('record');
