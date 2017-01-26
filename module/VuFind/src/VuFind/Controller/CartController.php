@@ -372,6 +372,7 @@ class CartController extends AbstractBase
      */
     public function doexportAction()
     {
+        $format = $this->getFormat();
         // We use abbreviated parameters here to keep the URL short (there may
         // be a long list of IDs, and we don't want to run out of room):
         $ids = $this->params()->fromQuery('i', []);
@@ -382,7 +383,6 @@ class CartController extends AbstractBase
             : $this->params()->fromPost('idsAll');
         }
         
-        $format = $this->getFormat();
 
         // Make sure we have IDs to export:
         if (!is_array($ids) || empty($ids)) {
@@ -392,26 +392,13 @@ class CartController extends AbstractBase
         // Send appropriate HTTP headers for requested format:
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders($this->getExport()->getHeaders($format));
-        
+
         // Get records in export format
         $records = $this->getRecordLoader()->loadBatch($ids);
         $exportedRecords = $this->exportRecords($records, $format);
-        
-        // Process and display the exported records
-        $response->setContent($exportedRecords);
-        return $response;
-        
-        
-        // Actually export the records
-        $records = $this->getRecordLoader()->loadBatch($ids);
-        $recordHelper = $this->getViewRenderer()->plugin('record');
-        $parts = [];
-        foreach ($records as $record) {
-            $parts[] = $recordHelper($record)->getExport($format);
-        }
 
         // Process and display the exported records
-        $response->setContent($this->getExport()->processGroup($format, $parts));
+        $response->setContent($exportedRecords);
         return $response;
     }
 
