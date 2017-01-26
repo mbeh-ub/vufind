@@ -384,4 +384,24 @@ class Export
         }
         return $this->activeFormats[$context];
     }
+
+    public function getFilename($format, $translate=true) {
+        $filename = "VuFindExport";
+        foreach ($this->getHeaders($format) as $header) {
+            if (preg_match('/^Content-Disposition:.*filename=(.*);/i',$header,$matches)) {
+                $filename = $matches[1];
+            };
+        }
+        return $filename;
+    }
+    
+    public function getMimeType($format) {
+        $mimeType = "text/plain";
+        foreach ($this->getHeaders($format) as $header) {
+            if (preg_match('/^Content-type:\s*([^;]*)(;|$)/i',$header,$matches)) {
+                $mimeType = $matches[1];
+            };
+        }
+        return $mimeType;
+    }
 }

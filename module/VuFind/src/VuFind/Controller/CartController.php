@@ -251,8 +251,11 @@ class CartController extends AbstractBase
         // Set up reCaptcha
         $view->useRecaptcha = $this->recaptcha()->active('email');
 
+        $view->emailFormatOptions = $this->getEmailFormats();
+        
         // Process form submission:
         if ($this->formWasSubmitted('submit', $view->useRecaptcha)) {
+            
             // Build the URL to share:
             $params = [];
             foreach ($ids as $current) {
@@ -267,10 +270,23 @@ class CartController extends AbstractBase
                 $mailer->setMaxRecipients($view->maxRecipients);
                 $cc = $this->params()->fromPost('ccself') && $view->from != $view->to
                     ? $view->from : null;
-                $mailer->sendLink(
-                    $view->to, $view->from, $view->message,
-                    $url, $this->getViewRenderer(), $view->subject, $cc
-                );
+                $format = $this->params()->fromPost('email_format');
+                if ($format == 'URL') {
+                    $mailer->sendLink(
+                            $view->to, $view->from, $view->message,
+                            $url, $this->getViewRenderer(), $view->subject, $cc
+                    );
+                } else {
+                    $records = $this->getRecordLoader()->loadBatch($ids);
+                    $a=$this->getExportDetails($records, $format);
+                    
+                    $mailer->sendAttachement(
+                            $view->to, $view->from, $view->message,
+                            $a, 
+                            $this->getViewRenderer(), $view->subject, $cc
+                    );
+                }
+                
                 return $this->redirectToSource('success', 'bulk_email_success');
             } catch (MailException $e) {
                 $this->flashMessenger()->addMessage($e->getMessage(), 'error');

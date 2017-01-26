@@ -648,4 +648,41 @@ class AbstractBase extends AbstractActionController
         $cfg = $this->getServiceLocator()->get('Config');
         return $cfg['vufind']['recorddriver_tabs'];
     }
+    
+    protected function getEmailFormats() {
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $exportOptions = $export->getFormatsForRecords($view->records);
+        $formatOptions = explode(':', $this->getConfig('config')->BulkExport->email);
+        $tmp = array_intersect($exportOptions, $formatOptions);
+        if (in_array('URL', $formatOptions)) {
+            $tmp[] = 'URL';
+        }
+    
+        return $tmp;
+    }
+    
+    protected function getExportDetails($records, $format) {
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $filename = $this->translate(explode('.', $export->getFilename($format))[0]) 
+          . '.' . explode('.', $export->getFilename($format))[1];
+        $exportDetails = [
+                'content'  => $this->exportRecords($records, $format),
+                'mimeType' => $export->getMimeType($format),
+                'filename' => $filename
+        ];
+        return $exportDetails;
+    }
+    
+    protected function exportRecords($records, $format) {
+        // Actually export the records
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $recordHelper = $this->getViewRenderer()->plugin('record');
+        $parts = [];
+        foreach ($records as $record) {
+            $parts[] = $recordHelper($record)->getExport($format);
+        }
+    
+        $exportedRecords = $export->processGroup($format, $parts);
+        return $exportedRecords;
+    }
 }

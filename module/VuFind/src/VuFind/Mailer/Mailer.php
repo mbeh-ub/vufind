@@ -30,7 +30,8 @@ use VuFind\Exception\Mail as MailException,
     Zend\Mail\Address,
     Zend\Mail\AddressList,
     Zend\Mail\Message,
-    Zend\Mail\Header\ContentType;
+    Zend\Mail\Header\ContentType,
+    Zend\Mime;
 
 /**
  * VuFind Mailer Class
@@ -287,5 +288,26 @@ class Mailer implements \VuFind\I18n\Translator\TranslatorAwareInterface
     {
         return $this->translate('Library Catalog Record') . ': '
             . $record->getBreadcrumb();
+    }
+    
+    public function sendAttachement($to, $from, $msg, $attachement, $view, $subject = null,
+            $cc = null
+            ) {
+                $text = new Mime\Part($msg);
+                $text->type = Mime\Mime::TYPE_TEXT;
+                $text->charset = 'utf-8';
+    
+                $att = new Mime\Part($attachement['content']);
+                $att->type = $attachement['mimeType'];
+                $att->filename = $attachement['filename'];
+                $att->disposition = Mime\Mime::DISPOSITION_ATTACHMENT;
+                // Setting the encoding is recommended for binary data
+                $att->encoding = Mime\Mime::ENCODING_BASE64;
+    
+                // then add them to a MIME message
+                $mimeMessage = new Mime\Message();
+                $mimeMessage->setParts(array($text, $att));
+    
+                return $this->send($to, $from, $subject, $mimeMessage, $cc);
     }
 }
