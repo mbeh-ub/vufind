@@ -372,17 +372,10 @@ class CartController extends AbstractBase
      */
     public function doexportAction()
     {
-        $format = $this->getFormat();
         // We use abbreviated parameters here to keep the URL short (there may
         // be a long list of IDs, and we don't want to run out of room):
         $ids = $this->params()->fromQuery('i', []);
-        
-        if (!is_array($ids) || empty($ids)) {
-            $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
-        }
-        
+        $format = $this->getFormat();
 
         // Make sure we have IDs to export:
         if (!is_array($ids) || empty($ids)) {
