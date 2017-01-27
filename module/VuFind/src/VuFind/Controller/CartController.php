@@ -374,7 +374,7 @@ class CartController extends AbstractBase
     {
         // We use abbreviated parameters here to keep the URL short (there may
         // be a long list of IDs, and we don't want to run out of room):
-        $ids = $this->params()->fromQuery('i', []);
+        $ids = $this->getIds();
         $format = $this->getFormat();
 
         // Make sure we have IDs to export:

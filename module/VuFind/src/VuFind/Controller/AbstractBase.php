@@ -649,6 +649,58 @@ class AbstractBase extends AbstractActionController
         return $cfg['vufind']['recorddriver_tabs'];
     }
     
+    protected function getIds()
+    {
+        $ids = [];
+        // listID could be 'null', 'bookbag', 'favorites' or a integer (listID)
+        $allFromList = $this->params()->fromPost('allFromList');
+    
+        // get ids of all items in bookbag
+        if ($allFromList === 'bookbag') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $ids = $cart->getItems();
+            return $ids;
+        }
+    
+        // get ids of all items over a given favorite list or overall favorite lists
+        if ($allFromList === 'favorites' || is_numeric($allFromList)) {
+            $results = $this->getServiceLocator()
+            ->get('VuFind\SearchResultsPluginManager')->get('Favorites');
+            $params = $results->getParams();
+    
+            $parameters = new Parameters(
+                    $this->getRequest()->getQuery()->toArray()
+                    + $this->getRequest()->getPost()->toArray()
+                    );
+            if (is_numeric($allFromList)) {
+                $parameters->set('id', $allFromList);
+            }
+    
+            $params->initFromRequest($parameters);
+            $params->setLimit(999);
+            $results->performAndProcessSearch();
+            $ids = [];
+            foreach ($results->getResults() as $result) {
+                $ids[] = $result->getResourceSource() . "|" . $result->getUniqueID();
+            }
+            return $ids;
+        }
+        $ids = $this->params()->fromPost('ids', []);
+        if (empty($ids)) {
+            $ids = $this->params()->fromQuery('i', []);
+        }
+        return $ids;
+    }
+    
+    protected function getFormat() {
+        $format = $this->params()->fromPost('format');
+        if (empty($format)) {
+            $format = $this->params()->fromQuery('f', 'HTML');
+        }
+    
+        return $format;
+    }
+    
     protected function exportRecords($records, $format) {
         // Actually export the records
         $export = $this->getServiceLocator()->get('VuFind\Export');
@@ -668,14 +720,5 @@ class AbstractBase extends AbstractActionController
         }
         
         return $exportedRecords;
-    }
-    
-    protected function getFormat() {
-        $format = $this->params()->fromPost('format');
-        if (empty($format)) {
-            $format = $this->params()->fromQuery('f', 'HTML');
-        }
-    
-        return $format;
     }
 }
