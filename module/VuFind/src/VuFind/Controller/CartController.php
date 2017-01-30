@@ -87,6 +87,8 @@ class CartController extends AbstractBase
             return 'Export';
         } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
             return 'doExport';
+        } else if (strlen($this->params()->fromPost('postLogin', '')) > 0) {
+            return 'postLogin';
         }
         // Check if the user is in the midst of a login process; if not,
         // use the provided default.
@@ -248,8 +250,11 @@ class CartController extends AbstractBase
         // Set up reCaptcha
         $view->useRecaptcha = $this->recaptcha()->active('email');
 
+        $view->emailFormatOptions = $this->getEmailFormats();
+        
         // Process form submission:
         if ($this->formWasSubmitted('submit', $view->useRecaptcha)) {
+            
             // Build the URL to share:
             $params = [];
             foreach ($ids as $current) {
@@ -264,10 +269,23 @@ class CartController extends AbstractBase
                 $mailer->setMaxRecipients($view->maxRecipients);
                 $cc = $this->params()->fromPost('ccself') && $view->from != $view->to
                     ? $view->from : null;
-                $mailer->sendLink(
-                    $view->to, $view->from, $view->message,
-                    $url, $this->getViewRenderer(), $view->subject, $cc
-                );
+                $format = $this->params()->fromPost('email_format');
+                if ($format == 'URL') {
+                    $mailer->sendLink(
+                            $view->to, $view->from, $view->message,
+                            $url, $this->getViewRenderer(), $view->subject, $cc
+                    );
+                } else {
+                    $records = $this->getRecordLoader()->loadBatch($ids);
+                    $a=$this->getExportDetails($records, $format);
+                    
+                    $mailer->sendAttachement(
+                            $view->to, $view->from, $view->message,
+                            $a, 
+                            $this->getViewRenderer(), $view->subject, $cc
+                    );
+                }
+                
                 return $this->redirectToSource('success', 'bulk_email_success');
             } catch (MailException $e) {
                 $this->flashMessenger()->addMessage($e->getMessage(), 'error');
@@ -333,7 +351,8 @@ class CartController extends AbstractBase
             $msg = [
                 'translate' => false, 'html' => true,
                 'msg' => $this->getViewRenderer()->render(
-                    'cart/export-success.phtml', ['url' => $url]
+                    'cart/export-success.phtml', ['url' => $url,
+                    'exportType' => $export->getBulkExportType($format)]
                 )
             ];
             return $this->redirectToSource('success', $msg);
@@ -469,5 +488,37 @@ class CartController extends AbstractBase
             $target = $this->url()->fromRoute('myresearch-home');
         }
         return $this->redirect()->toUrl($target);
+    }
+    
+    public function postLoginAction() {
+        $view = $this->createViewModel();
+    
+        if ($this->params()->fromPost('postLogin') === 'persist') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $user = $this->getAuthManager()->isLoggedIn();
+            $params['ids'] = $cart->getItems();
+            $params['list'] = split('_', $this->params()->fromPost('list'))[0];
+            $params['title'] = split('_', $this->params()->fromPost('list'))[1];
+            $this->favorites()->saveBulk($params, $user);
+            $cart->emptyCart();
+            $view->setVariable('action', 'persist');
+            $view->setTemplate('cart/post-login.phtml');
+            return $view;
+        }
+    
+        if ($this->params()->fromPost('postLogin') === 'discard') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $cart->emptyCart();
+            $view->setVariable('action', 'discard');
+            $view->setTemplate('cart/post-login.phtml');
+            return $view;
+        }
+    
+        $user = $this->getUser();
+        $lists = $user->getLists();
+        $view->setVariable('lists', $lists);
+        $view->setVariable('action', 'request');
+        $view->setTemplate('cart/post-login.phtml');
+        return $view;
     }
 }
