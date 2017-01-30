@@ -773,13 +773,4 @@ class AbstractBase extends AbstractActionController
     
         return $cacheContext;
     }
-    
-    protected function getFormat() {
-        $format = $this->params()->fromPost('format');
-        if (empty($format)) {
-            $format = $this->params()->fromQuery('f', 'HTML');
-        }
-    
-        return $format;
-    }
 }
