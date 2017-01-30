@@ -85,6 +85,8 @@ class CartController extends AbstractBase
             return 'Save';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             return 'Export';
+        } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
+            return 'doExport';
         }
         // Check if the user is in the midst of a login process; if not,
         // use the provided default.
@@ -208,6 +210,8 @@ class CartController extends AbstractBase
             $action = 'Home';
         } else if (strlen($this->params()->fromPost('export', '')) > 0) {
             $action = 'Export';
+        } else if (strlen($this->params()->fromPost('doExport', '')) > 0) {
+            $action = 'doExport';
         } else {
             throw new \Exception('Unrecognized bulk action.');
         }
@@ -358,8 +362,12 @@ class CartController extends AbstractBase
      */
     public function doexportAction()
     {
-        $format = $this->params()->fromQuery('f');
+        // We use abbreviated parameters here to keep the URL short (there may
+        // be a long list of IDs, and we don't want to run out of room):
         $ids = $this->getIds();
+        $format = $this->getFormat();
+
+        // Make sure we have IDs to export:
         if (!is_array($ids) || empty($ids)) {
             return $this->noItemSelected('doExport');
         }
@@ -368,16 +376,12 @@ class CartController extends AbstractBase
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders($this->getExport()->getHeaders($format));
 
-        // Actually export the records
+        // Get records in export format
         $records = $this->getRecordLoader()->loadBatch($ids);
-        $recordHelper = $this->getViewRenderer()->plugin('record');
-        $parts = [];
-        foreach ($records as $record) {
-            $parts[] = $recordHelper($record)->getExport($format);
-        }
+        $exportedRecords = $this->exportRecords($records, $format);
 
         // Process and display the exported records
-        $response->setContent($this->getExport()->processGroup($format, $parts));
+        $response->setContent($exportedRecords);
         return $response;
     }
 
