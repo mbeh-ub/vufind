@@ -221,17 +221,10 @@ class CartController extends AbstractBase
      */
     public function emailAction()
     {
-        // Retrieve ID list:
-        $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
-
-        // Retrieve follow-up information if necessary:
+        // Get the desired ID list:
+        $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-            $ids = $this->followup()->retrieveAndClear('cartIds');
-        }
-        if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+            return $this->noItemSelected('email');
         }
 
         // Force login if necessary:
@@ -287,11 +280,10 @@ class CartController extends AbstractBase
      */
     public function printcartAction()
     {
-        $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
+        // Get the desired ID list:
+        $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+            return $this->noItemSelected('print');
         }
         $callback = function ($i) {
             return 'id[]=' . urlencode($i);
@@ -319,11 +311,9 @@ class CartController extends AbstractBase
     public function exportAction()
     {
         // Get the desired ID list:
-        $ids = is_null($this->params()->fromPost('selectAll'))
-            ? $this->params()->fromPost('ids')
-            : $this->params()->fromPost('idsAll');
+        $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+            return $this->noItemSelected('export');
         }
 
         // Get export tools:
@@ -368,14 +358,10 @@ class CartController extends AbstractBase
      */
     public function doexportAction()
     {
-        // We use abbreviated parameters here to keep the URL short (there may
-        // be a long list of IDs, and we don't want to run out of room):
-        $ids = $this->params()->fromQuery('i', []);
         $format = $this->params()->fromQuery('f');
-
-        // Make sure we have IDs to export:
+        $ids = $this->getIds();
         if (!is_array($ids) || empty($ids)) {
-            return $this->redirectToSource('error', 'bulk_noitems_advice');
+            return $this->noItemSelected('doExport');
         }
 
         // Send appropriate HTTP headers for requested format:

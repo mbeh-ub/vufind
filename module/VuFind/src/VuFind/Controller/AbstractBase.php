@@ -34,7 +34,8 @@ use VuFind\Exception\Forbidden as ForbiddenException,
     Zend\Mvc\MvcEvent,
     Zend\View\Model\ViewModel,
     ZfcRbac\Service\AuthorizationServiceAwareInterface,
-    ZfcRbac\Service\AuthorizationServiceAwareTrait;
+    ZfcRbac\Service\AuthorizationServiceAwareTrait,
+    Zend\Stdlib\Parameters;
 
 /**
  * VuFind controller base class (defines some methods that can be shared by other
