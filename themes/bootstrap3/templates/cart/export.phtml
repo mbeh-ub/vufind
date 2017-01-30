@@ -13,6 +13,7 @@
 
 <? if (!empty($this->exportOptions)): ?>
   <form class="form-horizontal" method="post" action="<?=$this->url('cart-export')?>" name="exportForm" title="<?=$this->transEsc('Export Items')?>">
+    <input type="hidden" name="cacheContext" value="Favorite" />
     <? foreach ($this->records as $current): ?>
       <input type="hidden" name="ids[]" value="<?=$this->escapeHtmlAttr($current->getSourceIdentifier() . '|' . $current->getUniqueId())?>" />
     <? endforeach; ?>

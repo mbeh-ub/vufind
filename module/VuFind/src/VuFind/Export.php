@@ -96,10 +96,13 @@ class Export
      *
      * @return string
      */
-    public function getBulkUrl($view, $format, $ids)
+    public function getBulkUrl($view, $format, $ids, $cacheContext = 'Favorite')
     {
         $params = [];
         $params[] = 'f=' . urlencode($format);
+        if (isset($cacheContext)) {
+            $params[] = 'cacheContext=' . $cacheContext;
+        }
         foreach ($ids as $id) {
             $params[] = urlencode('i[]') . '=' . urlencode($id);
         }

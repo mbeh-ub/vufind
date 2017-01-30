@@ -371,8 +371,8 @@ class AbstractBase extends AbstractActionController
     {
         $recordLoader = $this->getServiceLocator()->get('VuFind\RecordLoader');
         
-        $cacheContext = $this->getRequest()->getQuery()->get('cacheContext');
-        if (isset($cachePolicy)) {
+        $cacheContext = $this->getCacheContext();
+        if (isset($cacheContext)) {
             $recordLoader->setCacheContext($cacheContext);
         }
         
@@ -654,5 +654,122 @@ class AbstractBase extends AbstractActionController
     {
         $cfg = $this->getServiceLocator()->get('Config');
         return $cfg['vufind']['recorddriver_tabs'];
+    }
+
+    protected function noItemSelected($action)
+    {
+        $view = $this->createViewModel();
+        $listID = $this->params()->fromPost('listID', 'favorites');
+        $allFromList = $this->params()->fromPost('allFromList', $listID);
+        $view->setVariable('action', $action);
+        $view->setVariable('allFromList', $allFromList);
+        $view->setTemplate('cart/process-all.phtml');
+        return $view;
+    }
+    
+    protected function getIds()
+    {
+        $ids = [];
+        // listID could be 'null', 'bookbag', 'favorites' or a integer (listID)
+        $allFromList = $this->params()->fromPost('allFromList');
+    
+        // get ids of all items in bookbag
+        if ($allFromList === 'bookbag') {
+            $cart = $this->getServiceLocator()->get('VuFind\Cart');
+            $ids = $cart->getItems();
+            return $ids;
+        }
+    
+        // get ids of all items over a given favorite list or overall favorite lists
+        if ($allFromList === 'favorites' || is_numeric($allFromList)) {
+            $results = $this->getServiceLocator()
+            ->get('VuFind\SearchResultsPluginManager')->get('Favorites');
+            $params = $results->getParams();
+    
+            $parameters = new Parameters(
+                    $this->getRequest()->getQuery()->toArray()
+                    + $this->getRequest()->getPost()->toArray()
+                    );
+            if (is_numeric($allFromList)) {
+                $parameters->set('id', $allFromList);
+            }
+    
+            $params->initFromRequest($parameters);
+            $params->setLimit(999);
+            $results->performAndProcessSearch();
+            $ids = [];
+            foreach ($results->getResults() as $result) {
+                $ids[] = $result->getResourceSource() . "|" . $result->getUniqueID();
+            }
+            return $ids;
+        }
+        $ids = $this->params()->fromPost('ids', []);
+        if (empty($ids)) {
+            $ids = $this->params()->fromQuery('i', []);
+        }
+        return $ids;
+    }
+    
+    protected function getFormat() {
+        $format = $this->params()->fromPost('format');
+        if (empty($format)) {
+            $format = $this->params()->fromQuery('f', 'HTML');
+        }
+    
+        return $format;
+    }
+    
+    protected function exportRecords($records, $format) {
+        // Actually export the records
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $recordHelper = $this->getViewRenderer()->plugin('record');
+        $parts = [];
+        foreach ($records as $record) {
+            $parts[] = $recordHelper($record)->getExport($format);
+        }
+
+        if ($format == 'HTML') {
+            $exportedRecords = $this->getViewRenderer()->render(
+                    './RecordDriver/AbstractBase/frame-html.phtml',
+                    ['records' => $parts]
+                    );
+        } else {
+            $exportedRecords = $export->processGroup($format, $parts);
+        }
+        
+        return $exportedRecords;
+    }
+    
+    protected function getEmailFormats() {
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $exportOptions = $export->getFormatsForRecords($view->records);
+        $formatOptions = explode(':', $this->getConfig('config')->BulkExport->email);
+        $tmp = array_intersect($exportOptions, $formatOptions);
+        if (in_array('URL', $formatOptions)) {
+            $tmp[] = 'URL';
+        }
+    
+        return $tmp;
+    }
+    
+    protected function getExportDetails($records, $format) {
+        $export = $this->getServiceLocator()->get('VuFind\Export');
+        $filename = $this->translate(explode('.', $export->getFilename($format))[0]) 
+          . '.' . explode('.', $export->getFilename($format))[1];
+        $exportDetails = [
+                'content'  => $this->exportRecords($records, $format),
+                'mimeType' => $export->getMimeType($format),
+                'filename' => $filename
+        ];
+        return $exportDetails;
+    }
+    
+    protected function getCacheContext() {
+        $cacheContext = $this->params()->fromQuery('cacheContext');
+        if (empty($cacheContext)) {
+            $cacheContext = $this->params()->fromPost('cacheContext', null);
+        }
+    
+        return $cacheContext;
     }
 }
