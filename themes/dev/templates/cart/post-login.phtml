@@ -1,0 +1,47 @@
+<?
+// Set page title.
+  //$this->headTitle($this->translate('RDS_CART_PERSIST_AFTER_LOGIN'));
+
+  // Set up breadcrumbs:
+  $this->layout()->breadcrumbs = '<li>' . $this->searchMemory()->getLastSearchLink($this->transEsc('Search'), '', '</li> ')
+    . '<li class="active">' . $this->transEsc('RDS_CART_PERSIST_AFTER_LOGIN') . '</li>';
+  $name = $this->transEsc('RDS_CART_COLLECTED_FAV_LIST');
+  $options[$name] = 'NEW_' . $name;
+  foreach ($this->lists as $list) {
+    $options[$list['title']] = $list['id'];
+  }
+?>
+
+<h2><?=$this->transEsc('RDS_CART_POST_LOGIN_DIALOG_TITLE')?></h2>
+
+<?if ($this->action === 'request'): ?>
+    <div>
+        <form class="form-inline" action="<?=$this->url('cart-processor')?>" method="post" name="cartForm">
+        <?=$this->transEsc('RDS_CART_POST_LOGIN_DIALOG_INFO')?>
+        <br /><br />
+        <?=$this->transEsc('RDS_CART_SAVE_AS_LIST')?>
+        <select id="save_list" name="list" class="form-control">
+              <? foreach ($options as $name => $id): ?>
+                <option value="<?=$id?>"><?=$this->escapeHtml($name)?></option>
+              <? endforeach; ?>
+        </select>
+        <br /><br />
+        <button type="submit" class="btn btn-default" name="postLogin" value="persist"><?=$this->transEsc('RDS_CART_PERSIST')?></button>
+        <button type="submit" class="btn btn-default" name="postLogin" value="discard"><?=$this->transEsc('RDS_CART_DISCARD')?></button>
+        </form>
+    </div>
+<?endif; ?>
+    
+<?if ($this->action === 'persist'): ?>
+    <div>
+      <?=$this->transEsc('RDS_CART_PERSIST_MSG')?><br /><br />
+      <input type="button" data-dismiss="modal"" value="OK"/>
+    </div>
+<?endif; ?>
+
+<?if ($this->action === 'discard'): ?>
+    <div>
+      <?=$this->transEsc('RDS_CART_DISCARD_MSG')?><br /><br />
+      <input type="button" data-dismiss="modal" value="OK"/>
+    </div>
+<?endif; ?>
