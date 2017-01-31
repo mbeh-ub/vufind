@@ -33,7 +33,11 @@
           <?=$this->transEsc('Export')?>
         </button>
       <? endif; ?>
-      <button type="submit" class="btn btn-default dropdown-toggle" name="doExport" title="<?=$this->transEsc('print_selected')?>" value="1" data-lightbox-target="_blank">
+      <button type="submit" class="btn btn-default dropdown-toggle" name="doExport" title="<?=$this->transEsc('print_html')?>" value="1" data-lightbox-target="_blank">
+        <i class="fa fa-print" aria-hidden="true"></i>
+        <?=$this->transEsc('Print (HTML)')?>
+      </button>
+            <button type="submit" class="btn btn-default dropdown-toggle" name="print" title="<?=$this->transEsc('print_selected')?>" value="1">
         <i class="fa fa-print" aria-hidden="true"></i>
         <?=$this->transEsc('Print')?>
       </button>
