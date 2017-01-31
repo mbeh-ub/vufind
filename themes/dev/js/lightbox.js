@@ -159,17 +159,6 @@ VuFind.register('lightbox', function Lightbox() {
           }
           _currentUrl = _originalUrl; // Now that we're logged in, where were we?
         }
-        
-//        try {
-//        	json = JSON.parse(content);
-//        	if (json.url) {
-//        		window.open(json.url);
-//        		_modal.modal('hide');
-//        		return;
-//        	}
-//        } catch(e){
-//        	
-//        }
         var testDiv = $('<div/>').html(content);
         var error = testDiv.find('.flash-message.alert-danger');
         if (!error.length && typeof(obj.target) !== 'undefined') {
