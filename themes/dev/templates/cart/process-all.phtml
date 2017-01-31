@@ -44,5 +44,5 @@
   <br />
   <input type="hidden" name="allFromList" value="<?=$this->allFromList?>" />
     <a class="btn btn-default" <?=$selectAction?> type="submit"><?=$this->transEsc('Select Items')?></a>
-	<input class="btn btn-default" type="submit" name="<?=$this->action?>" value="<?=$this->transEsc('Process List')?>" <?=$handleDoExport?>/>
+	<input class="btn btn-default" type="submit" name="<?=$this->action?>" value="<?=$this->transEsc($this->action . '_all_items')?>" <?=$handleDoExport?>/>
 </form>
