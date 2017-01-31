@@ -13,7 +13,13 @@
         $selectAction = 'data-lightbox href="' . $this->url('cart-processor') . '"';
     }
     
-    if ($this->action === 'print' || $this->action === 'doExport') {
+    $handleDoExport = '';
+    if ($this->action === 'doExport') {
+        $handleDoExport = 'data-lightbox-target="_blank"';
+    }
+    
+    $handlePrint = '';
+    if ($this->action === 'print') {
         $handlePrint = 'data-lightbox-onsubmit="return true;"';
     }
     
@@ -21,7 +27,7 @@
 
 <h2><?=$this->transEsc($this->action . ' Favorites')?></h2>
 
-<?=$this->flashmessages()?>
+<div class="flash-message alert-danger"></div>
 
 <form class="form-horizontal" method="post" action="<?=$this->url('cart-myresearchbulk')?>" 
       name="<?=$this->action?>ListForm" title="<?=$this->transEsc($this->action . ' Items')?>"  
@@ -38,5 +44,5 @@
   <br />
   <input type="hidden" name="allFromList" value="<?=$this->allFromList?>" />
     <a class="btn btn-default" <?=$selectAction?> type="submit"><?=$this->transEsc('Select Items')?></a>
-	<input class="btn btn-default" type="submit" name="<?=$this->action?>" value="<?=$this->transEsc('Process List')?>"/>
+	<input class="btn btn-default" type="submit" name="<?=$this->action?>" value="<?=$this->transEsc('Process List')?>" <?=$handleDoExport?>/>
 </form>
