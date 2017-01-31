@@ -170,7 +170,7 @@ VuFind.register('lightbox', function Lightbox() {
         var testDiv = $('<div/>').html(content);
         var error = testDiv.find('.flash-message.alert-danger');
         if (!error.length && typeof(obj.target) !== 'undefined') {
-        	_modal.modal('hide');	
+            _modal.modal('hide');	
             var newWindow =window.open('', obj.target);
             newWindow.document.body.innerHTML = content;
         } else {
