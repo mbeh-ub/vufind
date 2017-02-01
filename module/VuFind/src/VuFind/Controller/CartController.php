@@ -497,8 +497,8 @@ class CartController extends AbstractBase
             $cart = $this->getServiceLocator()->get('VuFind\Cart');
             $user = $this->getAuthManager()->isLoggedIn();
             $params['ids'] = $cart->getItems();
-            $params['list'] = split('_', $this->params()->fromPost('list'))[0];
-            $params['title'] = split('_', $this->params()->fromPost('list'))[1];
+            $params['list'] = explode('_', $this->params()->fromPost('list'))[0];
+            $params['title'] = explode('_', $this->params()->fromPost('list'))[1];
             $this->favorites()->saveBulk($params, $user);
             $cart->emptyCart();
             $view->setVariable('action', 'persist');
