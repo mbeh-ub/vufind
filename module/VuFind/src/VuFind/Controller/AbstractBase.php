@@ -697,6 +697,9 @@ class AbstractBase extends AbstractActionController
         if (empty($format)) {
             $format = $this->params()->fromQuery('f', 'HTML');
         }
+        if ($this->getAuthorizationService()->isGranted('access.RDSShortPrint')) {
+        	$format = "html-short";
+        }
     
         return $format;
     }
