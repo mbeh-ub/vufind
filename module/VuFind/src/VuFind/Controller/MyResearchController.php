@@ -1581,7 +1581,7 @@ class MyResearchController extends AbstractBase
     				$recordCache->setContext('Favorite');
     				// Load and persist record only if the source is cachable
     				if ($recordCache->isCachable($resource->source)) {
-    					$recordCache->createOrUpdate($recordId, $user->id, $searchClassId, $result->getRawData(), null, $resource->id);
+    					$recordCache->createOrUpdateForMigartion($recordId, $searchClassId, $result->getRawData(), $resource->id, $user->id);
     				}
     				$recordCache->setContext('Default');
     			}
