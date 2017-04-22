@@ -1483,4 +1483,124 @@ class MyResearchController extends AbstractBase
             $this->getAuthManager()->setAuthMethod($method);
         }
     }
+    
+    public function migrateAction() {
+    	$persistentId = $this->params()->fromQuery('persistentId');
+    	$recordId = $this->params()->fromQuery('recordId');
+    	$searchClassId = $this->params()->fromQuery('searchClassId');
+    	$password = $this->params()->fromQuery('pwd');
+    	$guest=$this->params()->fromQuery('guest', 'y');
+    	$recordSource=$this->params()->fromQuery('recordSource', 'INDEX');;
+    
+    	// guarantee that we have a user
+    	// (create a new user with given persistenceId if no one exists already)
+    	$userTable = $this->getTable('User');
+    	$user = $userTable->select(['username' => $persistentId])->current();
+    	if (!$user) {
+    		$user = $userTable->getByUsername($persistentId);
+    
+    		if (isset($password)) {
+    			$config = $this->getConfig();
+    			$passwordHashingEnabled = isset($config->Authentication->hash_passwords) ? $config->Authentication->hash_passwords : false;
+    
+    			if ($passwordHashingEnabled) {
+    				$bcrypt = new Bcrypt();
+    				$user->pass_hash = $bcrypt->create($password);
+    			} else {
+    				$user->password = $password;
+    			}
+    		}
+    		$user->save();
+    	}
+    
+    	// guarente that we have a favorite list for this user
+    	// (create a new list if no one exists)
+    	$userListTable = $this->getTable('UserList');
+    	$migrationList = $userListTable->select(array('title' => 'My Favorites', 'user_id' => $user->id));
+    	if ($migrationList->count()>0) {
+    		$migrationList = $migrationList->current();
+    		$listId = $migrationList->id;
+    	} else {
+    		$migrationList = $userListTable->getNew($user);
+    		$migrationList->title = 'My Favorites';
+    		$migrationList->save($user);
+    		$listId = $migrationList->id;
+    	}
+    
+    	$params = [
+    			'ids' => ["$searchClassId|$recordId"],
+    			'list' => $listId
+    	];
+    
+    	$msg = "$searchClassId ";
+    	try {
+    		$recordCache = $this->getRecordCache();
+    		$result = null;
+    
+    		// try to load record from source if given
+    		if ($recordSource) {
+    			$source = urldecode($recordSource);
+    			$result = file_get_contents($source);
+    			if ($result) {
+    				$result = $recordCache->getVuFindRecord(
+    						['data' => $result,
+    								'source' => 'RDSProxy',
+    								'version' => 1
+    						]
+    						);
+    			}
+    		}
+    
+    		// if we dont have a record yet, try to load it from cache
+    		if (empty($result)) {
+    			$recordCache->setContext('Favorite');
+    			$session = $_SESSION;
+    			$_SESSION['Account']->userId = $user->id;
+    			$result = $recordCache->lookup(["$recordId"], $searchClassId)[0];
+    			$recordCache->setContext('Default');
+    			$_SESSION = $session;
+    		}
+    
+    		// if we dont have a record yet, try to load it from index
+    		if (empty($result)) {
+    			$recordLoader = $this->getServiceLocator()->get('VuFind\RecordLoader');
+    			$result = $recordLoader->load($recordId, $searchClassId, true);
+    		}
+    
+    		if (!is_a($result, 'VuFind\RecordDriver\Missing')) {
+    			$fields = $result->getRawData();
+    			if (empty($fields)) {
+    				$msg .= " --- ERROR (no fields in record driver)";
+    			} else {
+    				$msg .= " --- SUCCESS (update record)";
+    				$params['record'] = $result;
+    
+    				$resourceTable = $this->getTable('Resource');
+    				$resource = $resourceTable->findResource($recordId, $searchClassId, true, $result);
+    				$user->saveResource($resource, $migrationList, [], '', false);
+    				$recordCache->setContext('Favorite');
+    				// Load and persist record only if the source is cachable
+    				if ($recordCache->isCachable($resource->source)) {
+    					$recordCache->createOrUpdate($recordId, $user->id, $searchClassId, $result->getRawData(), null, $resource->id);
+    				}
+    				$recordCache->setContext('Default');
+    			}
+    
+    
+    		} else {
+    			$msg .= " --- ERROR (no record found) ";
+    		}
+    	} catch (Exception $e) {
+    		$msg .= " --- ERROR --- $e->getMessage()";
+    	}
+    
+    	$msg .= "--- recordId: $recordId, source: $searchClassId, persistentId: $persistentId, guest: $guest ";
+    
+    	$response = $this->getResponse();
+    	$headers = $response->getHeaders();
+    	$headers->addHeaderLine('Content-type', 'text/plain');
+    	$response->setContent($msg);
+    	return $response;
+    	 
+    }
 }
