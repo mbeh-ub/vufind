@@ -677,7 +677,7 @@ class AbstractBase extends AbstractActionController
             }
     
             $params->initFromRequest($parameters);
-            $params->setLimit(999);
+            $params->setLimit(200);
             $results->performAndProcessSearch();
             $ids = [];
             foreach ($results->getResults() as $result) {
