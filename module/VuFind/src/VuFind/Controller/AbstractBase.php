@@ -698,7 +698,7 @@ class AbstractBase extends AbstractActionController
             $format = $this->params()->fromQuery('f', 'HTML');
         }
         if ($this->getAuthorizationService()->isGranted('access.RDSShortPrint')) {
-        	$format = "html-short";
+        	$format = "SHORT";
         }
     
         return $format;
@@ -713,9 +713,9 @@ class AbstractBase extends AbstractActionController
             $parts[] = $recordHelper($record)->getExport($format);
         }
 
-        if ($format == 'HTML') {
+        if ($format == 'HTML' || $format == 'SHORT') {
             $exportedRecords = $this->getViewRenderer()->render(
-                    './RecordDriver/AbstractBase/frame-html.phtml',
+                    './RecordDriver/AbstractBase/frame-' . strtolower($format) . '.phtml',
                     ['records' => $parts]
                     );
         } else {
