@@ -695,12 +695,13 @@ class AbstractBase extends AbstractActionController
     protected function getFormat() {
         $format = $this->params()->fromPost('format');
         if (empty($format)) {
-            $format = $this->params()->fromQuery('f', 'HTML');
+	        $format = $this->params()->fromQuery('f', 'HTML');
         }
+    
         if ($this->getAuthorizationService()->isGranted('access.RDSShortPrint')) {
         	$format = "SHORT";
         }
-    
+        
         return $format;
     }
     
