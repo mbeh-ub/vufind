@@ -247,7 +247,7 @@ class CartController extends AbstractBase
         }
 
         $view = $this->createEmailViewModel(
-            null, $this->translate('bulk_email_title')
+            null, $this->translate('bulk_email_title'), $this->translate('bulk_email_message')
         );
         $view->records = $this->getRecordLoader()->loadBatch($ids);
         // Set up reCaptcha
