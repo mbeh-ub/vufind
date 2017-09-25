@@ -144,11 +144,12 @@ class Loader
             // Try to load records from cache if source is cachable
             $cachedRecords = $this->recordCache->lookupBatch($ids, $source);
             // Check which records could not be loaded from the record cache
-            foreach ($cachedRecords as $cachedRecord) {
+            foreach ($cachedRecords as $idx => $cachedRecord) {
                 $key = array_search($cachedRecord->getUniqueId(), $ids);
                 if ($key !== false) {
                     unset($ids[$key]);
                 }
+                $this->checkAndRepairCacheRecord($idx, $cachedRecords);
             }
         }
 
@@ -258,6 +259,25 @@ class Loader
     {
         if (null !== $this->recordCache) {
             $this->recordCache->setContext($context);
+        }
+    }
+    
+    protected function checkAndRepairCacheRecord($idx, &$cachedRecords) {
+        $cachedRecord = $cachedRecords[$idx];
+        
+        if ( $cachedRecord->getRawData()['update'] ) {
+            $recordId=$cachedRecord->getUniqueID();
+            $sourceIdentifier=$cachedRecord->getSourceIdentifier();
+            $resourceId=$cachedRecord->getRawData()['resource_id'];
+            $record = $this->searchService->retrieve($sourceIdentifier, $recordId)->getRecords()[0];
+            if ( $record ) {
+                $this->recordCache->createOrUpdate($recordId, $sourceIdentifier, $record->getRawData(), $resourceId) ;
+            }
+            
+            $updatedRecord = $this->recordCache->lookup($recordId, $sourceIdentifier);
+            if ( ! empty($updatedRecord) ) {
+                $cachedRecords[$idx] = $updatedRecord[0];
+            }
         }
     }
 }

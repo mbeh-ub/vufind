@@ -128,6 +128,23 @@ class Cache implements \Zend\Log\LoggerAwareInterface
             );
         }
     }
+    
+    public function createOrUpdateForMigartion($recordId, $source, $rawData,
+    		$resourceId, $userId
+    		) {
+    			if (isset($this->cachableSources[$source])) {
+    
+    				$this->debug("Updating {$source}|{$recordId}");
+    				$this->debug("CreateOrUpdate cache item : " .
+    						'recordId: ' . $recordId .
+    						', userid: ' . $this->userId .
+    						', source: ' . $source
+    						);
+    				$this->recordTable->updateRecord($recordId, $source, $rawData,
+    						$userId, $resourceId
+    			    );
+    			}
+    }
 
     /**
      * Given a record ID, look up a record for that source.
@@ -268,10 +285,23 @@ class Cache implements \Zend\Log\LoggerAwareInterface
      *
      * @return \VuFind\RecordDriver\AbstractBase
      */
-    protected function getVuFindRecord($cachedRecord)
+    public function getVuFindRecord($cachedRecord)
     {
         $source = $cachedRecord['source'];
         $doc = unserialize($cachedRecord['data']);
+        //workaround for migrating RDSProxy entries form VuFind 1.3
+        if (empty($doc)) {
+        	$doc = json_decode($cachedRecord['data'], true);
+        }
+        // fix empty $doc 
+        if (empty($doc)) {
+            $doc = [
+                'id' => $cachedRecord['record_id'], 
+                'update' => true,
+                'resource_id' => $cachedRecord['resource_id']
+            ];
+        }
+        
         $doc = $this->addDebugMarker($doc);
 
         // Solr records are loaded in special-case fashion:
