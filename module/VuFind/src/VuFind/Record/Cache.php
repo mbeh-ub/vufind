@@ -289,6 +289,15 @@ class Cache implements \Zend\Log\LoggerAwareInterface
     {
         $source = $cachedRecord['source'];
         $doc = unserialize($cachedRecord['data']);
+
+        if (empty($doc)) {
+            $doc = unserialize(
+                preg_replace_callback('!s:(\d+):"(.*?)";!', 
+                    function($m) { return 's:'.strlen($m[2]).':"'.$m[2].'";'; }, $cachedRecord['data']
+            ));
+           $doc['update'] = true;
+        }
+        
         //workaround for migrating RDSProxy entries form VuFind 1.3
         if (empty($doc)) {
         	$doc = json_decode($cachedRecord['data'], true);

@@ -134,8 +134,13 @@ class Service
         try {
             $response = $backend->retrieve($id, $params);
         } catch (BackendException $e) {
-            $this->triggerError($e, $args);
-            throw $e;
+            // workaround to be able to catch Bad Gateway Error from RDSProxy
+            if ($backend->getIdentifier() == 'RDSProxy' && $e->getMessage() == '502 Bad Gateway' ) {
+              throw $e;
+            } else {
+              $this->triggerError($e, $args);
+              throw $e;
+            }
         }
         $this->triggerPost($response, $args);
         return $response;

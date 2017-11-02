@@ -269,7 +269,13 @@ class Loader
             $recordId=$cachedRecord->getUniqueID();
             $sourceIdentifier=$cachedRecord->getSourceIdentifier();
             $resourceId=$cachedRecord->getRawData()['resource_id'];
-            $record = $this->searchService->retrieve($sourceIdentifier, $recordId)->getRecords()[0];
+
+            try{
+                $record = $this->searchService->retrieve($sourceIdentifier, $recordId)->getRecords()[0];
+            } catch (\Exception $e) {
+                $record = false;    
+            }
+                
             if ( $record ) {
                 $this->recordCache->createOrUpdate($recordId, $sourceIdentifier, $record->getRawData(), $resourceId) ;
             }
