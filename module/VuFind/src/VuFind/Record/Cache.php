@@ -295,7 +295,9 @@ class Cache implements \Zend\Log\LoggerAwareInterface
                 preg_replace_callback('!s:(\d+):"(.*?)";!', 
                     function($m) { return 's:'.strlen($m[2]).':"'.$m[2].'";'; }, $cachedRecord['data']
             ));
-           $doc['update'] = true;
+            if ($doc){
+               $doc['update'] = true;
+            }
         }
         
         //workaround for migrating RDSProxy entries form VuFind 1.3
